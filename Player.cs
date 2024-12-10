@@ -46,7 +46,7 @@ public class Player : SpriteActor
 
         if(keyInfo.IsKeyDown(Keys.K) && cooltime >= 0 && keyInfo.IsKeyPressed(Keys.K))
         {
-            hitbox = new HitboxObj(new Vector2(15, 32), RawRect.CreateAdjusted(0.4f, 1f), 1, 0.15f);
+            hitbox = new HitboxObj(new Vector2(15, 32), new RectF(30, 15, 15, 5), 1, 0.15f);
             Add(hitbox);
             cooltime -= coolFix;
         }

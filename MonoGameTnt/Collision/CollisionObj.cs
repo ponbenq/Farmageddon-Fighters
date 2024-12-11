@@ -18,35 +18,22 @@ namespace ThanaNita.MonoGameTnt
         public OnCollideDelegate OnCollide = null;
         public Actor Actor { get; private set; }
 
-        public CollisionObj(CollisionRect shape, Actor actor, int groupCode=0)
+        public CollisionObj(CollisionRect shape, Actor actor, int groupCode = 0)
         {
             Shape = shape;
             shape.Parent = actor;
-            Actor = actor;
+            this.Actor = actor;
             GroupCode = groupCode;
         }
-        public void SetNewShape(CollisionRect shape)
-        {
-            Shape = shape;
-            shape.Parent = Actor;
-        }
-        public static CollisionObj CreateWithRect(Actor actor, int groupCode=0)
+        public static CollisionObj CreateWithRect(Actor actor, int groupCode = 0)
         {
             return new CollisionObj(new CollisionRect(actor.RawRect), actor, groupCode);
-        }
-        public static CollisionObj CreateWithRect(Actor actor, RectF rawRect, int groupCode = 0)
-        {
-            return new CollisionObj(new CollisionRect(rawRect), actor, groupCode);
         }
 
         public void InvokeCollide(CollisionObj objB, CollideData collideData)
         {
             if (OnCollide != null)
-            {
-                collideData.objA = this;
-                collideData.objB = objB;
                 OnCollide(objB, collideData);
-            }
         }
 
         public Vector2 RelativeDirection(RectF overlap)
@@ -55,7 +42,7 @@ namespace ThanaNita.MonoGameTnt
         }
         public override void Draw(DrawTarget target, DrawState state)
         {
-            if(DebugDraw)
+            if (DebugDraw)
                 Shape.DebugDraw(target);
         }
     }

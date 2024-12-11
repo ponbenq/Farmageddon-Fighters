@@ -17,7 +17,7 @@ namespace ThanaNita.MonoGameTnt
             }
         }
 
-        public List<CollisionObj> GetList(int index) 
+        public List<CollisionObj> GetList(int index)
         {
             return listOfList[index];
         }

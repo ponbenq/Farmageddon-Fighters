@@ -20,6 +20,7 @@ namespace GameProject
             //Start button
             var startButton = new Button("Simvoni.ttf", 50, Color.Brown, "Start", new Vector2(300, 100));
             startButton.Position = new Vector2(screenSize.X/2 , screenSize.Y/2 - 200);
+            startButton.ButtonClicked += GameStart;
             this.Add(startButton);
 
             //Exit button
@@ -32,6 +33,11 @@ namespace GameProject
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
+        }
+
+        public void GameStart(GenericButton button)
+        {
+            AddAction(new RunAction(() => exitNotifier(this, 1)));
         }
 
         public void GameExit(GenericButton button)

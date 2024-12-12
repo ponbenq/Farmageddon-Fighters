@@ -10,7 +10,7 @@ public class HitboxObj : RectangleActor
     private int groupCode;
     private RectF rect;
     private float spanTime;
-    public HitboxObj(Vector2 position, RectF rect, int groupCode, float spanTime): base(Color.LightBlue, rect)// new RectF(30, 15, 15, 5))
+    public HitboxObj(Vector2 position, RectF rect, int groupCode, float spanTime): base(Color.Transparent, rect)// new RectF(30, 15, 15, 5))
     {
         this.position = position;
         this.rect = rect;

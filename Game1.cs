@@ -9,12 +9,11 @@ namespace GameProject
     public class Game1 : Game2D
     {
         Actor menuScreen;
-        Actor characterSelectScreen;
+        Actor characterSelectScreen, gameScreen;
         protected override void LoadContent()
         {
             menuScreen = new MenuScreen(ScreenSize, ExitNotifier);
             All.Add(menuScreen);
-
             
             // TODO: use this.Content to load your game content here
         }
@@ -40,11 +39,12 @@ namespace GameProject
         }
         private void GameStart(Actor player1Char, Actor player2Char)
         {
-            characterSelectScreen.Detach();
-            //gameScreen = new GameScreen(player1Char, player2Char);
-
-            //All.Add(gameScreen);
             CollisionDetectionUnit.AddDetector(1, 2);
+            CollisionDetectionUnit.AddDetector(1, 3);
+            characterSelectScreen.Detach();
+            gameScreen = new GameScreen(ScreenSize, player1Char, player2Char);    
+
+            All.Add(gameScreen);
         }
     }
 }

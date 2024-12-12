@@ -30,10 +30,20 @@ namespace ThanaNita.MonoGameTnt
             return new CollisionObj(new CollisionRect(actor.RawRect), actor, groupCode);
         }
 
+        public static CollisionObj CreateWithRect(Actor actor, RectF rawRect, int groupCode = 0)
+        {
+            return new CollisionObj(new CollisionRect(rawRect), actor, groupCode);
+        }
+
         public void InvokeCollide(CollisionObj objB, CollideData collideData)
         {
             if (OnCollide != null)
+            {
+                collideData.objA = this;
+                collideData.objB = objB;
                 OnCollide(objB, collideData);
+            }
+                
         }
 
         public Vector2 RelativeDirection(RectF overlap)

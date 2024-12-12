@@ -7,6 +7,6 @@ namespace ThanaNita.MonoGameTnt
         public bool FirstContact;
 
         public CollisionObj objB;
-        internal object objA;
+        public CollisionObj objA;
     }
 }

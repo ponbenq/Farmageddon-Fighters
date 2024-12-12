@@ -37,7 +37,7 @@ namespace ThanaNita.MonoGameTnt
             var point = overlap.CenterPoint - a.CenterPoint;
             if (point.Y * a.Width > a.Height * point.X) // down or left
                 if (point.Y * a.Width > -a.Height * point.X) // down or right
-                    return new Vector2(0, -1);
+                    return new Vector2(0, 1);
                 else
                     return new Vector2(-1, 0);
             else

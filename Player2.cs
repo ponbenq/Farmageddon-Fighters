@@ -41,7 +41,7 @@ public class Player2 : SpriteActor
             var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
             Position = pos;
         }
-        Debug.WriteLine(Position);
+        //Debug.WriteLine(Position);
 
     }
 }

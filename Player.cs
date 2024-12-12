@@ -47,25 +47,16 @@ public class Player : SpriteActor
         base.Act(deltaTime);
         cooltime += deltaTime;
         var keyInfo = GlobalKeyboardInfo.Value;
-
-
         Origin = RawSize / 2;
 
         if (distance > 0)
         {
-
             Scale = new Vector2(Math.Abs(Scale.X), Scale.Y);
-
-            Position = new Vector2(Position.X, Position.Y); 
         }
         else if (distance < 0)
         {
-
             Scale = new Vector2(-Math.Abs(Scale.X), Scale.Y);
-            
-            Position = new Vector2(Position.X, Position.Y); 
         }
-
         if (keyInfo.IsKeyDown(Keys.K) && cooltime >= 0 && keyInfo.IsKeyPressed(Keys.K))
         {
             hitbox = new HitboxObj(new Vector2(15, 32), new RectF(30, 15, 15, 5), 1, 0.15f);

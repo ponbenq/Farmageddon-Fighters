@@ -11,6 +11,12 @@ public class GameTest01 : Game2D
     {
         BackgroundColor = Color.DarkGray;
     }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+
+    }
     protected override void LoadContent()
     {
         CollisionDetectionUnit.AddDetector(1, 2);

@@ -15,21 +15,18 @@ public class Fall : Actor
 
     public override void Act(float deltaTime)
     {
-        base.Act(deltaTime);
         var keyInfo = GlobalKeyboardInfo.Value;
 
         if(!actor.onFloor)
         {
             actor.V.Y += rate.Y * deltaTime;
         }
-        else
+        if (keyInfo.IsKeyPressed(Keys.Space) && actor.onFloor)
         {
-            if(keyInfo.IsKeyPressed(Keys.Space) && actor.onFloor)
-            {
-                actor.V.Y = -1000;
-            }
+            actor.V.Y = -1000;
         }
 
+        base.Act(deltaTime);
     }
 
 }

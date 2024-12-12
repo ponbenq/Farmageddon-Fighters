@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.Graphics;
 using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework.Input;
+using System.Formats.Tar;
 namespace GameProject;
 
 public class Player : SpriteActor
@@ -84,7 +85,7 @@ public class Player : SpriteActor
         Position += V * deltaTime;
         onFloor = false;
 
-        Debug.WriteLine("Pos : "+ Position);
+        Debug.WriteLine(onFloor);
     }
     // private void changeVy(float deltaTime)
     // {

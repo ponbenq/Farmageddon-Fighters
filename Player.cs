@@ -5,15 +5,16 @@ using System;
 using System.Diagnostics;
 using ThanaNita.MonoGameTnt;
 
-public class Player : SpriteActor
+public class Player : PlayerAb 
 {
-    Animation animation;
-    public Vector2 V { get => mover.Velocity; }
-    private KeyboardMover mover;
+    Animation idleAnimation, runAnimation, attAnimation_1 ;
+    // public Vector2 V { get => mover.Velocity; set => mover.Velocity = value;}
     private HitboxObj hitbox;
-    private Player2 opponent;
-
-    public Player(Vector2 screenSize, Player2 opponent)
+    private AnimationStates animationState;
+    private Vector2 size;
+    public bool onFloor{get; set;}
+    private Fall fall;
+    public Player(Vector2 screenSize)
     {
         this.opponent = opponent;
         var size = new Vector2(32, 48);
@@ -45,11 +46,15 @@ public class Player : SpriteActor
     {
         float distance = opponent.Position.X - Position.X;
         base.Act(deltaTime);
-        cooltime += deltaTime;
+        changeVy(deltaTime);
+        // fall.Act(deltaTime);
+
         var keyInfo = GlobalKeyboardInfo.Value;
         Origin = RawSize / 2;
 
-        if (distance > 0)
+        V.X = direction.X * 700;
+
+        if(keyInfo.IsKeyPressed(Keys.K) )
         {
             Scale = new Vector2(Math.Abs(Scale.X), Scale.Y);
             Position = new Vector2(Position.X, Position.Y);
@@ -58,15 +63,20 @@ public class Player : SpriteActor
         {
             Scale = new Vector2(-Math.Abs(Scale.X), Scale.Y);
 
-            Position = new Vector2(Position.X, Position.Y);
-        }
-        if (keyInfo.IsKeyDown(Keys.K) && cooltime >= 0 && keyInfo.IsKeyPressed(Keys.K))
-        {
-            hitbox = new HitboxObj(new Vector2(15, 32), new RectF(30, 15, 15, 5), 1, 0.15f);
-            Add(hitbox);
-            cooltime -= coolFix;
-        }
-        Debug.WriteLine(deltaTime);
+        
+        Position += V * deltaTime;
+        onFloor = false;
+
+    }
+    private void changeVy(float deltaTime)
+    {
+        Vector2 g = new Vector2(0, 2500);
+        V.Y += g.Y * deltaTime;
+
+        var keyInfo = GlobalKeyboardInfo.Value;
+
+        if(keyInfo.IsKeyPressed(Keys.Space) && onFloor)
+            V.Y = -750;
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

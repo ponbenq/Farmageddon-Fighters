@@ -36,13 +36,37 @@ public class Player2 : SpriteActor
     public override void Act(float deltaTime)
     {
         base.Act(deltaTime);
-        if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
+        //base class perform
+        applyFall(deltaTime, Keys.Space, DirectionWASD.Direction);
+        applyDirection(DirectionWASD.Direction, 700);
+        
+        if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
         {
             var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
             Position = pos;
         }
-        Debug.WriteLine(Position);
-        //Debug.WriteLine(Position);
+
+        Position += V * deltaTime;
+        onFloor = false;
+    }
+
+    public void OnCollide(CollisionObj objB, CollideData data)
+    {
+        var direction = data.objA.RelativeDirection(data.OverlapRect);
+
+        if (direction.Y == 1)
+            onFloor = true;
+        Debug.WriteLine(onFloor);
+        if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
+        {
+            V = new Vector2(V.X, 0);
+            Position -= new Vector2(0, data.OverlapRect.Height * direction.Y);
+        }
+        if ((direction.X > 0 && V.X > 0) || (direction.X < 0 && V.X < 0))
+        {
+            V = new Vector2(0, V.Y);
+            Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
+        }
 
     }
 }

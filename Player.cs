@@ -48,7 +48,7 @@ public class Player : SpriteActor
         sprite.AddAction(animationState);
 
         // AddAction(mover = new KeyboardMover(this, 500));
-        fall = new Fall(this, new Vector2(0, 2500));
+        // fall = new Fall(this, new Vector2(0, 2500));
 
         //collision
         var nRect = new RectF(40, 0, 48, 48);
@@ -62,8 +62,8 @@ public class Player : SpriteActor
     {
 
         base.Act(deltaTime);
-        // changeVy(deltaTime);
-        fall.Act(deltaTime);
+        changeVy(deltaTime);
+        // fall.Act(deltaTime);
 
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;
@@ -85,19 +85,17 @@ public class Player : SpriteActor
         Position += V * deltaTime;
         onFloor = false;
 
-        Debug.WriteLine(onFloor);
     }
-    // private void changeVy(float deltaTime)
-    // {
-    //     Vector2 g = new Vector2(0, 2500);
-    //     V.Y += g.Y * deltaTime;
+    private void changeVy(float deltaTime)
+    {
+        Vector2 g = new Vector2(0, 2500);
+        V.Y += g.Y * deltaTime;
 
-    //     var keyInfo = GlobalKeyboardInfo.Value;
+        var keyInfo = GlobalKeyboardInfo.Value;
 
-    //     if(keyInfo.IsKeyPressed(Keys.Space) && onFloor)
-    //         V.Y = -750;
-    //     Debug.Write("V :  "+V);
-    // }
+        if(keyInfo.IsKeyPressed(Keys.Space) && onFloor)
+            V.Y = -750;
+    }
 
     public void OnCollide(CollisionObj objB, CollideData data)
     {

@@ -28,11 +28,11 @@ namespace GameProject
         {
             if (playerId == 0)
             {
-                region = new TextureRegion(TextureCache.Get("Cursor.png"), new RectF(0, 0, 280, 256));
+                region = new TextureRegion(TextureCache.Get("Resources/Images/Cursor.png"), new RectF(0, 0, 280, 256));
             }
             else
             {
-                region = new TextureRegion(TextureCache.Get("Cursor.png"), new RectF(280, 0, 280, 256));
+                region = new TextureRegion(TextureCache.Get("Resources/Images/Cursor.png"), new RectF(280, 0, 280, 256));
             }
             SetTextureRegion(region);
         }

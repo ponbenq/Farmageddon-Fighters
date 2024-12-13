@@ -76,6 +76,7 @@ namespace ThanaNita.MonoGameTnt
             for (int i = 0; i < count; ++i)
             {
                 dest[destStart + i].TextureCoordinate = src[i].TextureCoordinate;
+
                 dest[destStart + i].Position = state.WorldMatrix.Transform(src[i].Position);
                 dest[destStart + i].Color = TransformColor(src[i].Color, state.ColorF);
             }

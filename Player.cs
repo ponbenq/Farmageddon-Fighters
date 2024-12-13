@@ -4,19 +4,16 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.Graphics;
 using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework.Input;
+using System.Formats.Tar;
 namespace GameProject;
 
-public class Player : SpriteActor
+public class Player : PlayerAb 
 {
     Animation idleAnimation, runAnimation, attAnimation_1 ;
     // public Vector2 V { get => mover.Velocity; set => mover.Velocity = value;}
-    public Vector2 V;
-    private KeyboardMover mover;
     private HitboxObj hitbox;
     private AnimationStates animationState;
     private Vector2 size;
-    public bool onFloor{get; set;}
-    private Fall fall;
     public Player(Vector2 screenSize)
     {
         // var size = new Vector2(32, 48);
@@ -47,7 +44,7 @@ public class Player : SpriteActor
         sprite.AddAction(animationState);
 
         // AddAction(mover = new KeyboardMover(this, 500));
-        fall = new Fall(this, new Vector2(0, 2500));
+        // fall = new Fall(this, new Vector2(0, 2500));
 
         //collision
         var nRect = new RectF(40, 0, 48, 48);
@@ -61,13 +58,11 @@ public class Player : SpriteActor
     {
 
         base.Act(deltaTime);
-        // changeVy(deltaTime);
-        fall.Act(deltaTime);
-
+        applyFall(deltaTime, Keys.L, DirectionKey.Direction);
+        applyDirection(DirectionKey.Direction, 700);
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;
 
-        V.X = direction.X * 700;
 
         if(keyInfo.IsKeyPressed(Keys.K) )
         {
@@ -83,20 +78,7 @@ public class Player : SpriteActor
         
         Position += V * deltaTime;
         onFloor = false;
-
-        Debug.WriteLine("Pos : "+ Position);
     }
-    // private void changeVy(float deltaTime)
-    // {
-    //     Vector2 g = new Vector2(0, 2500);
-    //     V.Y += g.Y * deltaTime;
-
-    //     var keyInfo = GlobalKeyboardInfo.Value;
-
-    //     if(keyInfo.IsKeyPressed(Keys.Space) && onFloor)
-    //         V.Y = -750;
-    //     Debug.Write("V :  "+V);
-    // }
 
     public void OnCollide(CollisionObj objB, CollideData data)
     {

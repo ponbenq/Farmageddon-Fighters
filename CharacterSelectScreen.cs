@@ -97,7 +97,7 @@ namespace GameProject
         }
         private void PrepareTileSet()
         {
-            var texture = TextureCache.Get("Characters.png");
+            var texture = TextureCache.Get("Resources/Images/Characters.png");
             var tiles2d = RegionCutter.Cut(texture, new Vector2(120, 120), countX: 3, countY: 1);
             tiles = RegionSelector.SelectAll(tiles2d);
         }

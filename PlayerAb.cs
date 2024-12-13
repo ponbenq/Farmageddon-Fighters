@@ -13,7 +13,7 @@ namespace GameProject
 
         protected float rate = 2500f;
 
-        public void applyFall(float deltaTime)
+        public void applyFall(float deltaTime, Keys input)
         {
             var keyInfo = GlobalKeyboardInfo.Value;
             if(!onFloor)
@@ -22,7 +22,7 @@ namespace GameProject
             }
             else
             {
-                if(keyInfo.IsKeyDown(Keys.L) && onFloor)
+                if(keyInfo.IsKeyDown(input) && onFloor)
                     vY = -1050;
                 else
                     vY = 0;

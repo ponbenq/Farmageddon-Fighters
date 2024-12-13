@@ -42,7 +42,7 @@ public class Player2 : PlayerAb
     {
         base.Act(deltaTime);
         //base class perform
-        applyFall(deltaTime);
+        applyFall(deltaTime, Keys.Space);
         applyDirection(DirectionWASD.Direction, 700);
         
         if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)

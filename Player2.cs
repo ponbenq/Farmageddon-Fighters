@@ -42,7 +42,7 @@ public class Player2 : PlayerAb
     {
         base.Act(deltaTime);
         //base class perform
-        applyFall(deltaTime, Keys.Space);
+        applyFall(deltaTime, Keys.Space, DirectionWASD.Direction);
         applyDirection(DirectionWASD.Direction, 700);
         
         if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
@@ -50,9 +50,10 @@ public class Player2 : PlayerAb
             var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
             Position = pos;
         }
-
+        var direction = DirectionWASD.Direction;
         Position += V * deltaTime;
         onFloor = false;
+        Debug.WriteLine(direction);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

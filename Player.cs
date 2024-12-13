@@ -58,7 +58,7 @@ public class Player : PlayerAb
     {
 
         base.Act(deltaTime);
-        applyFall(deltaTime, Keys.L);
+        applyFall(deltaTime, Keys.L, DirectionKey.Direction);
         applyDirection(DirectionKey.Direction, 700);
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;

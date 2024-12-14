@@ -53,6 +53,8 @@ public class Player : PlayerAb
         collisionObj.OnCollide = OnCollide;
         Add(collisionObj);
 
+        registerJump(Keys.L, Keys.K);
+
     }
     public override void Act(float deltaTime)
     {

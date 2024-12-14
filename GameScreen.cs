@@ -46,7 +46,7 @@ namespace GameProject
         {
             base.Act(deltaTime);
 
-            
+            //delay hp
             player1HpBar1.Value = player1Hp;
             if (player1HpBar1.Value < player1HpBar2.Value)
             {

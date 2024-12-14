@@ -53,7 +53,7 @@ public class Player2 : PlayerAb
         var direction = DirectionWASD.Direction;
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(direction);
+        //Debug.WriteLine(direction);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)
@@ -62,7 +62,7 @@ public class Player2 : PlayerAb
 
         if (direction.Y == 1)
             onFloor = true;
-        Debug.WriteLine(onFloor);
+        //Debug.WriteLine(onFloor);
         if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
         {
             V = new Vector2(V.X, 0);

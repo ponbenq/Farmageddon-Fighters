@@ -84,10 +84,10 @@ namespace GameProject
             switch (tileCode) //Character by index
             {
                 case 0:
-                    character = new Player(new Vector2(1920, 1080));
+                    //character = new Player(new Vector2(1920, 1080));
                     break;
                 case 1:
-                    character = new Player2(new Vector2(1920, 1080));
+                    //character = new Player2(new Vector2(1920, 1080));
                     break;
                 default:
                     //character = new Girl();

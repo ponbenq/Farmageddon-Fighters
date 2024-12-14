@@ -42,7 +42,7 @@ namespace GameProject
             CollisionDetectionUnit.AddDetector(1, 2);
             CollisionDetectionUnit.AddDetector(1, 3);
             characterSelectScreen.Detach();
-            gameScreen = new GameScreen(ScreenSize, player1Char, player2Char);    
+            //gameScreen = new GameScreen(ScreenSize, player1Char, player2Char);    
 
             All.Add(gameScreen);
         }

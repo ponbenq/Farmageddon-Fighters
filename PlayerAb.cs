@@ -12,6 +12,7 @@ namespace GameProject
         public bool onFloor {get; set;} = false;
 
         protected float rate = 2500f;
+        public HitCheck hitCheck;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -34,6 +35,11 @@ namespace GameProject
         {
             vX =  direction.X * speed;
             vY +=  direction.Y;
+        }
+
+        public void SetHitCheck(HitCheck hitCheck)
+        {
+            this.hitCheck = hitCheck;
         }
         public override void Act(float deltaTime)
         {

@@ -59,11 +59,12 @@ namespace GameProject
             }
         }   
 
-        public void HitCheck(object target, float damage)
+        public void HitCheck(Actor target, float damage)
         {
             if (target is Player2)
             {
                 player2Hp -= damage;
+                target.Position += new Vector2(40, 0);
             }
         }
     }

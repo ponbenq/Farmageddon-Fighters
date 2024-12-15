@@ -64,7 +64,7 @@ namespace GameProject
                             changeState(playerState.jumping);
                         }
                     }
-                    if(keyInfo.IsKeyPressed(attKey))
+                    if(keyInfo.IsKeyDown(attKey))
                         changeState(playerState.attacking);
                     break;
                 case playerState.jumping:
@@ -77,11 +77,10 @@ namespace GameProject
                         changeState(playerState.idle);
                     break;
                 case playerState.attacking:
-                    if(stateTimer > 0.15f)
+                    if(stateTimer > 0.2f)
                     {
                         OnAttack?.Invoke(new RectF(0, 0, 40, 40));
-                        if (keyInfo.IsKeyReleased(attKey))
-                            changeState(playerState.idle);
+                        changeState(playerState.idle);
                     }
                     break;
                 default:

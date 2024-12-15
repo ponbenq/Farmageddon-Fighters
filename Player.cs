@@ -66,7 +66,7 @@ public class Player : PlayerAb
         var direction = DirectionKey.Direction;
 
 
-        if(keyInfo.IsKeyPressed(Keys.K) )
+        if(state == playerState.attacking)
         {
             hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f, hitCheck, 2f);
             Add(hitbox);

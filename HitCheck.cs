@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ThanaNita.MonoGameTnt;
 
 namespace GameProject
 {
-    public delegate void HitCheck(Object target, float damage);
+    public delegate void HitCheck(Actor target, float damage);
 }

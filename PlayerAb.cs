@@ -22,6 +22,7 @@ namespace GameProject
         public delegate void onAttackDelegate(RectF rect);
         public onAttackDelegate OnAttack = null;
         public HitCheck hitCheck;
+        private float stateTimer = 0f;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -50,30 +51,49 @@ namespace GameProject
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
+            stateTimer += deltaTime;
             var keyInfo = GlobalKeyboardInfo.Value;
             switch(state)
             {
                 case playerState.idle:
-                    if(!onFloor)
-                        state = playerState.jumping;
-                    if(keyInfo.IsKeyDown(attKey))
-                        state = playerState.attacking;
+                    if(onFloor)
+                    {
+                        if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.2f)
+                        {
+                            vY -= 1050;
+                            changeState(playerState.jumping);
+                        }
+                    }
+                    if(keyInfo.IsKeyPressed(attKey))
+                        changeState(playerState.attacking);
                     break;
                 case playerState.jumping:
-                    if((keyInfo.IsKeyDown(jumpKey) || vY == -1) && onFloor)
-                        vY -= 1050;
-                    if(onFloor)
-                        state = playerState.idle;
+                    if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.3f)
+                    {
+                        vY -= 750;
+                        changeState(playerState.idle);
+                    }
+                    if (onFloor)
+                        changeState(playerState.idle);
                     break;
                 case playerState.attacking:
-                    OnAttack?.Invoke(new RectF(0, 0, 40, 40));
-                    state = playerState.idle;
+                    if(stateTimer > 0.15f)
+                    {
+                        OnAttack?.Invoke(new RectF(0, 0, 40, 40));
+                        if (keyInfo.IsKeyReleased(attKey))
+                            changeState(playerState.idle);
+                    }
                     break;
                 default:
-                    state = playerState.idle;
+                    changeState(playerState.idle);
                     break;
             }
+        }
 
+        protected void changeState(playerState newState)
+        {
+            state = newState;
+            stateTimer = 0f;
         }
     }
 }

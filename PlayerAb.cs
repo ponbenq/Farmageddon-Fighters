@@ -70,7 +70,7 @@ namespace GameProject
                 case playerState.jumping:
                     if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.3f)
                     {
-                        vY -= 750;
+                        vY -= 550;
                         changeState(playerState.idle);
                     }
                     if (onFloor)

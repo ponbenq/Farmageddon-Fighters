@@ -23,6 +23,7 @@ namespace GameProject
         public onAttackDelegate OnAttack = null;
         public HitCheck hitCheck;
         private float stateTimer = 0f;
+        public Vector2 playerDirection;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -40,6 +41,7 @@ namespace GameProject
         }
         public void applyDirection(Vector2 direction, float speed)
         {
+            this.playerDirection = direction;
             vX =  direction.X * speed;
             vY +=  direction.Y;
         }
@@ -58,7 +60,7 @@ namespace GameProject
                 case playerState.idle:
                     if(onFloor)
                     {
-                        if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.2f)
+                        if((keyInfo.IsKeyDown(jumpKey) || playerDirection.Y == -1) && stateTimer > 0.2f)
                         {
                             vY -= 1050;
                             changeState(playerState.jumping);
@@ -68,7 +70,7 @@ namespace GameProject
                         changeState(playerState.attacking);
                     break;
                 case playerState.jumping:
-                    if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.3f)
+                    if((keyInfo.IsKeyDown(jumpKey) || playerDirection.Y == -1) && stateTimer > 0.3f)
                     {
                         vY -= 550;
                         changeState(playerState.idle);

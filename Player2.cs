@@ -66,18 +66,20 @@ public class Player2 : PlayerAb
     {
         var direction = data.objA.RelativeDirection(data.OverlapRect);
 
-        if (direction.Y == 1)
-            onFloor = true;
-        //Debug.WriteLine(onFloor);
-        if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
+        if(objB.Actor is Floor)
         {
-            V = new Vector2(V.X, 0);
-            Position -= new Vector2(0, data.OverlapRect.Height * direction.Y);
-        }
-        if ((direction.X > 0 && V.X > 0) || (direction.X < 0 && V.X < 0))
-        {
-            V = new Vector2(0, V.Y);
-            Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
+            if (direction.Y == 1)
+                onFloor = true;
+            if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
+            {
+                V = new Vector2(V.X, 0);
+                Position -= new Vector2(0, data.OverlapRect.Height * direction.Y);
+            }
+            if ((direction.X > 0 && V.X > 0) || (direction.X < 0 && V.X < 0))
+            {
+                V = new Vector2(0, V.Y);
+                Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
+            }
         }
 
     }

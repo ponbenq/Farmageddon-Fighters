@@ -59,7 +59,7 @@ public class Player2 : PlayerAb
         }
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(state);
+        //Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

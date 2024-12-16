@@ -1,17 +1,19 @@
-using System.Diagnostics;
 using System.Xml.Schema;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.Graphics;
 using ThanaNita.MonoGameTnt;
+using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace GameProject;
 
-public class Player2 : SpriteActor
+public class Player2 : PlayerAb
 {
     Animation animation;
     Vector2 screenSize;
     Vector2 size;
     RectF nRect;
+
     public Player2(Vector2 screenSize)
     {
         size = new Vector2(32, 48);
@@ -19,7 +21,8 @@ public class Player2 : SpriteActor
         this.screenSize = screenSize;
         sprite.Origin = RawSize / 2;
         sprite.Scale = new Vector2(6, 6);
-        Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
+        // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
+        Position = new Vector2(600, 100);
 
         var texture = TextureCache.Get("B_witch_idle.png");
         var region2d = RegionCutter.Cut(texture, size);
@@ -30,7 +33,9 @@ public class Player2 : SpriteActor
         nRect = new RectF(5, 5, 20, 36);
         var collisionObj = CollisionObj.CreateWithRect(this, nRect, 2);
         collisionObj.DebugDraw = true;
+        collisionObj.OnCollide = OnCollide;
         Add(collisionObj);
+
     }
 
     public override void Act(float deltaTime)
@@ -39,15 +44,29 @@ public class Player2 : SpriteActor
         //base class perform
         applyFall(deltaTime, Keys.Space, DirectionWASD.Direction);
         applyDirection(DirectionWASD.Direction, 700);
-        
-        if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
+
+        //if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
+        //{
+        //    var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
+        //    Position = pos;
+        //}
+
+        // not allow to move outside
+        float buffer = 90f;
+        if (Position.X + RawRect.Width > screenSize.X - buffer)
         {
-            var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
-            Position = pos;
+            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
         }
 
+        if (Position.X < 0)
+        {
+            Position = new Vector2(0, Position.Y);
+        }
+        /////
+        var direction = DirectionWASD.Direction;
         Position += V * deltaTime;
         onFloor = false;
+        //Debug.WriteLine(direction);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)
@@ -56,7 +75,7 @@ public class Player2 : SpriteActor
 
         if (direction.Y == 1)
             onFloor = true;
-        Debug.WriteLine(onFloor);
+        //Debug.WriteLine(onFloor);
         if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
         {
             V = new Vector2(V.X, 0);

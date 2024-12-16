@@ -19,7 +19,7 @@ namespace GameProject
         Button startButton;
         Actor player1Char, player2Char = new Actor();
         Boolean player1Selected, player2Selected = false;
-        private Player2 opponent;
+
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
@@ -86,7 +86,7 @@ namespace GameProject
             switch (tileCode) //Character by index
             {
                 case 0:
-                    character = new Player(new Vector2(1920, 1080),opponent);
+                    character = new Player(new Vector2(1920, 1080));
                     break;
                 case 1:
                     character = new Player2(new Vector2(1920, 1080));

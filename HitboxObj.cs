@@ -44,7 +44,7 @@ public class HitboxObj : RectangleActor
             //objB.Actor.Position += new Vector2(40, 0);
             if (data.objA.Actor is HitboxObj) //if hit by hitboxobj
             {
-                Debug.WriteLine("Player1 hit player2 for " + damage.ToString());
+                //Debug.WriteLine("Player1 hit player2 for " + damage.ToString());
                 AddAction(new RunAction(() => hitCheck(objB.Actor, damage)));               
             }
         }        

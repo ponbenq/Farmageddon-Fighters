@@ -17,7 +17,7 @@ namespace GameProject
         ProgressBar player1HpBar1, player1HpBar2, player2HpBar1, player2HpBar2;
         int countdown = 90;
         float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2;
-        Text countdownText;
+        Text countdownText, damage1, damage2;
         bool player1Hit, player2Hit;
 
         //Constants
@@ -46,9 +46,11 @@ namespace GameProject
 
             player2HpBar1 = new ProgressBar(new Vector2(600, 75), max: 100, Color.Transparent, Color.DarkGreen);
             player2HpBar1.Origin = player2HpBar1.RawSize / 2;
+            player2HpBar1.Scale = new Vector2(player2HpBar1.Scale.X * -1, player2HpBar1.Scale.Y); //invert
             player2HpBar1.Position = new Vector2(screenSize.X * 0.7f, 120);
             player2HpBar2 = new ProgressBar(new Vector2(600, 75), max: 100, Color.Black, Color.Red) {Value = 100};
             player2HpBar2.Origin = player2HpBar2.RawSize / 2;
+            player2HpBar2.Scale = new Vector2(player2HpBar2.Scale.X * -1, player2HpBar2.Scale.Y); //invert
             player2HpBar2.Position = new Vector2(screenSize.X * 0.7f, 120);
             player2HpBar2.Value = 100;
             Add(player2HpBar2);
@@ -66,6 +68,20 @@ namespace GameProject
             countdownText.EffectAmount = 3;            
             countdownText.Position = new Vector2(screenSize.X / 2, 120); //need fix center
             Add(countdownText);
+
+            //Avatar
+            var avatar1 = new Avatar(0);
+            avatar1.Origin = new Vector2(60, 60);
+            avatar1.Position = new Vector2(screenSize.X * 0.075f, 120);
+            Add(avatar1);
+            var avatar2 = new Avatar(1);
+            avatar2.Origin = new Vector2(60, 60);
+            avatar2.Position = new Vector2(screenSize.X * 0.925f, 120);
+            Add(avatar2);
+
+            //Damage Text
+            damage1 = new Text("Simvoni.ttf", 50, Color.Red, "00");
+            damage1.Position = new Vector2(screenSize.X * 0.075f, 300);
         }
 
         public override void Act(float deltaTime)
@@ -103,7 +119,7 @@ namespace GameProject
             if (Keyboard.GetState().IsKeyDown(Keys.End))
             {
                 //player2Hp = 100;
-                Debug.WriteLine(countdownText.Origin);
+                player1Hp -= 2f;
             }
 
             //Hit Delay
@@ -123,6 +139,7 @@ namespace GameProject
                 {
                     player2Hit = false;
                     hitDelay2 = 0f;
+                    damage1.Detach();
                 }
             }
 
@@ -175,6 +192,8 @@ namespace GameProject
                     //target.Position += new Vector2(40, 0);
                     player2Hit = true;
                     Debug.WriteLine("Player2 got hit!");
+                    damage1.Str = damage.ToString();
+                    Add(damage1);
                 }
             }
         }

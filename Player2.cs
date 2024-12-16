@@ -36,6 +36,8 @@ public class Player2 : PlayerAb
         collisionObj.OnCollide = OnCollide;
         Add(collisionObj);
 
+        registerJump(Keys.Space, Keys.G);
+        OnAttack = IsAttack;
     }
 
     public override void Act(float deltaTime)
@@ -43,6 +45,9 @@ public class Player2 : PlayerAb
         base.Act(deltaTime);
         //base class perform
         applyFall(deltaTime, Keys.Space, DirectionWASD.Direction);
+        applyDirection(DirectionWASD.Direction, 500);
+        
+        if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
         applyDirection(DirectionWASD.Direction, 700);
 
         //if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
@@ -62,11 +67,10 @@ public class Player2 : PlayerAb
         {
             Position = new Vector2(0, Position.Y);
         }
-        /////
         var direction = DirectionWASD.Direction;
         Position += V * deltaTime;
         onFloor = false;
-        //Debug.WriteLine(direction);
+        Debug.WriteLine(direction);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)
@@ -87,5 +91,10 @@ public class Player2 : PlayerAb
             Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
         }
 
+    }
+    public void IsAttack(RectF rect)
+    {
+        Debug.WriteLine("hello from IsAttack!");
+        Debug.WriteLine($"the rect is : {rect}");
     }
 }

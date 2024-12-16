@@ -57,6 +57,8 @@ public class Player : PlayerAb
         collisionObj.OnCollide = OnCollide;
         Add(collisionObj);
 
+        registerJump(Keys.L, Keys.K);
+
     }
     public override void Act(float deltaTime)
     {
@@ -68,9 +70,10 @@ public class Player : PlayerAb
         var direction = DirectionKey.Direction;
         hitsound = SoundEffect.FromFile("hit.wav");
 
+        if(state == playerState.attacking)
         if (keyInfo.IsKeyPressed(Keys.K))
         {
-            hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f);
+            hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f, hitCheck, 2f);
             Add(hitbox);
             animationState.Animate(2);
             hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);

@@ -64,7 +64,7 @@ namespace GameProject
             Add(new CrossHair(new Vector2(screenSize.X * 0.925f, 120))); //player2 avatar
 
             //Countdown
-            countdownText = new Text("Simvoni.ttf", 100, Color.White, "00");
+            countdownText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 100, Color.White, "00");
             countdownText.Effect = FontStashSharp.FontSystemEffect.Stroked; //stroke font
             countdownText.EffectAmount = 3;            
             countdownText.Position = new Vector2(screenSize.X / 2, 120); //need fix center

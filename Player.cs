@@ -20,7 +20,7 @@ public class Player : PlayerAb
         size = new Vector2(128, 40);
         var sprite = this;
         sprite.Origin = RawSize / 2;
-        sprite.Scale = new Vector2(3, 3);
+        sprite.Scale = new Vector2(6, 6);
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
         Position = new Vector2( 100, 100);
 

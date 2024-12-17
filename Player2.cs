@@ -54,7 +54,7 @@ public class Player2 : PlayerAb
         }
         if(state == playerState.attacking)
         {
-            var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, null, 0f);
+            var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, hitCheck, 0f);
             Add(hitbox);
         }
         Position += V * deltaTime;

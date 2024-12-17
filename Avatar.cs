@@ -20,7 +20,7 @@ namespace GameProject
             this.screenSize = new Vector2(1920, 1080);
             Origin = RawSize / 2;
             Scale = new Vector2(1,1);
-            var texture = TextureCache.Get("Characters.png");
+            var texture = TextureCache.Get("Resources/Images/Characters.png");
             var region = new TextureRegion(texture, new RectF(i * 120, 0, 120, 120));
             SetTextureRegion(region);
         }

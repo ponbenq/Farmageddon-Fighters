@@ -17,20 +17,23 @@ namespace GameProject
         PlayerAb player1, player2;
         ProgressBar player1HpBar1, player1HpBar2, player2HpBar1, player2HpBar2;
         int countdown = 90;
-        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, startingTimeTemp;
+        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp;
         Text countdownText, damage1, damage2;
         bool player1Hit, player2Hit;
         Avatar avatar1, avatar2;
 
         //Constants
-        const float startingTime = 2f;
+        const float setupTime = 2f;
         const float hpDepleteDelay = 2.5f;
         const float hpDepleteRate = 1f;
         const float hitDelay = 1f;
+        Color color50 = new Color(100, 100, 100);
+        Color color25 = new Color(75, 75, 75);
+        Color color0 = new Color(50, 50, 50);
 
         //State
-        public enum gameStates { start, action, end}
-        public gameStates state = gameStates.start;
+        public enum gameStates {Setup, Start, End}
+        public gameStates state = gameStates.Setup;
         public GameScreen(Vector2 screenSize, Player player1, Player2 player2)
         {
             //Floor
@@ -39,8 +42,8 @@ namespace GameProject
             this.player2 = player2;
             player1.SetHitCheck(HitCheck); //Pass hitcheck to Player
             player2.SetHitCheck(HitCheck);
-            Add(this.player1);
-            Add(this.player2);
+            //Add(this.player1);
+            //Add(this.player2);
             var player1Cursor = new Cursor(player1, 1);
             var player2Cursor = new Cursor(player2, 2);
 
@@ -109,9 +112,16 @@ namespace GameProject
         {
             base.Act(deltaTime);
 
-            //Game State
-            UpdateGameState(deltaTime);            
-
+            //Game Start apt
+            if (state == gameStates.Setup)
+            {
+                setupTimeTemp += deltaTime;
+                if (setupTimeTemp >= setupTime)
+                {
+                    changeState(gameStates.Start);
+                }
+            }
+                  
             //HP Bar
             player1HpBar1.Value = player1Hp;
             if (player1HpBar1.Value < player1HpBar2.Value)
@@ -139,9 +149,13 @@ namespace GameProject
                     }
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.End))
+            if (Keyboard.GetState().IsKeyDown(Keys.PageUp))
             {
                 Debug.WriteLine(state);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.End))
+            {
+                player1Hp = 0f;
             }
 
             //Hit Delay
@@ -166,9 +180,10 @@ namespace GameProject
                 }
             }
 
-            //Countdown
-            if (state == gameStates.action) //If no one win yet or time not over (Implement gamestate in future)
+            
+            if (state == gameStates.Start)
             {
+                //Countdown
                 countdownTemp += deltaTime;
                 if (countdownTemp >= 1f)
                 {
@@ -177,29 +192,39 @@ namespace GameProject
                     countdownText.Origin = countdownText.RawSize / 2;
                 }
                 countdownText.Str = countdown.ToString();
-            }
-            if (countdown <= 0)  //if time's up
-            {
-                //set gameover
-                if (player1Hp > player2Hp)
-                {
-                    //player1 win
 
-                } else if (player2Hp > player1Hp)
+                //End State
+                if (countdown <= 0 || player1Hp <= 0 || player2Hp <= 0)
                 {
-                    //player2 win
-
-                } else
-                {
-                    //draw
-
+                    changeState(gameStates.End);
                 }
-            }
 
-            if (player2Hp <= 50)
-            {
-                AddAction(new ColorAction(3f, Color.DarkRed, avatar2));
-            }
+                //Low HP Avatar
+                switch (player1Hp)
+                {
+                    case <= 50 and > 25:
+                        AddAction(new ColorAction(2f, color50, avatar1));
+                        break;
+                    case <= 25 and > 0:
+                        AddAction(new ColorAction(2f, color25, avatar1));
+                        break;
+                    case <= 0:
+                        AddAction(new ColorAction(2f, color0, avatar1));
+                        break;
+                }
+                switch (player2Hp)
+                {
+                    case <= 50 and > 25:
+                        AddAction(new ColorAction(2f, color50, avatar2));
+                        break;
+                    case <= 25 and > 0:
+                        AddAction(new ColorAction(2f, color25, avatar2));
+                        break;
+                    case <= 0:
+                        AddAction(new ColorAction(2f, color0, avatar2));
+                        break;
+                }                
+            }                                    
         }   
 
         public void HitCheck(Actor target, float damage)
@@ -231,17 +256,39 @@ namespace GameProject
             }
         }
 
-        public void UpdateGameState(float deltaTime)
+        public void changeState(gameStates newState)
         {
-            switch (state)
+            state = newState;
+            if (newState == gameStates.Start)
             {
-                case gameStates.start:
-                    startingTimeTemp += deltaTime;
-                    if (startingTimeTemp >= 2f)
-                    {
-                        state = gameStates.action;
-                    }
-                    break;
+                Start();
+            } else if (newState == gameStates.End)
+            {
+                End();
+            }
+        }
+
+        public void Start()
+        {
+            Add(player1);
+            Add(player2);
+        }
+
+        private void End()
+        {
+            //Time's up
+            if (countdown <= 0)
+            {
+                if (player1Hp > player2Hp) //Player1 win
+                {
+                    
+                } else if (player2Hp > player1Hp) //Player2 win
+                {
+
+                } else //Draw
+                {
+
+                }
             }
         }
     }

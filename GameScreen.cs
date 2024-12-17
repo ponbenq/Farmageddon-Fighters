@@ -65,7 +65,7 @@ namespace GameProject
             Add(player2HpBar1);           
 
             //Countdown
-            countdownText = new Text("ZFTERMIN__.ttf", 140, Color.White, "90");
+            countdownText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 140, Color.White, "90");
             countdownText.Effect = FontStashSharp.FontSystemEffect.Stroked; //stroke font
             countdownText.EffectAmount = 3;
             countdownText.Origin = countdownText.RawSize / 2;

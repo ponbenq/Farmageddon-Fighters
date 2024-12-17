@@ -41,6 +41,8 @@ namespace GameProject
             player2.SetHitCheck(HitCheck);
             Add(this.player1);
             Add(this.player2);
+            var player1Cursor = new Cursor(player1, 1);
+            var player2Cursor = new Cursor(player2, 2);
 
             //HP bar
             player1HpBar1 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Transparent, Color.DarkGreen);

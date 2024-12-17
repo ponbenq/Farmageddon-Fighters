@@ -88,13 +88,13 @@ namespace GameProject
             Add(avatar2);
 
             //Damage Text
-            damage1 = new Text("ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
+            damage1 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
             damage1.Position = new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.25f);
             damage1.Origin = damage1.RawSize / 2;
             damage1.Effect = FontStashSharp.FontSystemEffect.Stroked;
             damage1.EffectAmount = 3;
             damage1.CharacterSpacing = 10;
-            damage2 = new Text("ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
+            damage2 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
             damage2.Position = new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.25f);
             damage2.Origin = damage2.RawSize / 2;
             damage2.Effect = FontStashSharp.FontSystemEffect.Stroked;

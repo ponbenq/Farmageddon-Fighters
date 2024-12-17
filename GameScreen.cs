@@ -42,6 +42,9 @@ namespace GameProject
             this.player2 = player2;
             player1.SetHitCheck(HitCheck); //Pass hitcheck to Player
             player2.SetHitCheck(HitCheck);
+            //set input handler
+            player1.setInputHandler(new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K));
+            player2.setInputHandler(new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.G));
             //Add(this.player1);
             //Add(this.player2);
             var player1Cursor = new Cursor(player1, 1);

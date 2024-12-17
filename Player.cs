@@ -14,6 +14,7 @@ public class Player : PlayerAb
     private HitboxObj hitbox;
     private AnimationStates animationState;
     private Vector2 size;
+    private Vector2 screenSize;
     public Player(Vector2 screenSize)
     {
         // var size = new Vector2(32, 48);
@@ -23,6 +24,7 @@ public class Player : PlayerAb
         sprite.Scale = new Vector2(6, 6);
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
         Position = new Vector2( 100, 100);
+        this.screenSize = screenSize;
 
         // var texture = TextureCache.Get("B_witch_idle.png");
         var idleTexture = TextureCache.Get("Resources/Pic/slime/blue/Idle.png");
@@ -77,6 +79,18 @@ public class Player : PlayerAb
         else
             animationState.Animate(0);
 
+        float buffer = 90f;
+        if (Position.X + RawRect.Width > screenSize.X - buffer)
+        {
+            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+            V = new Vector2(0, V.Y);
+        }
+
+        if (Position.X < 0)
+        {
+            Position = new Vector2(0, Position.Y);
+            V = new Vector2(0, V.Y);
+        }
         
         Position += V * deltaTime;
         onFloor = false;

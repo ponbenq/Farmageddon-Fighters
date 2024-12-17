@@ -57,6 +57,19 @@ public class Player2 : PlayerAb
             var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, hitCheck, 0f);
             Add(hitbox);
         }
+
+        float buffer = 90f;
+        if (Position.X + RawRect.Width > screenSize.X - buffer)
+        {
+            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+            V = new Vector2(0, V.Y);
+        }
+
+        if (Position.X < 0)
+        {
+            Position = new Vector2(0, Position.Y);
+            V = new Vector2(0, V.Y);
+        }
         Position += V * deltaTime;
         onFloor = false;
         //Debug.WriteLine(state);

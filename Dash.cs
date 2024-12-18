@@ -16,7 +16,7 @@ namespace GameProject
             size = new Vector2(64, 64);
             var texture = TextureCache.Get("Resources/smoke/smoke_1.png");
             var region = RegionCutter.Cut(texture, size);
-            var selector = RegionSelector.Select(region, start: 0, count: 14);
+            var selector = RegionSelector.Select(region, start: 160, count: 14);
             var left = new Animation(this, 1.0f, selector);
 
             var texture2 = TextureCache.Get("Resources/smoke/smoke_1_flip.png");
@@ -27,7 +27,6 @@ namespace GameProject
             dashAnimationState = new AnimationStates([left, right]);
             AddAction(dashAnimationState);
             this.direction = direction;
-            player.Add(this);
 
             timer = 0;
         }
@@ -36,18 +35,18 @@ namespace GameProject
         {
             base.Act(deltaTime);
             timer += deltaTime;
+            if(timer >= 1f)
+                this.Detach();
             if(direction.X == -1)
             {
                 dashAnimationState.Animate(0);
-                Position = new Vector2(player.RawRect.X - player.RawSize.X, player.RawRect.Y);
+                Position = new Vector2(player.RawRect.X - player.RawSize.X, player.RawRect.Y - (player.RawSize.Y / 3));
             }
             else if(direction.X == 1)
             {
                 dashAnimationState.Animate(1);
-                Position = new Vector2(player.RawRect.X + player.RawSize.X, player.RawRect.Y);
+                Position = new Vector2(player.RawRect.X + player.RawSize.X, player.RawRect.Y - (player.RawSize.Y / 3));
             }
-            if(timer >= 1f)
-                this.Detach();
         }
     }
 }

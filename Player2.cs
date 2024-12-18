@@ -60,6 +60,7 @@ public class Player2 : PlayerAb
         if(state == playerState.dash)
         {
             var dash = new Dash(this, DirectionWASD.Direction);
+            Add(dash);
         }
 
         float buffer = 90f;

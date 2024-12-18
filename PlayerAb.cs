@@ -82,11 +82,13 @@ namespace GameProject
                         changeState(playerState.attacking);
                     if(inputHandler.isDoublePressed(keyScheme.right, pressedTime) && inputHandler.getDirection(keyInfo).X == 1 && stateTimer > 0.2f)
                     {
+                        vX = 0;
                         dashDirection = inputHandler.getDirection(keyInfo);
                         changeState(playerState.dash);
                     }
                     if (inputHandler.isDoublePressed(keyScheme.left, pressedTime) && inputHandler.getDirection(keyInfo).X == -1 && stateTimer > 0.2f)
                     {
+                        vX = 0;
                         dashDirection = inputHandler.getDirection(keyInfo);
                         changeState(playerState.dash);
                     }
@@ -103,7 +105,7 @@ namespace GameProject
                 case playerState.attacking:
                     if(stateTimer > 0.2f)
                     {
-                        OnAttack?.Invoke(new RectF(0, 0, 40, 40));
+                        // OnAttack?.Invoke(new RectF(0, 0, 40, 40));
                         changeState(playerState.idle);
                     }
                     break;

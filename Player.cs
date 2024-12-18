@@ -24,9 +24,8 @@ public class Player : PlayerAb
         var sprite = this;
         sprite.Origin = RawSize / 2;
         sprite.Scale = new Vector2(3, 3);
-        this.screenSize = screenSize;
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
-        Position = new Vector2(100, 100);
+        Position = new Vector2(150,100);
 
         // var texture = TextureCache.Get("B_witch_idle.png");
         var idleTexture = TextureCache.Get("Resources/Pic/slime/blue/Idle.png");
@@ -52,7 +51,7 @@ public class Player : PlayerAb
 
         //collision
         var nRect = new RectF(40, 0, 48, 48);
-        var collisionObj = CollisionObj.CreateWithRect(this,RawRect.CreateAdjusted(0.4f, 1), 1);
+        var collisionObj = CollisionObj.CreateWithRect(this, RawRect.CreateAdjusted(0.4f, 1), 1);
         collisionObj.DebugDraw = true;
         collisionObj.OnCollide = OnCollide;
         Add(collisionObj);
@@ -70,36 +69,24 @@ public class Player : PlayerAb
         var direction = DirectionKey.Direction;
         hitsound = SoundEffect.FromFile("hit.wav");
 
-        if(state == playerState.attacking)
-        if (keyInfo.IsKeyPressed(Keys.K))
+
+        if (state == playerState.attacking)
         {
             hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f, hitCheck, 2f);
             Add(hitbox);
             animationState.Animate(2);
-            hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
-
+            //hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
         }
         else if (direction.X > 0 || direction.X < 0)
             animationState.Animate(1);
         else
             animationState.Animate(0);
 
-        // not allow to move outside
-        float buffer = 130f;
-        if (Position.X + RawRect.Width > screenSize.X - buffer)
-        {
-            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
-        }
-
-        if (Position.X <= 0)
-        {
-            Position = new Vector2(0, Position.Y);
-        }
-
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(Position.X);
+        Debug.WriteLine(state);
     }
+
     public void OnCollide(CollisionObj objB, CollideData data)
     {
         var direction = data.objA.RelativeDirection(data.OverlapRect);
@@ -107,13 +94,13 @@ public class Player : PlayerAb
         if (direction.Y == 1)
             onFloor = true;
 
-        //if (objB.Actor is Player2)
-        //{
-        //    if (direction.X > 0 && direction.Y <= 0)
-        //        objB.Actor.Position += new Vector2(20, 0);
-        //    if (direction.X < 0 && direction.Y <= 0)
-        //        objB.Actor.Position += new Vector2(-20, 0);
-        //}
+        if (objB.Actor is Player2)
+        {
+            if (direction.X > 0 && direction.Y <= 0)
+                objB.Actor.Position += new Vector2(20, 0);
+            if (direction.X < 0 && direction.Y <= 0)
+                objB.Actor.Position += new Vector2(-20, 0);
+        }
         if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
         {
             V = new Vector2(V.X, 0);
@@ -124,5 +111,6 @@ public class Player : PlayerAb
             V = new Vector2(0, V.Y);
             Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
         }
+
     }
 }

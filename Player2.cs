@@ -46,31 +46,20 @@ public class Player2 : PlayerAb
         //base class perform
         applyFall(deltaTime, Keys.Space, DirectionWASD.Direction);
         applyDirection(DirectionWASD.Direction, 500);
-        
-        if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
-        applyDirection(DirectionWASD.Direction, 700);
 
-        //if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
-        //{
-        //    var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
-        //    Position = pos;
-        //}
-
-        // not allow to move outside
-        float buffer = 90f;
-        if (Position.X + RawRect.Width > screenSize.X - buffer)
+        if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
         {
-            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+            var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
+            Position = pos;
         }
-
-        if (Position.X < 0)
+        if (state == playerState.attacking)
         {
-            Position = new Vector2(0, Position.Y);
+            //var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, null, 0f);
+            //Add(hitbox);
         }
-        var direction = DirectionWASD.Direction;
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(direction);
+        Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

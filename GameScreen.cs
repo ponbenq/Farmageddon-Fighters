@@ -16,6 +16,7 @@ namespace GameProject
         ProgressBar player1HpBar1, player1HpBar2, player2HpBar1, player2HpBar2;
         public GameScreen(Vector2 screenSize, Player player1, Player2 player2)
         {
+            Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
             Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 30)));
             this.player1 = player1;
             this.player2 = player2;
@@ -57,7 +58,7 @@ namespace GameProject
             {
                 player2HpBar2.Value -= 1f;
             }
-        }   
+        }
 
         public void HitCheck(Actor target, float damage)
         {

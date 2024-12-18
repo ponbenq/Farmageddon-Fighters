@@ -15,7 +15,5 @@ public class Floor : SpriteActor
         var collisionObj = CollisionObj.CreateWithRect(this, 3);
         collisionObj.DebugDraw = true;
         Add(collisionObj);
-
-        
     }
 }

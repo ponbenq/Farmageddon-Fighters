@@ -26,6 +26,7 @@ namespace GameProject
         public Vector2 playerDirection;
         private PlayerInputHandler inputHandler;
         private KeyScheme keyScheme;
+        private Vector2 dashDirection = Vector2.Zero;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -81,12 +82,12 @@ namespace GameProject
                         changeState(playerState.attacking);
                     if(inputHandler.isDoublePressed(keyScheme.right, pressedTime) && inputHandler.getDirection(keyInfo).X == 1 && stateTimer > 0.2f)
                     {
-                        vX += 12000 * deltaTime;
+                        dashDirection = inputHandler.getDirection(keyInfo);
                         changeState(playerState.dash);
                     }
                     if (inputHandler.isDoublePressed(keyScheme.left, pressedTime) && inputHandler.getDirection(keyInfo).X == -1 && stateTimer > 0.2f)
                     {
-                        vX -= 12000 * deltaTime;
+                        dashDirection = inputHandler.getDirection(keyInfo);
                         changeState(playerState.dash);
                     }
                     break;
@@ -107,12 +108,18 @@ namespace GameProject
                     }
                     break;
                 case playerState.dash:
-                    if (stateTimer > (1f/60f))
+                    var speed = 200f;
+                    var acc = 1.2f;
+                    var decay = 0.75f;
+                    if (stateTimer <= 0.18f)
                     {
-                        changeState(playerState.idle);
+                        var smoothDash = speed * acc;
+                        vX += dashDirection.X > 0? smoothDash : -smoothDash;
+                        acc *= decay;
                     }
                     else
                     {
+                        changeState(playerState.idle);
                     }
                     break;
                 default:

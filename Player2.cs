@@ -54,30 +54,49 @@ public class Player2 : PlayerAb
         }
         if (state == playerState.attacking)
         {
-            //var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, null, 0f);
-            //Add(hitbox);
+            var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, hitCheck, 0f);
+            Add(hitbox);
+        }
+        if(state == playerState.dash)
+        {
+            var dash = new Dash(this, DirectionWASD.Direction);
+        }
+
+        float buffer = 90f;
+        if (Position.X + RawRect.Width > screenSize.X - buffer)
+        {
+            Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+            V = new Vector2(0, V.Y);
+        }
+
+        if (Position.X < 0)
+        {
+            Position = new Vector2(0, Position.Y);
+            V = new Vector2(0, V.Y);
         }
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(state);
+        Debug.WriteLine(V);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)
     {
         var direction = data.objA.RelativeDirection(data.OverlapRect);
 
-        if (direction.Y == 1)
-            onFloor = true;
-        //Debug.WriteLine(onFloor);
-        if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
+        if(objB.Actor is Floor)
         {
-            V = new Vector2(V.X, 0);
-            Position -= new Vector2(0, data.OverlapRect.Height * direction.Y);
-        }
-        if ((direction.X > 0 && V.X > 0) || (direction.X < 0 && V.X < 0))
-        {
-            V = new Vector2(0, V.Y);
-            Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
+            if (direction.Y == 1)
+                onFloor = true;
+            if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))
+            {
+                V = new Vector2(V.X, 0);
+                Position -= new Vector2(0, data.OverlapRect.Height * direction.Y);
+            }
+            if ((direction.X > 0 && V.X > 0) || (direction.X < 0 && V.X < 0))
+            {
+                V = new Vector2(0, V.Y);
+                Position -= new Vector2(data.OverlapRect.Width * direction.X, 0);
+            }
         }
 
     }

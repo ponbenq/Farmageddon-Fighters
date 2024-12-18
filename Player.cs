@@ -15,6 +15,7 @@ public class Player : PlayerAb
     private HitboxObj hitbox;
     private AnimationStates animationState;
     private Vector2 size;
+    private Vector2 screenSize;
     private SoundEffect hitsound;
     Vector2 screenSize;
     public Player(Vector2 screenSize)
@@ -23,9 +24,9 @@ public class Player : PlayerAb
         size = new Vector2(128, 40);
         var sprite = this;
         sprite.Origin = RawSize / 2;
-        sprite.Scale = new Vector2(3, 3);
+        sprite.Scale = new Vector2(6, 6);
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
-        Position = new Vector2(150,100);
+        Position = new Vector2( 100, 100);
 
         // var texture = TextureCache.Get("B_witch_idle.png");
         var idleTexture = TextureCache.Get("Resources/Pic/slime/blue/Idle.png");
@@ -82,9 +83,9 @@ public class Player : PlayerAb
         else
             animationState.Animate(0);
 
+        
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

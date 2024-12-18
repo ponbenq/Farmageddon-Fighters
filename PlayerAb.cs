@@ -17,6 +17,7 @@ namespace GameProject
         private SoundEffect jumpsound;
 
         protected float rate = 2500f;
+        public enum playerState {idle, jumping, attacking, blocking, dash};
         public enum playerState { idle, jumping, attacking, blocking };
         public playerState state = playerState.idle;
 
@@ -25,7 +26,11 @@ namespace GameProject
         public delegate void onAttackDelegate(RectF rect);
         public onAttackDelegate OnAttack = null;
         public HitCheck hitCheck;
-        private float stateTimer = 0f;
+        public float stateTimer = 0f;
+        public Vector2 playerDirection;
+        private PlayerInputHandler inputHandler;
+        private KeyScheme keyScheme;
+        private Vector2 dashDirection = Vector2.Zero;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -44,36 +49,52 @@ namespace GameProject
         }
         public void applyDirection(Vector2 direction, float speed)
         {
-            vX = direction.X * speed;
-            vY += direction.Y;
+            vX =  direction.X * speed;
+            vY +=  direction.Y;
         }
 
         public void SetHitCheck(HitCheck hitCheck)
         {
             this.hitCheck = hitCheck;
         }
+
+        public void setInputHandler(KeyScheme scheme)
+        {
+            this.keyScheme = scheme;
+            inputHandler = new PlayerInputHandler(scheme);
+        }
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
             stateTimer += deltaTime;
             var keyInfo = GlobalKeyboardInfo.Value;
-            switch (state)
+            switch(state)
             {
                 case playerState.idle:
                     if (onFloor)
                     {
-                        if (keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.2f)
+                        if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.2f)
                         {
                             vY -= 1050;
                             changeState(playerState.jumping);
                             jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                         }
                     }
-                    if (keyInfo.IsKeyDown(attKey))
+                    if(keyInfo.IsKeyDown(attKey))
                         changeState(playerState.attacking);
+                    if(inputHandler.isDoublePressed(keyScheme.right, pressedTime) && inputHandler.getDirection(keyInfo).X == 1 && stateTimer > 0.2f)
+                    {
+                        dashDirection = inputHandler.getDirection(keyInfo);
+                        changeState(playerState.dash);
+                    }
+                    if (inputHandler.isDoublePressed(keyScheme.left, pressedTime) && inputHandler.getDirection(keyInfo).X == -1 && stateTimer > 0.2f)
+                    {
+                        dashDirection = inputHandler.getDirection(keyInfo);
+                        changeState(playerState.dash);
+                    }
                     break;
                 case playerState.jumping:
-                    if (keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.3f)
+                    if(keyInfo.IsKeyDown(jumpKey) && stateTimer > 0.3f)
                     {
                         vY -= 550;
                         changeState(playerState.idle);
@@ -86,6 +107,21 @@ namespace GameProject
                     if (stateTimer > 0.2f)
                     {
                         OnAttack?.Invoke(new RectF(0, 0, 40, 40));
+                        changeState(playerState.idle);
+                    }
+                    break;
+                case playerState.dash:
+                    var speed = 200f;
+                    var acc = 1.2f;
+                    var decay = 0.75f;
+                    if (stateTimer <= 0.18f)
+                    {
+                        var smoothDash = speed * acc;
+                        vX += dashDirection.X > 0? smoothDash : -smoothDash;
+                        acc *= decay;
+                    }
+                    else
+                    {
                         changeState(playerState.idle);
                     }
                     break;

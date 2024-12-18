@@ -14,7 +14,7 @@ namespace GameProject
         public bool onFloor {get; set;} = false;
 
         protected float rate = 2500f;
-        public enum playerState {idle, jumping, attacking, blocking};
+        public enum playerState {idle, jumping, attacking, blocking, dash};
         public playerState state = playerState.idle;
 
         public Keys jumpKey, attKey;
@@ -22,9 +22,10 @@ namespace GameProject
         public delegate void onAttackDelegate(RectF rect);
         public onAttackDelegate OnAttack = null;
         public HitCheck hitCheck;
-        private float stateTimer = 0f;
+        public float stateTimer = 0f;
         public Vector2 playerDirection;
         private PlayerInputHandler inputHandler;
+        private KeyScheme keyScheme;
 
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
@@ -42,6 +43,8 @@ namespace GameProject
         }
         public void applyDirection(Vector2 direction, float speed)
         {
+            if(state == playerState.dash)
+                return;
             this.playerDirection = direction;
             vX =  direction.X * speed;
             vY +=  direction.Y;
@@ -54,6 +57,7 @@ namespace GameProject
 
         public void setInputHandler(KeyScheme scheme)
         {
+            this.keyScheme = scheme;
             inputHandler = new PlayerInputHandler(scheme);
         }
         public override void Act(float deltaTime)
@@ -61,6 +65,7 @@ namespace GameProject
             base.Act(deltaTime);
             stateTimer += deltaTime;
             var keyInfo = GlobalKeyboardInfo.Value;
+            var pressedTime = stateTimer;
             switch(state)
             {
                 case playerState.idle:
@@ -74,6 +79,16 @@ namespace GameProject
                     }
                     if(inputHandler.isAttackPressed(keyInfo))
                         changeState(playerState.attacking);
+                    if(inputHandler.isDoublePressed(keyScheme.right, pressedTime) && inputHandler.getDirection(keyInfo).X == 1 && stateTimer > 0.2f)
+                    {
+                        vX += 12000 * deltaTime;
+                        changeState(playerState.dash);
+                    }
+                    if (inputHandler.isDoublePressed(keyScheme.left, pressedTime) && inputHandler.getDirection(keyInfo).X == -1 && stateTimer > 0.2f)
+                    {
+                        vX -= 12000 * deltaTime;
+                        changeState(playerState.dash);
+                    }
                     break;
                 case playerState.jumping:
                     if(inputHandler.isJumpPressed(keyInfo, playerDirection) && stateTimer > 0.3f)
@@ -89,6 +104,15 @@ namespace GameProject
                     {
                         OnAttack?.Invoke(new RectF(0, 0, 40, 40));
                         changeState(playerState.idle);
+                    }
+                    break;
+                case playerState.dash:
+                    if (stateTimer > (1f/60f))
+                    {
+                        changeState(playerState.idle);
+                    }
+                    else
+                    {
                     }
                     break;
                 default:

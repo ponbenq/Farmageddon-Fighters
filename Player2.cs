@@ -57,6 +57,10 @@ public class Player2 : PlayerAb
             var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, hitCheck, 0f);
             Add(hitbox);
         }
+        if(state == playerState.dash)
+        {
+            var dash = new Dash(this, DirectionWASD.Direction);
+        }
 
         float buffer = 90f;
         if (Position.X + RawRect.Width > screenSize.X - buffer)
@@ -72,7 +76,7 @@ public class Player2 : PlayerAb
         }
         Position += V * deltaTime;
         onFloor = false;
-        //Debug.WriteLine(state);
+        Debug.WriteLine(V);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

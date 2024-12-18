@@ -94,6 +94,7 @@ public class Player : PlayerAb
         
         Position += V * deltaTime;
         onFloor = false;
+
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

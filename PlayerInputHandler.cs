@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ThanaNita.MonoGameTnt;
@@ -9,11 +10,21 @@ namespace GameProject
     {
         private KeyScheme keyScheme;
         private Dictionary<Keys, float> lastPressedKeys;
-        private float threshold = 0.3f;
+        private float threshold = 0.2f;
         public PlayerInputHandler(KeyScheme keyScheme)
         {
             this.keyScheme = keyScheme;
             lastPressedKeys = new Dictionary<Keys, float>();
+        }
+        public Vector2 getDirection(KeyboardInfo key)
+        {
+            var direction = Vector2.Zero;
+            if(key.IsKeyDown(keyScheme.up)) direction.Y -= 1;
+            if(key.IsKeyDown(keyScheme.down)) direction.Y += 1;
+            if(key.IsKeyDown(keyScheme.right)) direction.X += 1;
+            if(key.IsKeyDown(keyScheme.left)) direction.X -= 1;
+
+            return direction;
         }
         public bool isJumpPressed(KeyboardInfo keys, Vector2 direction)
         {
@@ -23,26 +34,26 @@ namespace GameProject
         {
             return keys.IsKeyDown(keyScheme.attack);
         }
-        public bool isDoublePressed(Keys keys, float pressedTime)
+        public bool isDoublePressed(Keys key, float pressedTime)
         {
-            if(!lastPressedKeys.ContainsKey(keys))
+            var isPressed = GlobalKeyboardInfo.Value.IsKeyPressed(key);
+            if(isPressed)
             {
-                lastPressedKeys[keys] = pressedTime;
-                return false;
+                if (!lastPressedKeys.ContainsKey(key))
+                {
+                    lastPressedKeys[key] = pressedTime;
+                    return false;
+                }
+                float lastTime = lastPressedKeys[key];
+                if ((pressedTime - lastTime) <= threshold)
+                {
+                    lastPressedKeys.Remove(key);
+                    return true;
+                }
+                lastPressedKeys[key] = pressedTime;
             }
-            float lastTime = lastPressedKeys[keys];
-            if((pressedTime - lastTime) <= threshold)
-            {
-                // reset current pressed time
-                lastPressedKeys[keys] = 0f;
-                return true;
-            }
-            else
-            {
-                //if not set same current time
-                lastPressedKeys[keys] = pressedTime;
-                return false;
-            }
+
+            return false;
         }
 
     }

@@ -16,14 +16,14 @@ namespace GameProject
         float player1Hp = 100, player2Hp = 100;
         PlayerAb player1, player2;
         ProgressBar player1HpBar1, player1HpBar2, player2HpBar1, player2HpBar2;
-        int countdown = 90;
-        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp;
-        Text countdownText, damage1, damage2;
-        bool player1Hit, player2Hit;
+        int countdown = 90, start;
+        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp, startCountdownTemp;
+        Text countdownText, damage1, damage2, centerText;
+        bool player1Hit, player2Hit, isStarted;
         Avatar avatar1, avatar2;
 
         //Constants
-        const float setupTime = 2f;
+        const float setupTime = 4f;
         const float hpDepleteDelay = 2.5f;
         const float hpDepleteRate = 1f;
         const float hitDelay = 1f;
@@ -104,6 +104,15 @@ namespace GameProject
             damage2.EffectAmount = 3;
             damage2.CharacterSpacing = 10;
 
+            //Center Text
+            centerText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 300, Color.White, "3");
+            centerText.Origin = centerText.RawSize / 2;
+            centerText.Position = screenSize/2;
+            centerText.Effect = FontStashSharp.FontSystemEffect.Stroked;
+            centerText.EffectAmount = 3;
+            Add(centerText);
+            start = ((int)setupTime) - 1;
+
             //Markers
             Add(new CrossHair(player1HpBar1.Position));
             Add(new CrossHair(player2HpBar1.Position));
@@ -114,6 +123,8 @@ namespace GameProject
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
+            var keyInfo = GlobalKeyboardInfo.Value;
+            StartCountdown(deltaTime);
 
             //Game Start apt
             if (state == gameStates.Setup)
@@ -124,7 +135,7 @@ namespace GameProject
                     changeState(gameStates.Start);
                 }
             }
-                  
+
             //HP Bar
             player1HpBar1.Value = player1Hp;
             if (player1HpBar1.Value < player1HpBar2.Value)
@@ -152,13 +163,17 @@ namespace GameProject
                     }
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.PageUp))
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.PageUp))
             {
-                Debug.WriteLine(state);
+                player1Hp = 1f;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.End))
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.PageDown))
             {
-                player1Hp = 0f;
+                player2Hp = 1f;
+            }
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.End))
+            {
+                countdown = 2;
             }
 
             //Hit Delay
@@ -265,6 +280,7 @@ namespace GameProject
             if (newState == gameStates.Start)
             {
                 Start();
+                centerText.Detach();
             } else if (newState == gameStates.End)
             {
                 End();
@@ -279,20 +295,61 @@ namespace GameProject
 
         private void End()
         {
+            //Any player hp <= 0
+            if (player2Hp <= 0)
+            {
+                centerText.Str = "Player1 Win";
+                centerText.Origin = centerText.RawSize / 2;
+                Add(centerText);
+                player2.Detach();
+            } else if (player1Hp <= 0)
+            {
+                centerText.Str = "Player2 Win";
+                centerText.Origin = centerText.RawSize / 2;
+                Add(centerText);
+                player1.Detach();
+            }
+
             //Time's up
             if (countdown <= 0)
             {
                 if (player1Hp > player2Hp) //Player1 win
                 {
-                    
+                    centerText.Str = "Player1 Win";
+                    centerText.Origin = centerText.RawSize / 2;
+                    Add(centerText);
                 } else if (player2Hp > player1Hp) //Player2 win
                 {
-
+                    centerText.Str = "Player2 Win";
+                    centerText.Origin = centerText.RawSize / 2;
+                    Add(centerText);
                 } else //Draw
                 {
-
+                    centerText.Str = "Draw";
+                    centerText.Origin = centerText.RawSize / 2;
+                    Add(centerText);
                 }
             }
+        }
+
+        public void StartCountdown (float deltaTime)
+        {
+            if (state == gameStates.Setup)
+            {
+                startCountdownTemp += deltaTime;
+                if (startCountdownTemp >= 1f && start != 0)
+                {
+                    start -= 1;
+                    centerText.Str = start.ToString();
+                    centerText.Origin = centerText.RawSize / 2;
+                    startCountdownTemp = 0f;
+                }
+                if (start == 0)
+                {
+                    centerText.Str = "Fight!";
+                    centerText.Origin = centerText.RawSize / 2;
+                }
+            }                      
         }
     }
 }

@@ -3,15 +3,18 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework.Input;
 using System.Data;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
     public class PlayerAb : SpriteActor
     {
-        public Vector2 V {get; set;}
-        public float vX {get => V.X; set => V = new Vector2(value, V.Y);}
-        public float vY {get => V.Y; set => V = new Vector2(V.X, value);}
-        public bool onFloor {get; set;} = false;
+        public Vector2 V { get; set; }
+        public float vX { get => V.X; set => V = new Vector2(value, V.Y); }
+        public float vY { get => V.Y; set => V = new Vector2(V.X, value); }
+        public bool onFloor { get; set; } = false;
+
+        private SoundEffect jumpsound;
 
         protected float rate = 2500f;
         public enum playerState {idle, jumping, attacking, blocking, dash};
@@ -31,7 +34,8 @@ namespace GameProject
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
             var keyInfo = GlobalKeyboardInfo.Value;
-            if(!onFloor)
+            jumpsound = SoundEffect.FromFile("jump.wav");
+            if (!onFloor)
             {
                 vY += rate * deltaTime;
             }
@@ -70,12 +74,13 @@ namespace GameProject
             switch(state)
             {
                 case playerState.idle:
-                    if(onFloor)
+                    if (onFloor)
                     {
                         if(inputHandler.isJumpPressed(keyInfo, playerDirection) && stateTimer > 0.2f)
                         {
                             vY -= 1050;
                             changeState(playerState.jumping);
+                            jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                         }
                     }
                     if(inputHandler.isAttackPressed(keyInfo))
@@ -98,12 +103,13 @@ namespace GameProject
                     {
                         vY -= 550;
                         changeState(playerState.idle);
+                        jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                     }
                     if (onFloor)
                         changeState(playerState.idle);
                     break;
                 case playerState.attacking:
-                    if(stateTimer > 0.2f)
+                    if (stateTimer > 0.2f)
                     {
                         // OnAttack?.Invoke(new RectF(0, 0, 40, 40));
                         changeState(playerState.idle);

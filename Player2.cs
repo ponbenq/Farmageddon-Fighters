@@ -77,7 +77,7 @@ public class Player2 : PlayerAb
         }
         Position += V * deltaTime;
         onFloor = false;
-        Debug.WriteLine(V);
+        Debug.WriteLine(this.GetMatrix());
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

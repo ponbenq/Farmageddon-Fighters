@@ -28,7 +28,7 @@ namespace GameProject
         }
         public bool isJumpPressed(KeyboardInfo keys, Vector2 direction)
         {
-            return keys.IsKeyDown(keyScheme.jump) || direction.Y == -1; 
+            return keys.IsKeyPressed(keyScheme.jump)|| direction.Y == -1; 
         }
         public bool isAttackPressed(KeyboardInfo keys)
         {

@@ -31,7 +31,8 @@ namespace GameProject
         public void applyFall(float deltaTime, Keys input, Vector2 direction)
         {
             var keyInfo = GlobalKeyboardInfo.Value;
-            if(!onFloor)
+            jumpsound = SoundEffect.FromFile("Resources/soundeffect/jump.wav");
+            if (!onFloor)
             {
                 vY += rate * deltaTime;
             }

@@ -19,6 +19,14 @@ public class GameTest01 : Game2D
     }
     protected override void LoadContent()
     {
+        //BGM Music
+
+        bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
+        bgmInstance = bgmsong.CreateInstance();
+        bgmInstance.IsLooped = true;
+        bgmInstance.Volume = 0.0f;
+        bgmInstance.Play();
+
         CollisionDetectionUnit.AddDetector(1, 2);
         CollisionDetectionUnit.AddDetector(1,3);
         CollisionDetectionUnit.AddDetector(2,3);

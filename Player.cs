@@ -15,6 +15,7 @@ public class Player : PlayerAb
     private AnimationStates animationState;
     private Vector2 size;
     private Vector2 screenSize;
+    private SoundEffect hitsound;
     public Player(Vector2 screenSize)
     {
         // var size = new Vector2(32, 48);
@@ -25,6 +26,7 @@ public class Player : PlayerAb
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
         Position = new Vector2( 100, 100);
         this.screenSize = screenSize;
+        Position = new Vector2(150,100);
 
         // var texture = TextureCache.Get("B_witch_idle.png");
         var idleTexture = TextureCache.Get("Resources/Pic/slime/blue/Idle.png");
@@ -66,6 +68,7 @@ public class Player : PlayerAb
         applyDirection(DirectionKey.Direction, 700);
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;
+        hitsound = SoundEffect.FromFile("Resources/soundeffect/hit.wav");
 
 
         if(state == playerState.attacking)
@@ -92,9 +95,11 @@ public class Player : PlayerAb
             V = new Vector2(0, V.Y);
         }
         
+
         Position += V * deltaTime;
         onFloor = false;
 
+        Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

@@ -5,16 +5,18 @@ using MonoGame.Extended.Graphics;
 using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework.Input;
 using System.Formats.Tar;
+using Microsoft.Xna.Framework.Audio;
 namespace GameProject;
 
-public class Player : PlayerAb 
+public class Player : PlayerAb
 {
-    Animation idleAnimation, runAnimation, attAnimation_1 ;
+    Animation idleAnimation, runAnimation, attAnimation_1;
     // public Vector2 V { get => mover.Velocity; set => mover.Velocity = value;}
     private HitboxObj hitbox;
     private AnimationStates animationState;
     private Vector2 size;
     private Vector2 screenSize;
+    private SoundEffect hitsound;
     public Player(Vector2 screenSize)
     {
         // var size = new Vector2(32, 48);
@@ -25,21 +27,22 @@ public class Player : PlayerAb
         // Position = new Vector2((screenSize.X / 2 - ((size.X * sprite.Scale.X) / 2)) - 150, screenSize.Y - (100 + (size.Y * sprite.Scale.Y)));
         Position = new Vector2( 100, 100);
         this.screenSize = screenSize;
+        Position = new Vector2(150,100);
 
         // var texture = TextureCache.Get("B_witch_idle.png");
         var idleTexture = TextureCache.Get("Resources/Pic/slime/blue/Idle.png");
         var idleRegion2d = RegionCutter.Cut(idleTexture, size);
-        var idleSelector = RegionSelector.Select(idleRegion2d, start:0 , count:6);
+        var idleSelector = RegionSelector.Select(idleRegion2d, start: 0, count: 6);
         idleAnimation = new Animation(sprite, 1.0f, idleSelector);
 
         var runTexture = TextureCache.Get("Resources/Pic/slime/blue/Run.png");
         var runRegion2d = RegionCutter.Cut(runTexture, size);
-        var runSelector = RegionSelector.Select(runRegion2d, start:0 , count: 7);
+        var runSelector = RegionSelector.Select(runRegion2d, start: 0, count: 7);
         runAnimation = new Animation(sprite, 1.0f, runSelector);
 
         var attTexture = TextureCache.Get("Resources/Pic/slime/blue/Attack_1.png");
         var attRegion2d = RegionCutter.Cut(attTexture, size);
-        var attSelector = RegionSelector.Select(attRegion2d, start:0, count:4);
+        var attSelector = RegionSelector.Select(attRegion2d, start: 0, count: 4);
         attAnimation_1 = new Animation(sprite, 1.0f, attSelector);
 
         animationState = new AnimationStates([idleAnimation, runAnimation, attAnimation_1]);
@@ -66,15 +69,17 @@ public class Player : PlayerAb
         applyDirection(DirectionKey.Direction, 700);
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;
+        hitsound = SoundEffect.FromFile("Resources/soundeffect/hit.wav");
 
 
-        if(state == playerState.attacking)
+        if (state == playerState.attacking)
         {
             hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f, hitCheck, 2f);
             Add(hitbox);
             animationState.Animate(2);
+            //hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
         }
-        else if(direction.X > 0 || direction.X < 0)
+        else if (direction.X > 0 || direction.X < 0)
             animationState.Animate(1);
         else
             animationState.Animate(0);
@@ -92,9 +97,11 @@ public class Player : PlayerAb
             V = new Vector2(0, V.Y);
         }
         
+
         Position += V * deltaTime;
         onFloor = false;
 
+        Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)
@@ -106,9 +113,9 @@ public class Player : PlayerAb
 
         if (objB.Actor is Player2)
         {
-            if(direction.X > 0 && direction.Y <= 0)
+            if (direction.X > 0 && direction.Y <= 0)
                 objB.Actor.Position += new Vector2(20, 0);
-            if(direction.X < 0 && direction.Y <= 0)
+            if (direction.X < 0 && direction.Y <= 0)
                 objB.Actor.Position += new Vector2(-20, 0);
         }
         if ((direction.Y > 0 && V.Y > 0) || (direction.Y < 0 && V.Y < 0))

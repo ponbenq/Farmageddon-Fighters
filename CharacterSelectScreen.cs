@@ -19,6 +19,8 @@ namespace GameProject
         Button startButton;
         Actor player1Char, player2Char = new Actor();
         Boolean player1Selected, player2Selected = false;
+
+
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
             this.gameStart = gameStart;

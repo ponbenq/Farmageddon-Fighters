@@ -13,7 +13,7 @@ public class Background : SpriteActor
 
     public Background(RectF rect, Vector2 screenSize)
     {
-        texture = TextureCache.Get("skybg.jpg");
+        texture = TextureCache.Get("Resources/Images/skybg.jpg");
 
         float scaleX = screenSize.X / texture.Width;
         float scaleY = screenSize.Y / texture.Height;

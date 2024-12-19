@@ -36,8 +36,9 @@ namespace GameProject
         public gameStates state = gameStates.Setup;
         public GameScreen(Vector2 screenSize, Player player1, Player2 player2)
         {
+            Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
             //Floor
-            Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 30)));
+            Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50)));
             this.player1 = player1;
             this.player2 = player2;
             player1.SetHitCheck(HitCheck); //Pass hitcheck to Player

@@ -34,6 +34,10 @@ namespace GameProject
         {
             return keys.IsKeyDown(keyScheme.attack);
         }
+        public bool isBlockingPressed(KeyboardInfo keys)
+        {
+            return keys.IsKeyDown(keyScheme.down);
+        }
         public bool isDoublePressed(Keys key, float pressedTime)
         {
             var isPressed = GlobalKeyboardInfo.Value.IsKeyPressed(key);

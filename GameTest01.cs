@@ -36,8 +36,11 @@ public class GameTest01 : Game2D
         CollisionDetectionUnit.AddDetector(1,3);
         CollisionDetectionUnit.AddDetector(2,3);
         CollisionDetectionUnit.AddDetector(2,4);
-
-        All.Add(new GameScreen(ScreenSize, new Player(ScreenSize), new Player2(ScreenSize)));
+        var player1 = new Entity(ScreenSize, new Vector2(100, 100), "Resources/sprite/pumpkin/pumpkin.png",
+                                1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K), 1);
+        var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), "Resources/sprite/broccoli/broccoli_test.png",
+                                2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys. Space, Keys.F), 2);
+        All.Add(new GameScreen(ScreenSize, player1, player2));
         //All.Add(new Floor(new RectF(0, ScreenSize.Y - 150, 1000, 30)));
         //All.Add(new PlayerHolder1(ScreenSize));
         //All.Add(new Player(ScreenSize));

@@ -31,7 +31,7 @@ namespace GameProject
         private KeyScheme keyScheme;
         private Vector2 dashDirection = Vector2.Zero;
 
-        public void applyFall(float deltaTime, Keys input, Vector2 direction)
+        public void applyFall(float deltaTime)
         {
             var keyInfo = GlobalKeyboardInfo.Value;
             jumpsound = SoundEffect.FromFile("Resources/soundeffect/jump.wav");
@@ -97,6 +97,11 @@ namespace GameProject
                         dashDirection = inputHandler.getDirection(keyInfo);
                         changeState(playerState.dash);
                     }
+                    if(inputHandler.isBlockingPressed(keyInfo))
+                    {
+                        vX = 0;
+                        changeState(playerState.blocking);
+                    }
                     break;
                 case playerState.jumping:
                     if(inputHandler.isJumpPressed(keyInfo, playerDirection) && stateTimer > 0.3f)
@@ -109,7 +114,7 @@ namespace GameProject
                         changeState(playerState.idle);
                     break;
                 case playerState.attacking:
-                    if (stateTimer > 0.2f)
+                    if (stateTimer > 0.4f)
                     {
                         // OnAttack?.Invoke(new RectF(0, 0, 40, 40));
                         changeState(playerState.idle);
@@ -126,6 +131,12 @@ namespace GameProject
                         acc *= decay;
                     }
                     else
+                    {
+                        changeState(playerState.idle);
+                    }
+                    break;
+                case playerState.blocking:
+                    if(!inputHandler.isBlockingPressed(keyInfo) && stateTimer > 0.2f)
                     {
                         changeState(playerState.idle);
                     }

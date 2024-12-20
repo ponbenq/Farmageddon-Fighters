@@ -34,7 +34,7 @@ namespace GameProject
         //State
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
-        public GameScreen(Vector2 screenSize, Player player1, Player2 player2)
+        public GameScreen(Vector2 screenSize, Entity player1, Entity player2)
         {
             Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
             //Floor
@@ -44,8 +44,8 @@ namespace GameProject
             player1.SetHitCheck(HitCheck); //Pass hitcheck to Player
             player2.SetHitCheck(HitCheck);
             //set input handler
-            player1.setInputHandler(new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K));
-            player2.setInputHandler(new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.G));
+            // player1.setInputHandler(new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K));
+            // player2.setInputHandler(new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.G));
             //Add(this.player1);
             //Add(this.player2);
             var player1Cursor = new Cursor(player1, 1);
@@ -121,12 +121,28 @@ namespace GameProject
             Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
         }
 
+        public void checkPlayerCross(Entity player1, Entity player2)
+        {
+            if(player1.Position.X > player2.Position.X)
+            {
+                player1.isFacingRight = false;
+                player2.isFacingRight = true;
+            }
+            else
+            {
+                player1.isFacingRight = true;
+                player2.isFacingRight = false;
+            }
+                
+        }
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
             var keyInfo = GlobalKeyboardInfo.Value;
             StartCountdown(deltaTime);
 
+            // cross checking
+            checkPlayerCross((Entity)player1, (Entity)player2);
             //Game Start apt
             if (state == gameStates.Setup)
             {

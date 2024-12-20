@@ -42,8 +42,11 @@ public class HitboxObj : RectangleActor
     public void OnCollide(CollisionObj objB, CollideData data)
     {
         var direction = data.objA.RelativeDirection(data.OverlapRect);
-        if (objB.Actor is Player2) //if target is player2
+        if (objB.Actor is PlayerAb) //if target is player2
         {
+            // TODO: [ ] check blocking
+            //       [ ] create player object for handle response
+            //       [ ] attack delay
             //objB.Actor.Position += new Vector2(40, 0);
             if (data.objA.Actor is HitboxObj) //if hit by hitboxobj
             {

@@ -65,7 +65,7 @@ public class Player : PlayerAb
     {
 
         base.Act(deltaTime);
-        applyFall(deltaTime, Keys.L, DirectionKey.Direction);
+        applyFall(deltaTime);
         applyDirection(DirectionKey.Direction, 700);
         var keyInfo = GlobalKeyboardInfo.Value;
         var direction = DirectionKey.Direction;
@@ -101,7 +101,6 @@ public class Player : PlayerAb
         Position += V * deltaTime;
         onFloor = false;
 
-        Debug.WriteLine(state);
     }
 
     public void OnCollide(CollisionObj objB, CollideData data)

@@ -8,6 +8,7 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -21,6 +22,7 @@ namespace GameProject
         Text countdownText, damage1, damage2, centerText;
         bool player1Hit, player2Hit, isStarted;
         Avatar avatar1, avatar2;
+        private SoundEffect hurtsound;
 
         //Constants
         const float setupTime = 4f;
@@ -264,6 +266,7 @@ namespace GameProject
 
         public void HitCheck(Actor target, float damage)
         {
+            hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
             if (target is Entity player)
             {
                 if (!player1Hit && player.playerNum == 1)
@@ -273,6 +276,7 @@ namespace GameProject
                     Debug.WriteLine("Player1 got hit!");
                     damage2.Str = damage.ToString("0") + "\nHIT";
                     damage2.Origin = damage2.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage2);
                 }
                 if(!player2Hit && player.playerNum == 2)
@@ -283,6 +287,7 @@ namespace GameProject
                     Debug.WriteLine("Player2 got hit!");
                     damage1.Str = damage.ToString("0") + "\nHIT";
                     damage1.Origin = damage1.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage1);
                 }
             }

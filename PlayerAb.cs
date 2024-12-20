@@ -52,6 +52,7 @@ namespace GameProject
         {
             if(state == playerState.dash)
                 return;
+            this.playerDirection = direction;
             vX =  direction.X * speed;
             vY +=  direction.Y;
         }
@@ -156,6 +157,8 @@ namespace GameProject
                     {
                         changeState(playerState.idle);
                     }
+                    break;
+                case playerState.death:
                     break;
                 default:
                     changeState(playerState.idle);

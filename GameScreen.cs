@@ -22,6 +22,7 @@ namespace GameProject
         Text countdownText, damage1, damage2, centerText;
         bool player1Hit, player2Hit, fightSfxPlayed;
         Avatar avatar1, avatar2;
+        private SoundEffect hurtsound;
 
         //Constants
         const float setupTime = 4f;
@@ -265,6 +266,7 @@ namespace GameProject
 
         public void HitCheck(Actor target, float damage)
         {
+            hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
             if (target is Entity player)
             {
                 if (!player1Hit && player.playerNum == 1)
@@ -274,6 +276,7 @@ namespace GameProject
                     Debug.WriteLine("Player1 got hit!");
                     damage2.Str = damage.ToString("0") + "\nHIT";
                     damage2.Origin = damage2.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage2);
                 }
                 if(!player2Hit && player.playerNum == 2)
@@ -284,6 +287,7 @@ namespace GameProject
                     Debug.WriteLine("Player2 got hit!");
                     damage1.Str = damage.ToString("0") + "\nHIT";
                     damage1.Origin = damage1.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage1);
                 }
             }
@@ -316,13 +320,16 @@ namespace GameProject
                 centerText.Str = "Player1 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player2.Detach();
+                player2.changeState(PlayerAb.playerState.death);
+                // player2.Detach();
+                
             } else if (player1Hp <= 0)
             {
                 centerText.Str = "Player2 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player1.Detach();
+                player1.changeState(PlayerAb.playerState.death);
+                // player1.Detach();
             }
 
             //Time's up

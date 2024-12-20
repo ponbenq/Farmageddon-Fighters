@@ -51,6 +51,8 @@ namespace GameProject
             var hurtRight = RegionSelector.Select(region, start: 72, count:4);
 
             var block = RegionSelector.Select(region, start: 80, count: 2);
+            var deadLeft = RegionSelector.Select(region, start: 35, count:1);
+            var deadRight = RegionSelector.Select(region, start: 75, count: 1);
 
             var idleL = new Animation(this, 1.0f, idleLeft);
             var walkL = new Animation(this, 1.0f, walkLeft);
@@ -65,13 +67,15 @@ namespace GameProject
             var hurtR = new Animation(this, 1.0f, hurtRight);
 
             var b = new Animation(this, 1.0f, block);
+            var deadL = new Animation(this, 1.0f, deadLeft);
+            var deadR = new Animation(this, 1.0f, deadRight);
 
             animationStates = new AnimationStates([idleL, walkL, fistL, kickL, hurtL, 
-                                                    idleR, walkR, fistR, kickR, hurtR, b]);
+                                                    idleR, walkR, fistR, kickR, hurtR, b, deadL, deadR]);
             AddAction(animationStates);
 
             // create collision object
-            var collisionObj = CollisionObj.CreateWithRect(this, RawRect.CreateAdjusted(0.4f, 1), collisionGroup);
+            var collisionObj = CollisionObj.CreateWithRect(this, RawRect.CreateAdjusted(0.6f, 1), collisionGroup);
             collisionObj.DebugDraw = true;
             collisionObj.OnCollide = OnCollide;
             Add(collisionObj);
@@ -109,7 +113,7 @@ namespace GameProject
                 }
                 if(state == playerState.attacking)
                 {
-                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(size.X - 20, 20, 14, 12),
+                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(30, 24, 15, 12),
                                                  collisionGroup, 0.15f, hitCheck, 2f);
                     Add(hitbox);
                     animationStates.Animate(7);
@@ -126,6 +130,10 @@ namespace GameProject
                 {
                     animationStates.Animate(9);
                 }
+                if(state == playerState.death)
+                {
+                    animationStates.Animate(12);
+                }
             }
             else // on right, facing left
             {
@@ -138,7 +146,7 @@ namespace GameProject
                 }
                 if(state == playerState.attacking)
                 {
-                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(-size.X + 20, 20, 14, 12),
+                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(0, 24, 15, 12),
                                                  collisionGroup, 0.15f, hitCheck, 2f);
                     Add(hitbox);
                     animationStates.Animate(2);
@@ -154,6 +162,10 @@ namespace GameProject
                 if(state == playerState.hurt)
                 {
                     animationStates.Animate(4);
+                }
+                if(state == playerState.death)
+                {
+                    animationStates.Animate(11);
                 }
             }
 

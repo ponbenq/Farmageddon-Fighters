@@ -32,7 +32,7 @@ namespace GameProject
         }
         public bool isAttackPressed(KeyboardInfo keys)
         {
-            return keys.IsKeyDown(keyScheme.attack);
+            return keys.IsKeyPressed(keyScheme.attack);
         }
         public bool isBlockingPressed(KeyboardInfo keys)
         {

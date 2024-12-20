@@ -17,7 +17,7 @@ namespace GameProject
         private SoundEffect jumpsound;
 
         protected float rate = 2500f;
-        public enum playerState {idle, jumping, attacking, blocking, dash};
+        public enum playerState {idle, jumping, attacking, blocking, dash, hurt, death};
         public playerState state = playerState.idle;
 
         public Keys jumpKey, attKey;
@@ -141,13 +141,19 @@ namespace GameProject
                         changeState(playerState.idle);
                     }
                     break;
+                case playerState.hurt:
+                    if(stateTimer > 0.2f)
+                    {
+                        changeState(playerState.idle);
+                    }
+                    break;
                 default:
                     changeState(playerState.idle);
                     break;
             }
         }
 
-        protected void changeState(playerState newState)
+        public void changeState(playerState newState)
         {
             state = newState;
             stateTimer = 0f;

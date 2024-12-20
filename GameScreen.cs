@@ -264,9 +264,9 @@ namespace GameProject
 
         public void HitCheck(Actor target, float damage)
         {
-            if (target is Player)
+            if (target is Entity player)
             {
-                if (!player1Hit)
+                if (!player1Hit && player.playerNum == 1)
                 {
                     player1Hp -= damage;
                     player1Hit = true;
@@ -275,10 +275,7 @@ namespace GameProject
                     damage2.Origin = damage2.RawSize / 2;
                     Add(damage2);
                 }
-            }
-            if (target is Player2)
-            {
-                if (!player2Hit)
+                if(!player2Hit && player.playerNum == 2)
                 {
                     player2Hp -= damage;
                     //target.Position += new Vector2(40, 0);

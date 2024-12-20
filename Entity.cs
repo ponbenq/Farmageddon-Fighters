@@ -13,12 +13,12 @@ namespace GameProject
     {
         private AnimationStates animationStates;
         private Vector2 screenSize, size;
-        private SoundEffect hitSound;
         private PlayerInputHandler inputHandler;
         private KeyScheme keyScheme;
         private const int speed = 400;
         public bool isFacingRight = false;
         private int collisionGroup;
+        public int playerNum;
 
         public Entity(Vector2 screenSize, Vector2 position, String spritePath, int collisionGroup, KeyScheme keyScheme, int playerNum)
         {
@@ -31,6 +31,7 @@ namespace GameProject
 
             // init
             isFacingRight = playerNum == 2? false: true;
+            this.playerNum = playerNum;
             this.collisionGroup = collisionGroup;
 
             // animation declaration
@@ -121,6 +122,10 @@ namespace GameProject
                 {
                     animationStates.Animate(10);
                 }
+                if(state == playerState.hurt)
+                {
+                    animationStates.Animate(9);
+                }
             }
             else // on right, facing left
             {
@@ -133,7 +138,7 @@ namespace GameProject
                 }
                 if(state == playerState.attacking)
                 {
-                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(size.X - 20, 20, 14, 12),
+                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(-size.X + 20, 20, 14, 12),
                                                  collisionGroup, 0.15f, hitCheck, 2f);
                     Add(hitbox);
                     animationStates.Animate(2);
@@ -145,6 +150,10 @@ namespace GameProject
                 if(state == playerState.blocking)
                 {
                     animationStates.Animate(10);
+                }
+                if(state == playerState.hurt)
+                {
+                    animationStates.Animate(4);
                 }
             }
 

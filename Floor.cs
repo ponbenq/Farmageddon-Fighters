@@ -7,7 +7,7 @@ public class Floor : SpriteActor
 {
     public Floor(RectF rect)
     {
-        var texture = TextureCache.Get("Resources/ground/yellow_brick.png");
+        var texture = TextureCache.Get("Resources/ground/green_brick5.png");
         
         SetTextureRegion(new TextureRegion(texture, new RectF(Vector2.Zero, rect.Size)));
         Scale = new Vector2(5,5);

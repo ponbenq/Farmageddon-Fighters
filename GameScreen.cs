@@ -8,6 +8,7 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -19,7 +20,7 @@ namespace GameProject
         int countdown = 90, start;
         float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp, startCountdownTemp;
         Text countdownText, damage1, damage2, centerText;
-        bool player1Hit, player2Hit, isStarted;
+        bool player1Hit, player2Hit, fightSfxPlayed;
         Avatar avatar1, avatar2;
 
         //Constants
@@ -362,6 +363,12 @@ namespace GameProject
                 {
                     centerText.Str = "Fight!";
                     centerText.Origin = centerText.RawSize / 2;
+                    if (!fightSfxPlayed)
+                    {
+                        var fightSfx = SoundEffect.FromFile("Resources/soundeffect/announcer/fight.wav");
+                        fightSfx.Play();
+                        fightSfxPlayed = true;
+                    }                    
                 }
             }                      
         }

@@ -15,10 +15,11 @@ namespace GameProject
         public bool onFloor { get; set; } = false;
 
         private SoundEffect jumpsound;
+        private SoundEffect dashsound;
+        private bool hasPlayedDashSound = false;
 
         protected float rate = 2500f;
         public enum playerState {idle, jumping, attacking, blocking, dash};
-        public enum playerState { idle, jumping, attacking, blocking };
         public playerState state = playerState.idle;
 
         public Keys jumpKey, attKey;
@@ -49,6 +50,8 @@ namespace GameProject
         }
         public void applyDirection(Vector2 direction, float speed)
         {
+            if(state == playerState.dash)
+                return;
             vX =  direction.X * speed;
             vY +=  direction.Y;
         }
@@ -68,6 +71,7 @@ namespace GameProject
             base.Act(deltaTime);
             stateTimer += deltaTime;
             var keyInfo = GlobalKeyboardInfo.Value;
+            var pressedTime = stateTimer;
             switch(state)
             {
                 case playerState.idle:
@@ -104,29 +108,35 @@ namespace GameProject
                         changeState(playerState.idle);
                     break;
                 case playerState.attacking:
-                    if (stateTimer > 0.2f)
+                    if (stateTimer > (1/60f))
                     {
                         OnAttack?.Invoke(new RectF(0, 0, 40, 40));
                         changeState(playerState.idle);
                     }
                     break;
                 case playerState.dash:
+                    dashsound = SoundEffect.FromFile("dash2.wav");
                     var speed = 200f;
                     var acc = 1.2f;
                     var decay = 0.75f;
+
+                    if (!hasPlayedDashSound) 
+                    {
+                        dashsound.Play(volume: 0.5f, pitch: 0.0f, pan: 0.0f);
+                        hasPlayedDashSound = true; 
+                    }
+
                     if (stateTimer <= 0.18f)
                     {
                         var smoothDash = speed * acc;
-                        vX += dashDirection.X > 0? smoothDash : -smoothDash;
+                        vX += dashDirection.X > 0 ? smoothDash : -smoothDash;
                         acc *= decay;
                     }
                     else
                     {
                         changeState(playerState.idle);
+                        hasPlayedDashSound = false;
                     }
-                    break;
-                default:
-                    changeState(playerState.idle);
                     break;
             }
         }

@@ -17,7 +17,6 @@ public class Player : PlayerAb
     private Vector2 size;
     private Vector2 screenSize;
     private SoundEffect hitsound;
-    Vector2 screenSize;
     public Player(Vector2 screenSize)
     {
         // var size = new Vector2(32, 48);
@@ -76,7 +75,7 @@ public class Player : PlayerAb
             hitbox = new HitboxObj(new Vector2(15, 32), new RectF(size.X - 36, 15, 15, 5), 1, 0.15f, hitCheck, 2f);
             Add(hitbox);
             animationState.Animate(2);
-            //hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
+            hitsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
         }
         else if (direction.X > 0 || direction.X < 0)
             animationState.Animate(1);

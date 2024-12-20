@@ -8,6 +8,7 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -21,6 +22,7 @@ namespace GameProject
         Text countdownText, damage1, damage2, centerText;
         bool player1Hit, player2Hit, isStarted;
         Avatar avatar1, avatar2;
+        private SoundEffect hurtsound;
 
         //Constants
         const float setupTime = 4f;
@@ -32,7 +34,7 @@ namespace GameProject
         Color color0 = new Color(50, 50, 50);
 
         //State
-        public enum gameStates {Setup, Start, End}
+        public enum gameStates { Setup, Start, End }
         public gameStates state = gameStates.Setup;
         public GameScreen(Vector2 screenSize, Player player1, Player2 player2)
         {
@@ -56,7 +58,7 @@ namespace GameProject
             player1HpBar1.Origin = player1HpBar1.RawSize / 2;
             player1HpBar1.Scale = new Vector2(player1HpBar1.Scale.X * -1, player1HpBar1.Scale.Y); //invert
             player1HpBar1.Position = new Vector2(screenSize.X * 0.3f, screenSize.Y * 0.111f);
-            player1HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) {Value = 100};
+            player1HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) { Value = 100 };
             player1HpBar2.Origin = player1HpBar2.RawSize / 2;
             player1HpBar2.Scale = new Vector2(player1HpBar2.Scale.X * -1, player1HpBar2.Scale.Y); //invert
             player1HpBar2.Position = new Vector2(screenSize.X * 0.3f, screenSize.Y * 0.111f);
@@ -64,14 +66,14 @@ namespace GameProject
             Add(player1HpBar1);
 
             player2HpBar1 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Transparent, Color.DarkGreen);
-            player2HpBar1.Origin = player2HpBar1.RawSize / 2;            
+            player2HpBar1.Origin = player2HpBar1.RawSize / 2;
             player2HpBar1.Position = new Vector2(screenSize.X * 0.7f, screenSize.Y * 0.111f);
-            player2HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) {Value = 100};
-            player2HpBar2.Origin = player2HpBar2.RawSize / 2;            
+            player2HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) { Value = 100 };
+            player2HpBar2.Origin = player2HpBar2.RawSize / 2;
             player2HpBar2.Position = new Vector2(screenSize.X * 0.7f, screenSize.Y * 0.111f);
             player2HpBar2.Value = 100;
             Add(player2HpBar2);
-            Add(player2HpBar1);           
+            Add(player2HpBar1);
 
             //Countdown
             countdownText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 140, Color.White, "90");
@@ -108,7 +110,7 @@ namespace GameProject
             //Center Text
             centerText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 300, Color.White, "3");
             centerText.Origin = centerText.RawSize / 2;
-            centerText.Position = screenSize/2;
+            centerText.Position = screenSize / 2;
             centerText.Effect = FontStashSharp.FontSystemEffect.Stroked;
             centerText.EffectAmount = 3;
             Add(centerText);
@@ -154,11 +156,52 @@ namespace GameProject
             player2HpBar1.Value = player2Hp;
             if (player2HpBar1.Value < player2HpBar2.Value)
             {
-                player2HpBar2.Value -= 1f;
+                hpTemp2 += deltaTime;
+                if (hpTemp2 >= hpDepleteDelay)
+                {
+                    player2HpBar2.Value -= hpDepleteRate;
+                    if (player2HpBar2.Value == player2HpBar1.Value)
+                    {
+                        hpTemp2 = 0f;
+                    }
+                }
             }
-        }   
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.PageUp))
+            {
+                player1Hp = 1f;
+            }
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.PageDown))
+            {
+                player2Hp = 1f;
+            }
+            if (GlobalKeyboardInfo.Value.IsKeyPressed(Keys.End))
+            {
+                countdown = 2;
+            }
 
-            
+            //Hit Delay
+            if (player1Hit)
+            {
+                hitDelay1 += deltaTime;
+                if (hitDelay1 >= hitDelay)
+                {
+                    player1Hit = false;
+                    hitDelay1 = 0f;
+                    damage2.Detach();
+                }
+            }
+            if (player2Hit)
+            {
+                hitDelay2 += deltaTime;
+                if (hitDelay2 >= hitDelay)
+                {
+                    player2Hit = false;
+                    hitDelay2 = 0f;
+                    damage1.Detach();
+                }
+            }
+
+
             if (state == gameStates.Start)
             {
                 //Countdown
@@ -201,12 +244,13 @@ namespace GameProject
                     case <= 0:
                         AddAction(new ColorAction(2f, color0, avatar2));
                         break;
-                }                
-            }                                    
-        }   
+                }
+            }
+        }
 
         public void HitCheck(Actor target, float damage)
         {
+            hurtsound = SoundEffect.FromFile("hurt.wav");
             if (target is Player)
             {
                 if (!player1Hit)
@@ -216,6 +260,7 @@ namespace GameProject
                     Debug.WriteLine("Player1 got hit!");
                     damage2.Str = damage.ToString("0") + "\nHIT";
                     damage2.Origin = damage2.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage2);
                 }
             }
@@ -229,6 +274,7 @@ namespace GameProject
                     Debug.WriteLine("Player2 got hit!");
                     damage1.Str = damage.ToString("0") + "\nHIT";
                     damage1.Origin = damage1.RawSize / 2;
+                    hurtsound.Play();
                     Add(damage1);
                 }
             }
@@ -241,7 +287,8 @@ namespace GameProject
             {
                 Start();
                 centerText.Detach();
-            } else if (newState == gameStates.End)
+            }
+            else if (newState == gameStates.End)
             {
                 End();
             }
@@ -262,7 +309,8 @@ namespace GameProject
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
                 player2.Detach();
-            } else if (player1Hp <= 0)
+            }
+            else if (player1Hp <= 0)
             {
                 centerText.Str = "Player2 Win";
                 centerText.Origin = centerText.RawSize / 2;
@@ -278,12 +326,14 @@ namespace GameProject
                     centerText.Str = "Player1 Win";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
-                } else if (player2Hp > player1Hp) //Player2 win
+                }
+                else if (player2Hp > player1Hp) //Player2 win
                 {
                     centerText.Str = "Player2 Win";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
-                } else //Draw
+                }
+                else //Draw
                 {
                     centerText.Str = "Draw";
                     centerText.Origin = centerText.RawSize / 2;
@@ -292,7 +342,7 @@ namespace GameProject
             }
         }
 
-        public void StartCountdown (float deltaTime)
+        public void StartCountdown(float deltaTime)
         {
             if (state == gameStates.Setup)
             {
@@ -309,7 +359,7 @@ namespace GameProject
                     centerText.Str = "Fight!";
                     centerText.Origin = centerText.RawSize / 2;
                 }
-            }                      
+            }
         }
     }
 }

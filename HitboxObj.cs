@@ -48,7 +48,7 @@ public class HitboxObj : RectangleActor
             //       [ ] create player object for handle response
             //       [ ] attack delay
             //objB.Actor.Position += new Vector2(40, 0);
-            if(!(otherPlayer.state == PlayerAb.playerState.blocking))
+            if(!(otherPlayer.state == PlayerAb.playerState.blocking) && !(otherPlayer.state == PlayerAb.playerState.death))
             {
                 otherPlayer.changeState(PlayerAb.playerState.hurt);
                 if (data.objA.Actor is HitboxObj) //if hit by hitboxobj

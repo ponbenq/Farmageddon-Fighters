@@ -320,13 +320,16 @@ namespace GameProject
                 centerText.Str = "Player1 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player2.Detach();
+                player2.changeState(PlayerAb.playerState.death);
+                // player2.Detach();
+                
             } else if (player1Hp <= 0)
             {
                 centerText.Str = "Player2 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player1.Detach();
+                player1.changeState(PlayerAb.playerState.death);
+                // player1.Detach();
             }
 
             //Time's up

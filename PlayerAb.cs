@@ -50,7 +50,7 @@ namespace GameProject
         }
         public void applyDirection(Vector2 direction, float speed)
         {
-            if(state == playerState.dash)
+            if(state == playerState.dash || state == playerState.blocking)
                 return;
             this.playerDirection = direction;
             vX =  direction.X * speed;
@@ -147,9 +147,18 @@ namespace GameProject
                     }
                     break;
                 case playerState.blocking:
-                    if(!inputHandler.isBlockingPressed(keyInfo) && stateTimer > 0.2f)
+                    if(!inputHandler.isBlockingPressed(keyInfo) && stateTimer > 0.17f)
                     {
                         changeState(playerState.idle);
+                    }
+                    else
+                    {
+                        if(playerDirection.X > 0)
+                            vX = 100;
+                        else if(playerDirection.X < 0)
+                            vX = -100;
+                        else
+                            vX = 0;
                     }
                     break;
                 case playerState.hurt:

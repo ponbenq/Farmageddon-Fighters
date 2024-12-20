@@ -20,7 +20,7 @@ namespace GameProject
         int countdown = 90, start;
         float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp, startCountdownTemp;
         Text countdownText, damage1, damage2, centerText;
-        bool player1Hit, player2Hit, isStarted;
+        bool player1Hit, player2Hit, fightSfxPlayed;
         Avatar avatar1, avatar2;
         private SoundEffect hurtsound;
 
@@ -94,14 +94,14 @@ namespace GameProject
             Add(avatar2);
 
             //Damage Text
-            damage1 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
-            damage1.Position = new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.25f);
+            damage1 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.White, "20\nHIT");
+            damage1.Position = new Vector2(screenSize.X * 0.09f, screenSize.Y * 0.25f);
             damage1.Origin = damage1.RawSize / 2;
             damage1.Effect = FontStashSharp.FontSystemEffect.Stroked;
             damage1.EffectAmount = 3;
             damage1.CharacterSpacing = 10;
-            damage2 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.Red, "20\nHIT");
-            damage2.Position = new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.25f);
+            damage2 = new Text("Resources/Fonts/ZFTERMIN__.ttf", 75, Color.White, "20\nHIT");
+            damage2.Position = new Vector2(screenSize.X * 0.91f, screenSize.Y * 0.25f);
             damage2.Origin = damage2.RawSize / 2;
             damage2.Effect = FontStashSharp.FontSystemEffect.Stroked;
             damage2.EffectAmount = 3;
@@ -267,28 +267,57 @@ namespace GameProject
         public void HitCheck(Actor target, float damage)
         {
             hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
+            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/blocked.wav");
+            var blocked = false;
+            if (damage == 0f) { blocked = true; }
             if (target is Entity player)
             {
                 if (!player1Hit && player.playerNum == 1)
                 {
-                    player1Hp -= damage;
-                    player1Hit = true;
-                    Debug.WriteLine("Player1 got hit!");
-                    damage2.Str = damage.ToString("0") + "\nHIT";
-                    damage2.Origin = damage2.RawSize / 2;
-                    hurtsound.Play();
-                    Add(damage2);
+                    if (!blocked)
+                    {
+                        player.changeState(PlayerAb.playerState.hurt);
+                        player1Hp -= damage;
+                        player1Hit = true;
+                        Debug.WriteLine("Player1 got hit!");
+                        damage2.Str = damage.ToString("0") + "\nHIT";
+                        damage2.Origin = damage2.RawSize / 2;
+                        hurtsound.Play();
+                        Add(damage2);
+                        
+                    } else
+                    {
+                        player1Hit = true;
+                        blockSfx.Play();
+                        damage2.Str = "BLOCKED";
+                        damage2.Color = Color.Red;
+                        damage2.Origin = damage2.RawSize / 2;
+                        Add(damage2);
+                    }
+                    
                 }
                 if(!player2Hit && player.playerNum == 2)
                 {
-                    player2Hp -= damage;
-                    //target.Position += new Vector2(40, 0);
-                    player2Hit = true;
-                    Debug.WriteLine("Player2 got hit!");
-                    damage1.Str = damage.ToString("0") + "\nHIT";
-                    damage1.Origin = damage1.RawSize / 2;
-                    hurtsound.Play();
-                    Add(damage1);
+                    if (!blocked)
+                    {
+                        player.changeState(PlayerAb.playerState.hurt);
+                        player2Hp -= damage;
+                        //target.Position += new Vector2(40, 0);
+                        player2Hit = true;
+                        Debug.WriteLine("Player2 got hit!");
+                        damage1.Str = damage.ToString("0") + "\nHIT";
+                        damage1.Origin = damage1.RawSize / 2;
+                        hurtsound.Play();
+                        Add(damage1);
+                    } else
+                    {
+                        player2Hit = true;
+                        blockSfx.Play();
+                        damage1.Str = "BLOCKED";
+                        damage1.Color = Color.Red;
+                        damage1.Origin = damage2.RawSize / 2;
+                        Add(damage1);
+                    }                    
                 }
             }
         }
@@ -314,6 +343,10 @@ namespace GameProject
 
         private void End()
         {
+            var player1Win = SoundEffect.FromFile("Resources/soundeffect/announcer/Player1Win.wav");
+            var player2Win = SoundEffect.FromFile("Resources/soundeffect/announcer/Player2Win.wav");
+            var draw = SoundEffect.FromFile("Resources/soundeffect/announcer/Draw.wav");
+
             //Any player hp <= 0
             if (player2Hp <= 0)
             {
@@ -321,7 +354,7 @@ namespace GameProject
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
                 player2.changeState(PlayerAb.playerState.death);
-                // player2.Detach();
+                player1Win.Play();
                 
             } else if (player1Hp <= 0)
             {
@@ -329,7 +362,7 @@ namespace GameProject
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
                 player1.changeState(PlayerAb.playerState.death);
-                // player1.Detach();
+                player2Win.Play();
             }
 
             //Time's up
@@ -340,16 +373,19 @@ namespace GameProject
                     centerText.Str = "Player1 Win";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
+                    player1Win.Play();
                 } else if (player2Hp > player1Hp) //Player2 win
                 {
                     centerText.Str = "Player2 Win";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
+                    player2Win.Play();
                 } else //Draw
                 {
                     centerText.Str = "Draw";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
+                    draw.Play();
                 }
             }
         }
@@ -370,6 +406,12 @@ namespace GameProject
                 {
                     centerText.Str = "Fight!";
                     centerText.Origin = centerText.RawSize / 2;
+                    if (!fightSfxPlayed)
+                    {
+                        var fightSfx = SoundEffect.FromFile("Resources/soundeffect/announcer/fight.wav");
+                        fightSfx.Play();
+                        fightSfxPlayed = true;
+                    }                    
                 }
             }                      
         }

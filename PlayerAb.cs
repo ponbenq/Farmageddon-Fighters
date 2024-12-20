@@ -162,7 +162,7 @@ namespace GameProject
                     }
                     break;
                 case playerState.hurt:
-                    if(stateTimer > 0.2f)
+                    if(stateTimer > 0.6f)
                     {
                         changeState(playerState.idle);
                     }

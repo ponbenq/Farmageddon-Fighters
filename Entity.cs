@@ -54,6 +54,9 @@ namespace GameProject
             var deadLeft = RegionSelector.Select(region, start: 35, count:1);
             var deadRight = RegionSelector.Select(region, start: 75, count: 1);
 
+            var dyingLeft = RegionSelector.Select(region, start:32, count: 4);
+            var dyingRight = RegionSelector.Select(region, start: 72, count: 4);
+
             var idleL = new Animation(this, 1.0f, idleLeft);
             var walkL = new Animation(this, 1.0f, walkLeft);
             var fistL = new Animation(this, 1.0f, fistLeft);
@@ -69,9 +72,11 @@ namespace GameProject
             var b = new Animation(this, 1.0f, block);
             var deadL = new Animation(this, 1.0f, deadLeft);
             var deadR = new Animation(this, 1.0f, deadRight);
+            var dyingL = new Animation(this, 1.0f, dyingLeft);
+            var dyingR = new Animation(this, 1.0f, dyingRight);
 
             animationStates = new AnimationStates([idleL, walkL, fistL, kickL, hurtL, 
-                                                    idleR, walkR, fistR, kickR, hurtR, b, deadL, deadR]);
+                                                    idleR, walkR, fistR, kickR, hurtR, b, deadL, deadR, dyingL, dyingR]);
             AddAction(animationStates);
 
             // create collision object
@@ -134,6 +139,10 @@ namespace GameProject
                 {
                     animationStates.Animate(12);
                 }
+                if (state == playerState.dying)
+                {
+                    animationStates.Animate(14);
+                }
             }
             else // on right, facing left
             {
@@ -167,6 +176,10 @@ namespace GameProject
                 {
                     animationStates.Animate(11);
                 }
+                if (state == playerState.dying)
+                {
+                    animationStates.Animate(13);
+                }
             }
 
 
@@ -176,7 +189,7 @@ namespace GameProject
             onFloor = false;
 
             // debuging
-            Debug.WriteLine(state);
+            //Debug.WriteLine(state);
         }
 
         private void screenBounding()

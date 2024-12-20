@@ -51,7 +51,7 @@ public class HitboxObj : RectangleActor
             if(!(otherPlayer.state == PlayerAb.playerState.blocking) && !(otherPlayer.state == PlayerAb.playerState.death))
             {
                 //otherPlayer.changeState(PlayerAb.playerState.hurt);
-                Debug.WriteLine("Player1 hit player2 for " + damage.ToString());
+                //Debug.WriteLine("Player1 hit player2 for " + damage.ToString());
                 // hurtsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
                 AddAction(new RunAction(() => hitCheck(objB.Actor, damage)));
             } else if ((otherPlayer.state == PlayerAb.playerState.blocking) && !(otherPlayer.state == PlayerAb.playerState.death))

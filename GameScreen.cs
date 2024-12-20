@@ -267,7 +267,7 @@ namespace GameProject
         public void HitCheck(Actor target, float damage)
         {
             hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
-            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/blocked.wav");
+            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/block.wav");
             var blocked = false;
             if (damage == 0f) { blocked = true; }
             if (target is Entity player)
@@ -278,13 +278,12 @@ namespace GameProject
                     {
                         player.changeState(PlayerAb.playerState.hurt);
                         player1Hp -= damage;
-                        player1Hit = true;
-                        Debug.WriteLine("Player1 got hit!");
+                        player1Hit = true;                        
                         damage2.Str = damage.ToString("0") + "\nHIT";
+                        damage2.Color = Color.White;
                         damage2.Origin = damage2.RawSize / 2;
                         hurtsound.Play();
-                        Add(damage2);
-                        
+                        Add(damage2);                       
                     } else
                     {
                         player1Hit = true;
@@ -292,7 +291,7 @@ namespace GameProject
                         damage2.Str = "BLOCKED";
                         damage2.Color = Color.Red;
                         damage2.Origin = damage2.RawSize / 2;
-                        Add(damage2);
+                        Add(damage2);                        
                     }
                     
                 }
@@ -303,9 +302,9 @@ namespace GameProject
                         player.changeState(PlayerAb.playerState.hurt);
                         player2Hp -= damage;
                         //target.Position += new Vector2(40, 0);
-                        player2Hit = true;
-                        Debug.WriteLine("Player2 got hit!");
+                        player2Hit = true;                        
                         damage1.Str = damage.ToString("0") + "\nHIT";
+                        damage1.Color = Color.White;
                         damage1.Origin = damage1.RawSize / 2;
                         hurtsound.Play();
                         Add(damage1);
@@ -353,7 +352,7 @@ namespace GameProject
                 centerText.Str = "Player1 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player2.changeState(PlayerAb.playerState.death);
+                player2.changeState(PlayerAb.playerState.dying);
                 player1Win.Play();
                 
             } else if (player1Hp <= 0)
@@ -361,7 +360,7 @@ namespace GameProject
                 centerText.Str = "Player2 Win";
                 centerText.Origin = centerText.RawSize / 2;
                 Add(centerText);
-                player1.changeState(PlayerAb.playerState.death);
+                player1.changeState(PlayerAb.playerState.dying);
                 player2Win.Play();
             }
 
@@ -374,12 +373,14 @@ namespace GameProject
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
                     player1Win.Play();
+                    player2.changeState(PlayerAb.playerState.dying);
                 } else if (player2Hp > player1Hp) //Player2 win
                 {
                     centerText.Str = "Player2 Win";
                     centerText.Origin = centerText.RawSize / 2;
                     Add(centerText);
                     player2Win.Play();
+                    player1.changeState(PlayerAb.playerState.dying);
                 } else //Draw
                 {
                     centerText.Str = "Draw";

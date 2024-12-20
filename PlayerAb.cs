@@ -19,7 +19,7 @@ namespace GameProject
         private bool hasPlayedDashSound = false;
 
         protected float rate = 2500f;
-        public enum playerState {idle, jumping, attacking, blocking, dash, hurt, death};
+        public enum playerState {idle, jumping, attacking, blocking, dash, hurt, dying, death};
         public playerState state = playerState.idle;
 
         public Keys jumpKey, attKey;
@@ -156,6 +156,12 @@ namespace GameProject
                     if(stateTimer > 0.6f)
                     {
                         changeState(playerState.idle);
+                    }
+                    break;
+                case playerState.dying:
+                    if (stateTimer > 0.6f)
+                    {
+                        changeState(playerState.death);
                     }
                     break;
                 case playerState.death:

@@ -78,7 +78,8 @@ namespace GameProject
             var dyingR = new Animation(this, 0.5f, dyingRight);
 
             animationStates = new AnimationStates([idleL, walkL, fistL, kickL, hurtL, 
-                                                    idleR, walkR, fistR, kickR, hurtR, b, deadL, deadR, dyingL, dyingR]);
+                                                    idleR, walkR, fistR, kickR, hurtR, b, 
+                                                    deadL, deadR, dyingL, dyingR]);
             AddAction(animationStates);
 
             // create collision object
@@ -127,7 +128,8 @@ namespace GameProject
                 }
                 if(state == playerState.dash)
                 {
-
+                    var dash = new Dash(this, direction);
+                    // Add(dash);
                 }
                 if(state == playerState.blocking)
                 {
@@ -144,6 +146,13 @@ namespace GameProject
                 if (state == playerState.dying)
                 {
                     animationStates.Animate(14);
+                }
+                if(state == playerState.kicking)
+                {
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(33, 26, 15, 12),
+                                                collisionGroup, 0.15f, hitCheck, 15f);
+                    Add(hitbox);
+                    animationStates.Animate(8);
                 }
             }
             else // on right, facing left
@@ -164,7 +173,8 @@ namespace GameProject
                 }
                 if(state == playerState.dash)
                 {
-
+                    var dash = new Dash(this, direction);
+                    // Add(dash);
                 }
                 if(state == playerState.blocking)
                 {
@@ -181,6 +191,13 @@ namespace GameProject
                 if (state == playerState.dying)
                 {
                     animationStates.Animate(13);
+                }
+                if(state == playerState.kicking)
+                {
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(3, 26, 15, 12),
+                                                collisionGroup, 0.15f, hitCheck, 15f);
+                    Add(hitbox);
+                    animationStates.Animate(3);
                 }
             }
 

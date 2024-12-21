@@ -52,6 +52,7 @@ namespace GameProject
         {
             if(state == playerState.dash)
                 return;
+            this.playerDirection = direction;
             vX =  direction.X * speed;
             vY +=  direction.Y;
         }

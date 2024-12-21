@@ -26,11 +26,11 @@ namespace GameProject
         protected override void LoadContent()
         {
             //BGM Music
-            bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
-            bgmInstance = bgmsong.CreateInstance();
-            bgmInstance.IsLooped = true;
-            bgmInstance.Volume = 0.5f;
-            bgmInstance.Play();
+            //bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
+            //bgmInstance = bgmsong.CreateInstance();
+            //bgmInstance.IsLooped = true;
+            //bgmInstance.Volume = 0.5f;
+            //bgmInstance.Play();
 
             menuScreen = new MenuScreen(ScreenSize, ExitNotifier);
             All.Add(menuScreen);

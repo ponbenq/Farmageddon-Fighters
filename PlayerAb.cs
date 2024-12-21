@@ -3,7 +3,6 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework.Input;
 using System.Data;
 using System.Diagnostics;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -76,13 +75,12 @@ namespace GameProject
             switch(state)
             {
                 case playerState.idle:
-                    if (onFloor)
+                    if(onFloor)
                     {
                         if(inputHandler.isJumpPressed(keyInfo, playerDirection) && stateTimer > 0.2f)
                         {
                             vY -= 1050;
                             changeState(playerState.jumping);
-                            jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                         }
                     }
                     if(inputHandler.isAttackPressed(keyInfo))
@@ -110,7 +108,6 @@ namespace GameProject
                     {
                         vY -= 550;
                         changeState(playerState.idle);
-                        jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                     }
                     if (onFloor)
                         changeState(playerState.idle);

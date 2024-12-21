@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace GameProject;
 
-public class Player2 : PlayerAb
+public class Player2 : PlayerAb 
 {
     Animation animation;
     Vector2 screenSize;
@@ -26,7 +26,7 @@ public class Player2 : PlayerAb
 
         var texture = TextureCache.Get("B_witch_idle.png");
         var region2d = RegionCutter.Cut(texture, size);
-        var selector = RegionSelector.Select(region2d, start: 0, count: 6);
+        var selector = RegionSelector.Select(region2d, start:0 , count:6);
         animation = new Animation(sprite, 1.0f, selector);
         sprite.AddAction(animation);
 
@@ -46,13 +46,13 @@ public class Player2 : PlayerAb
         //base class perform
         applyFall(deltaTime);
         applyDirection(DirectionWASD.Direction, 500);
-
-        if (Position.X > screenSize.X || Position.X + RawRect.Width < 0)
+        
+        if(Position.X > screenSize.X || Position.X + RawRect.Width < 0)
         {
             var pos = new Vector2((screenSize.X / 2 - ((size.X * Scale.X) / 2)) + 150, screenSize.Y - (100 + (size.Y * Scale.Y)));
             Position = pos;
         }
-        if (state == playerState.attacking)
+        if(state == playerState.attacking)
         {
             var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(35, 15, 20, 10), 2, 0.15f, hitCheck, 0f);
             Add(hitbox);

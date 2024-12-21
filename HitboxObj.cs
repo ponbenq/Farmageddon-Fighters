@@ -2,7 +2,6 @@ using ThanaNita.MonoGameTnt;
 using System;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject;
 
@@ -14,8 +13,7 @@ public class HitboxObj : RectangleActor
     private float spanTime;
     HitCheck hitCheck;
     private float damage;
-    private SoundEffect hurtsound;
-    public HitboxObj(Vector2 position, RectF rect, int groupCode, float spanTime, HitCheck hitCheck, float damage) : base(Color.Transparent, rect)// new RectF(30, 15, 15, 5))
+    public HitboxObj(Vector2 position, RectF rect, int groupCode, float spanTime, HitCheck hitCheck, float damage): base(Color.Transparent, rect)// new RectF(30, 15, 15, 5))
     {
         this.position = position;
         this.rect = rect;
@@ -36,7 +34,7 @@ public class HitboxObj : RectangleActor
     {
         base.Act(deltaTime);
         time += deltaTime;
-        if (time >= spanTime)
+        if(time >= spanTime)
             this.Detach();
     }
     public void OnCollide(CollisionObj objB, CollideData data)

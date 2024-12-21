@@ -1,51 +1,57 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using ThanaNita.MonoGameTnt;
 
-public class Background : SpriteActor
+namespace GameProject
 {
-    private float scrollSpeed = 40f; 
-    private float offsetX = 0f;       
-    private Texture2D texture;        
-    private float textureWidth;        
-    private float maxOffset;
-
-    public Background(RectF rect, Vector2 screenSize)
+    internal class Background : SpriteActor
     {
-        texture = TextureCache.Get("Resources/Images/skybg.jpg");
+        private float scrollSpeed;
+        private Texture2D texture;
+        private Vector2 startPosition;
+        private Vector2 screenSize;
 
-        float scaleX = screenSize.X / texture.Width;
-        float scaleY = screenSize.Y / texture.Height;
-        float scale = Math.Max(scaleX, scaleY); 
+        public Background(string file, Vector2 screenSize, Vector2 startPosition, float scrollSpeed)
+        {
+            this.scrollSpeed = scrollSpeed;
+            this.screenSize = screenSize;
+            this.startPosition = startPosition;
 
-        SetTextureRegion(new TextureRegion(texture, new RectF(0, 0, texture.Width, texture.Height)));
+            texture = TextureCache.Get(file);
 
-        Scale = new Vector2(scale, scale);
-        Position = new Vector2(rect.Position.X, rect.Position.Y - 50); 
+            float scaleX = screenSize.X / texture.Width;
+            float scaleY = screenSize.Y / texture.Height;
+            float scale = Math.Max(scaleX, scaleY);
 
-        textureWidth = texture.Width * scale; 
-        maxOffset = textureWidth * 0.1f; 
+            Position = startPosition;
+            SetTextureRegion(new TextureRegion(texture, new RectF(0, 0, texture.Width, texture.Height)));
+            Scale = new Vector2(scale, scale);
+        }
+
+        public override void Act(float deltaTime)
+        {
+            var velocity = new Vector2(scrollSpeed, 0); 
+            Position += velocity * deltaTime;
+
+            if (Position.X >= GetTextureWidth())
+            {
+                Position = new Vector2(Position.X - GetTextureWidth() * 2, Position.Y);
+            }
+
+            base.Act(deltaTime);
+        }
+
+        public float GetTextureWidth()
+        {
+            return texture.Width * Scale.X;
+        }
     }
 
 
-    public override void Act(float deltaTime)
-    {
-        base.Act(deltaTime);
 
-        offsetX += scrollSpeed * deltaTime;
-
-        if (offsetX >= maxOffset)
-        {
-            offsetX = maxOffset;  
-            scrollSpeed = -scrollSpeed; 
-        }
-        else if (offsetX <= 0)
-        {
-            offsetX = 0;  
-            scrollSpeed = -scrollSpeed; 
-        }
-
-        Position = new Vector2(-offsetX, Position.Y);
-    }
 }

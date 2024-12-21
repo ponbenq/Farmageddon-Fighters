@@ -10,18 +10,15 @@ namespace GameProject
 {
     public class Avatar : SpriteActor
     {
-        Vector2 screenSize;
         Vector2 size;
         RectF nRect;
         public Avatar(int i)
         {
-            size = new Vector2(240, 240);
-            var sprite = this;
-            this.screenSize = new Vector2(1920, 1080);
+            size = new Vector2(50, 50);
+            var sprite = this;            
             Origin = RawSize / 2;
-            Scale = new Vector2(1,1);
-            var texture = TextureCache.Get("Resources/Images/Characters.png");
-            var region = new TextureRegion(texture, new RectF(i * 120, 0, 120, 120));
+            var texture = TextureCache.Get("Resources/sprite/characterTiles.png");
+            var region = new TextureRegion(texture, new RectF(i * 50, 0, 50, 50));
             SetTextureRegion(region);
         }
     }

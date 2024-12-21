@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Screens;
@@ -8,14 +9,31 @@ namespace GameProject
 {
     public class Game1 : Game2D
     {
-        Actor menuScreen;
-        Actor characterSelectScreen, gameScreen;
+        Actor menuScreen, characterSelectScreen, gameScreen;
+        private SoundEffect bgmsong;
+        private SoundEffectInstance bgmInstance;
+
+        public Game1()
+        {
+            BackgroundColor = Color.DarkGray;
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+        }
+
         protected override void LoadContent()
         {
+            //BGM Music
+            bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
+            bgmInstance = bgmsong.CreateInstance();
+            bgmInstance.IsLooped = true;
+            bgmInstance.Volume = 0.5f;
+            bgmInstance.Play();
+
             menuScreen = new MenuScreen(ScreenSize, ExitNotifier);
             All.Add(menuScreen);
-            
-            // TODO: use this.Content to load your game content here
         }
 
         private void ExitNotifier(Actor actor, int code) 
@@ -37,13 +55,18 @@ namespace GameProject
                 }
             }
         }
-        private void GameStart(Actor player1Char, Actor player2Char)
+        private void GameStart(string player1Sprite, string player2Sprite)
         {
             CollisionDetectionUnit.AddDetector(1, 2);
             CollisionDetectionUnit.AddDetector(1, 3);
+            CollisionDetectionUnit.AddDetector(2, 3);
+            CollisionDetectionUnit.AddDetector(2, 4);
             characterSelectScreen.Detach();
-            //gameScreen = new GameScreen(ScreenSize, player1Char, player2Char);    
-
+            var player1 = new Entity(ScreenSize, new Vector2(100, 100), player1Sprite,
+                                1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K), 1);
+            var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), player2Sprite,
+                                    2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F), 2);
+            gameScreen = new GameScreen(ScreenSize, player1, player2);
             All.Add(gameScreen);
         }
     }

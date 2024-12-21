@@ -17,29 +17,32 @@ namespace GameProject
         Vector2 tileSize;
         GameStart gameStart;
         Button startButton;
-        Actor player1Char, player2Char = new Actor();
+        string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected = false;
 
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
             this.gameStart = gameStart;
-            tileSize = new Vector2(120, 120);
+            tileSize = new Vector2(200, 200);
 
             PrepareTileSet();
-            var tileArray = new int[2, 3] {
-                {0, 1, 2},
-                {2, 1, 0}
+            var tileArray = new int[1, 4] {
+                {0, 1, 2, 3}
             };
             tileMap = new TileMap(tileSize, tileArray, CreateTile);
-            var visual = new Actor() { Position = screenSize / 2.5f };
+            //tileMap.Origin = tileMap.RawSize / 2;
+            //tileMap.Position = screenSize / 2;
+            var visual = new Actor();
             visual.Add(tileMap);
 
             player1 = new PlayerSelect(0) { Position = tileSize / 2 };
             player2 = new PlayerSelect(1) { Position = tileSize / 2 };
             visual.Add(player1);
             visual.Add(player2);
-            this.Add(visual);
+            visual.Origin = visual.RawSize / 2;
+            visual.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2);
+            Add(visual);
 
             startButton = new Button("Simvoni.ttf", 50, Color.Brown, "Start", new Vector2(300, 100));
             startButton.Position = new Vector2(screenSize.X / 2.5f, screenSize.Y / 2 + 200);
@@ -54,13 +57,13 @@ namespace GameProject
             var keyInfo = GlobalKeyboardInfo.Value;
             if (keyInfo.IsKeyPressed(Keys.Enter))
             {
-                player1Char = GetCharacter(player1);
+                player1Sprite = GetSprite(player1);
                 player1.Detach();
                 player1Selected = true;
             }
             if (keyInfo.IsKeyPressed(Keys.Space))
             {
-                player2Char = GetCharacter(player2);
+                player2Sprite = GetSprite(player2);
                 player2.Detach();
                 player2Selected = true;
             }
@@ -74,33 +77,21 @@ namespace GameProject
         public void GameStart(GenericButton button)
         {
             startButton.Detach();
-            AddAction(new RunAction(() => gameStart(player1Char, player2Char)));
+            AddAction(new RunAction(() => gameStart(player1Sprite, player2Sprite)));
         }
 
-        public Actor GetCharacter(PlayerSelect player)
+        public string GetSprite(PlayerSelect player)
         {
-            var character = new Actor();
-
+            var spritePath = "";
             Vector2i index = tileMap.CalcIndex(player.Position, new Vector2(0, 0));
             int tileCode = tileMap.GetTileCode(index);
-            switch (tileCode) //Character by index
-            {
-                case 0:
-                    //character = new Player(new Vector2(1920, 1080));
-                    break;
-                case 1:
-                    //character = new Player2(new Vector2(1920, 1080));
-                    break;
-                default:
-                    //character = new Girl();
-                    break;
-            }
-            return character;
+            spritePath = Character.GetSpritePath(tileCode);
+            return spritePath;
         }
         private void PrepareTileSet()
         {
-            var texture = TextureCache.Get("Resources/Images/Characters.png");
-            var tiles2d = RegionCutter.Cut(texture, new Vector2(120, 120), countX: 3, countY: 1);
+            var texture = TextureCache.Get("Resources/sprite/characterTiles.png");
+            var tiles2d = RegionCutter.Cut(texture, new Vector2(50, 50), countX: 4, countY: 1);
             tiles = RegionSelector.SelectAll(tiles2d);
         }
 
@@ -108,7 +99,7 @@ namespace GameProject
         {
             var sprite = new SpriteActor(tiles[tileCode]);
             sprite.Origin = sprite.RawSize / 2;
-            sprite.Scale = new Vector2(1, 1);
+            sprite.Scale = new Vector2(4, 4);
             return sprite;
         }
 

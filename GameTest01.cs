@@ -40,7 +40,7 @@ public class GameTest01 : Game2D
                                 1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K), 1);
         var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), Character.GetSpritePath(1),
                                 2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys. Space, Keys.F), 2);
-        All.Add(new GameScreen(ScreenSize, player1, player2));
+        All.Add(new GameScreen(ScreenSize, player1, player2, null));
         //All.Add(new Floor(new RectF(0, ScreenSize.Y - 150, 1000, 30)));
         //All.Add(new PlayerHolder1(ScreenSize));
         //All.Add(new Player(ScreenSize));

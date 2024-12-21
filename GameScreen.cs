@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Game12;
 
 namespace GameProject
 {
@@ -18,11 +19,12 @@ namespace GameProject
         PlayerAb player1, player2;
         ProgressBar player1HpBar1, player1HpBar2, player2HpBar1, player2HpBar2;
         int countdown = 90, start;
-        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp, startCountdownTemp;
+        float countdownTemp, hpTemp1, hpTemp2, hitDelay1, hitDelay2, setupTimeTemp, startCountdownTemp, endTime;
         Text countdownText, damage1, damage2, centerText;
         bool player1Hit, player2Hit, fightSfxPlayed;
         Avatar avatar1, avatar2;
         private SoundEffect hurtsound;
+        ExitNotifier exitNotifier;
 
         //Constants
         const float setupTime = 4f;
@@ -36,9 +38,13 @@ namespace GameProject
         //State
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
-        public GameScreen(Vector2 screenSize, Entity player1, Entity player2)
+        public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier)
         {
+            this.exitNotifier = exitNotifier;
+
+            //Background
             Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
+
             //Floor
             Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50)));
             this.player1 = player1;
@@ -263,7 +269,16 @@ namespace GameProject
                         AddAction(new ColorAction(2f, color0, avatar2));
                         break;
                 }                
-            }                                    
+            }   
+            
+            if (state == gameStates.End)
+            {
+                endTime += deltaTime;
+                if (endTime >= 4f)
+                {
+                    AddAction(new RunAction(() => exitNotifier(this, 0)));
+                }
+            }
         }   
 
         public void HitCheck(Actor target, float damage)

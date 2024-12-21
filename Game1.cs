@@ -54,6 +54,11 @@ namespace GameProject
                         return;
                 }
             }
+            if (actor == gameScreen)
+            {
+                gameScreen.Detach();
+                All.Add(menuScreen);
+            }
         }
         private void GameStart(string player1Sprite, string player2Sprite)
         {
@@ -66,7 +71,7 @@ namespace GameProject
                                 1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K), 1);
             var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), player2Sprite,
                                     2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F), 2);
-            gameScreen = new GameScreen(ScreenSize, player1, player2);
+            gameScreen = new GameScreen(ScreenSize, player1, player2, ExitNotifier);
             All.Add(gameScreen);
         }
     }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -19,7 +20,7 @@ namespace GameProject
         Button startButton;
         string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected = false;
-
+        SoundEffect select, move;
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
@@ -47,6 +48,9 @@ namespace GameProject
             startButton = new Button("Simvoni.ttf", 50, Color.Brown, "Start", new Vector2(300, 100));
             startButton.Position = new Vector2(screenSize.X / 2.5f, screenSize.Y / 2 + 200);
             startButton.ButtonClicked += GameStart;
+
+            select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
+            move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
         }
 
         public override void Act(float deltaTime)
@@ -60,12 +64,14 @@ namespace GameProject
                 player1Sprite = GetSprite(player1);
                 player1.Detach();
                 player1Selected = true;
+                select.Play();
             }
             if (keyInfo.IsKeyPressed(Keys.Space))
             {
                 player2Sprite = GetSprite(player2);
                 player2.Detach();
                 player2Selected = true;
+                select.Play();
             }
 
             if (player1Selected & player2Selected)
@@ -142,7 +148,7 @@ namespace GameProject
                 return;
             }
             player2.Position += player2Direction * tileMap.TileSize;
-
+            move.Play();
         }
         private bool IsAllowMove(PlayerSelect player, Vector2 direction)
         {

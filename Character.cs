@@ -19,5 +19,10 @@ namespace GameProject
         {
             return spritePaths[charIndex];
         }
+
+        public static int GetCharacterIndex(string spritePath)
+        {
+            return spritePaths.IndexOf(spritePath);
+        }
     }
 }

@@ -90,12 +90,12 @@ namespace GameProject
             Add(countdownText);
 
             //Avatar
-            avatar1 = new Avatar(0);
+            avatar1 = new Avatar(player1.spritePath);
             avatar1.Origin = avatar1.RawSize / 2;
             avatar1.Scale = new Vector2(-4,4);
             avatar1.Position = new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f);
             Add(avatar1);
-            avatar2 = new Avatar(1);
+            avatar2 = new Avatar(player2.spritePath);
             avatar2.Origin = avatar2.RawSize / 2;
             avatar2.Scale = new Vector2(4, 4);
             avatar2.Position = new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f);

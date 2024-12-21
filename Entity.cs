@@ -19,6 +19,7 @@ namespace GameProject
         public bool isFacingRight = false;
         private int collisionGroup;
         public int playerNum;
+        public string spritePath;
 
         public Entity(Vector2 screenSize, Vector2 position, String spritePath, int collisionGroup, KeyScheme keyScheme, int playerNum)
         {
@@ -28,6 +29,7 @@ namespace GameProject
             Scale = new Vector2(5, 5);
             Position = position;
             this.screenSize = screenSize;
+            this.spritePath = spritePath;
 
             // init
             isFacingRight = playerNum == 2? false: true;

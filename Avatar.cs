@@ -18,7 +18,7 @@ namespace GameProject
             var sprite = this;            
             Origin = RawSize / 2;
             int index = Character.GetCharacterIndex(spritePath);            
-            var texture = TextureCache.Get("Resources/sprite/characterTiles.png");
+            var texture = TextureCache.Get("Resources/sprite/characterAvatars.png");
             var region = new TextureRegion(texture, new RectF(index * 50, 0, 50, 50));
             SetTextureRegion(region);
         }

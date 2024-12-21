@@ -44,13 +44,13 @@ namespace GameProject
             var walkLeft = RegionSelector.Select(region, start: 8, count: 6);
             var fistLeft = RegionSelector.Select(region, start: 16, count:8);
             var kickLeft = RegionSelector.Select(region, start: 24, count: 8);
-            var hurtLeft = RegionSelector.Select(region, start:32, count: 4);
+            var hurtLeft = RegionSelector.Select(region, start:32, count: 3);
 
             var idleRight = RegionSelector.Select(region, start: 40, count: 4);
             var walkRight = RegionSelector.Select(region, start: 48, count: 6);
             var fistRight = RegionSelector.Select(region, start: 56, count: 8);
             var kickRight = RegionSelector.Select(region, start: 64, count: 8);
-            var hurtRight = RegionSelector.Select(region, start: 72, count:4);
+            var hurtRight = RegionSelector.Select(region, start: 72, count: 3);
 
             var block = RegionSelector.Select(region, start: 80, count: 2);
             var deadLeft = RegionSelector.Select(region, start: 35, count:1);
@@ -59,23 +59,23 @@ namespace GameProject
             var dyingLeft = RegionSelector.Select(region, start:32, count: 4);
             var dyingRight = RegionSelector.Select(region, start: 72, count: 4);
 
-            var idleL = new Animation(this, 1.0f, idleLeft);
-            var walkL = new Animation(this, 1.0f, walkLeft);
-            var fistL = new Animation(this, 1.0f, fistLeft);
-            var kickL = new Animation(this, 1.0f, kickLeft);
-            var hurtL = new Animation(this, 1.0f, hurtLeft);
+            var idleL = new Animation(this, 0.5f, idleLeft);
+            var walkL = new Animation(this, 0.8f, walkLeft);
+            var fistL = new Animation(this, 0.4f, fistLeft);
+            var kickL = new Animation(this, 0.4f, kickLeft);
+            var hurtL = new Animation(this, 0.3f, hurtLeft);
             
-            var idleR = new Animation(this, 1.0f, idleRight);
-            var walkR = new Animation(this, 1.0f, walkRight);
-            var fistR = new Animation(this, 1.0f, fistRight);
-            var kickR = new Animation(this, 1.0f, kickRight);
-            var hurtR = new Animation(this, 1.0f, hurtRight);
+            var idleR = new Animation(this, 0.5f, idleRight);
+            var walkR = new Animation(this, 0.8f, walkRight);
+            var fistR = new Animation(this, 0.4f, fistRight);
+            var kickR = new Animation(this, 0.4f, kickRight);
+            var hurtR = new Animation(this, 0.3f, hurtRight);
 
-            var b = new Animation(this, 1.0f, block);
-            var deadL = new Animation(this, 1.0f, deadLeft);
-            var deadR = new Animation(this, 1.0f, deadRight);
-            var dyingL = new Animation(this, 1.0f, dyingLeft);
-            var dyingR = new Animation(this, 1.0f, dyingRight);
+            var b = new Animation(this, 0.5f, block);
+            var deadL = new Animation(this, 0.5f, deadLeft);
+            var deadR = new Animation(this, 0.5f, deadRight);
+            var dyingL = new Animation(this, 0.5f, dyingLeft);
+            var dyingR = new Animation(this, 0.5f, dyingRight);
 
             animationStates = new AnimationStates([idleL, walkL, fistL, kickL, hurtL, 
                                                     idleR, walkR, fistR, kickR, hurtR, b, 

@@ -11,8 +11,9 @@ namespace GameProject
 
         public Keys jump {get; set;}
         public Keys attack {get; set;}
+        public Keys kick {get; set;}
 
-        public KeyScheme(Keys up, Keys down, Keys right, Keys left, Keys jump, Keys attack)
+        public KeyScheme(Keys up, Keys down, Keys right, Keys left, Keys jump, Keys attack, Keys kick)
         {
             this.up = up;
             this.down = down;
@@ -20,6 +21,7 @@ namespace GameProject
             this.left = left;
             this.jump = jump;
             this.attack = attack;
+            this.kick = kick;
         }
     }
 }

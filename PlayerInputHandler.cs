@@ -34,6 +34,10 @@ namespace GameProject
         {
             return keys.IsKeyPressed(keyScheme.attack);
         }
+        public bool isKickPressed(KeyboardInfo keys)
+        {
+            return keys.IsKeyPressed(keyScheme.kick);
+        }
         public bool isBlockingPressed(KeyboardInfo keys)
         {
             return keys.IsKeyDown(keyScheme.down);

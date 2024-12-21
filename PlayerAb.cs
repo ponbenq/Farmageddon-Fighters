@@ -19,7 +19,7 @@ namespace GameProject
         private bool hasPlayedDashSound = false;
 
         protected float rate = 2500f;
-        public enum playerState {idle, jumping, attacking, blocking, dash, hurt, dying, death};
+        public enum playerState {idle, jumping, attacking, kicking, blocking, dash, hurt, dying, death};
         public playerState state = playerState.idle;
 
         public Keys jumpKey, attKey;
@@ -87,6 +87,8 @@ namespace GameProject
                     }
                     if(inputHandler.isAttackPressed(keyInfo))
                         changeState(playerState.attacking);
+                    if(inputHandler.isKickPressed(keyInfo))
+                        changeState(playerState.kicking);
                     if(inputHandler.isDoublePressed(keyScheme.right, pressedTime) && inputHandler.getDirection(keyInfo).X == 1 && stateTimer > 0.2f)
                     {
                         vX = 0;
@@ -122,6 +124,12 @@ namespace GameProject
                         changeState(playerState.idle);
                     }
                     break;
+                case playerState.kicking:
+                    if(stateTimer > 0.4f)
+                    {
+                        changeState(playerState.idle);
+                    }
+                    break;
                 case playerState.dash:
                     dashsound = SoundEffect.FromFile("Resources/soundeffect/dash2.wav");
                     var speed = 200f;
@@ -147,7 +155,7 @@ namespace GameProject
                     }
                     break;
                 case playerState.blocking:
-                    if(!inputHandler.isBlockingPressed(keyInfo) && stateTimer > 0.17f)
+                    if(!inputHandler.isBlockingPressed(keyInfo))
                     {
                         changeState(playerState.idle);
                     }

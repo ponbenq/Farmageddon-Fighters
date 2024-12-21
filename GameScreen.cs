@@ -8,7 +8,6 @@ using ThanaNita.MonoGameTnt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GameProject
 {
@@ -22,7 +21,6 @@ namespace GameProject
         Text countdownText, damage1, damage2, centerText;
         bool player1Hit, player2Hit, fightSfxPlayed;
         Avatar avatar1, avatar2;
-        private SoundEffect hurtsound;
 
         //Constants
         const float setupTime = 4f;
@@ -266,58 +264,26 @@ namespace GameProject
 
         public void HitCheck(Actor target, float damage)
         {
-            hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
-            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/blocked.wav");
-            var blocked = false;
-            if (damage == 0f) { blocked = true; }
             if (target is Entity player)
             {
                 if (!player1Hit && player.playerNum == 1)
                 {
-                    if (!blocked)
-                    {
-                        player.changeState(PlayerAb.playerState.hurt);
-                        player1Hp -= damage;
-                        player1Hit = true;
-                        Debug.WriteLine("Player1 got hit!");
-                        damage2.Str = damage.ToString("0") + "\nHIT";
-                        damage2.Origin = damage2.RawSize / 2;
-                        hurtsound.Play();
-                        Add(damage2);
-                        
-                    } else
-                    {
-                        player1Hit = true;
-                        blockSfx.Play();
-                        damage2.Str = "BLOCKED";
-                        damage2.Color = Color.Red;
-                        damage2.Origin = damage2.RawSize / 2;
-                        Add(damage2);
-                    }
-                    
+                    player1Hp -= damage;
+                    player1Hit = true;
+                    Debug.WriteLine("Player1 got hit!");
+                    damage2.Str = damage.ToString("0") + "\nHIT";
+                    damage2.Origin = damage2.RawSize / 2;
+                    Add(damage2);
                 }
                 if(!player2Hit && player.playerNum == 2)
                 {
-                    if (!blocked)
-                    {
-                        player.changeState(PlayerAb.playerState.hurt);
-                        player2Hp -= damage;
-                        //target.Position += new Vector2(40, 0);
-                        player2Hit = true;
-                        Debug.WriteLine("Player2 got hit!");
-                        damage1.Str = damage.ToString("0") + "\nHIT";
-                        damage1.Origin = damage1.RawSize / 2;
-                        hurtsound.Play();
-                        Add(damage1);
-                    } else
-                    {
-                        player2Hit = true;
-                        blockSfx.Play();
-                        damage1.Str = "BLOCKED";
-                        damage1.Color = Color.Red;
-                        damage1.Origin = damage2.RawSize / 2;
-                        Add(damage1);
-                    }                    
+                    player2Hp -= damage;
+                    //target.Position += new Vector2(40, 0);
+                    player2Hit = true;
+                    Debug.WriteLine("Player2 got hit!");
+                    damage1.Str = damage.ToString("0") + "\nHIT";
+                    damage1.Origin = damage1.RawSize / 2;
+                    Add(damage1);
                 }
             }
         }

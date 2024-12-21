@@ -44,15 +44,6 @@ namespace GameProject
             exitButton.Origin = btnSize / 2;
             exitButton.ButtonClicked += GameExit;
             this.Add(exitButton);
-
-
-            var region = new TextureRegion(TextureCache.Get("items.jpg"), new RectF(0, 0, 300, 300));
-            var imageButton = new ImageButton(region);
-            imageButton.Position = new Vector2(50, 50);
-            imageButton.PressedColor = Color.Pink;
-            imageButton.OutlineWidth = 0;
-            imageButton.SetButtonText("Tangerine-Regular.ttf", 70, Color.Blue, "Image Button", new Vector2(0, 100));
-            this.Add(imageButton);
         }
 
         public override void Act(float deltaTime)

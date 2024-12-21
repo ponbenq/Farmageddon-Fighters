@@ -284,7 +284,7 @@ namespace GameProject
         public void HitCheck(Actor target, float damage)
         {
             hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
-            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/blocked.wav");
+            var blockSfx = SoundEffect.FromFile("Resources/soundeffect/block.wav");
             var blocked = false;
             if (damage == 0f) { blocked = true; }
             if (target is Entity player)

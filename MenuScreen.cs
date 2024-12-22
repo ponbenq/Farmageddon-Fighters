@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace GameProject
     public class MenuScreen : Actor
     {
         ExitNotifier exitNotifier;
+        SoundEffect clicksound;
         
         public MenuScreen(Vector2 screenSize, ExitNotifier exitNotifier)
         {
@@ -50,6 +52,7 @@ namespace GameProject
             startButton.Origin = btnRegion.Size / 2;
             startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65,Color.DimGray, "Start");
             startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            startButton.ButtonClicked += Playsoundclick;
             startButton.ButtonClicked += GameStart;
             this.Add(startButton);
 
@@ -62,6 +65,12 @@ namespace GameProject
             exitButton.ButtonClicked += GameExit;
             this.Add(exitButton);
 
+        }
+
+        private void Playsoundclick(GenericButton button)
+        {
+            clicksound = SoundEffect.FromFile("Resources/soundeffect/click.wav");
+            clicksound.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
         }
 
         public override void Act(float deltaTime)

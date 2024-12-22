@@ -84,8 +84,8 @@ namespace GameProject
             startButton.Origin = btnRegion.Size / 2;
             startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Start");
             startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            startButton.ButtonClicked += GameStart;
             startButton.ButtonClicked += Playclicksound;
+            startButton.ButtonClicked += GameStart;
 
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");

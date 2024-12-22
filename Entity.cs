@@ -121,7 +121,7 @@ namespace GameProject
                 }
                 if(state == playerState.attacking)
                 {
-                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(30, 24, 15, 12),
+                    var hitbox = new HitboxObj(new Vector2(0, 0), new RectF(36, 24, 15, 12),
                                                  collisionGroup, 0.15f, hitCheck, 2f);
                     Add(hitbox);
                     animationStates.Animate(7);
@@ -149,7 +149,7 @@ namespace GameProject
                 }
                 if(state == playerState.kicking)
                 {
-                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(33, 26, 15, 12),
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(35, 26, 15, 12),
                                                 collisionGroup, 0.15f, hitCheck, 15f);
                     Add(hitbox);
                     animationStates.Animate(8);
@@ -194,7 +194,7 @@ namespace GameProject
                 }
                 if(state == playerState.kicking)
                 {
-                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(3, 26, 15, 12),
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(0, 26, 15, 12),
                                                 collisionGroup, 0.15f, hitCheck, 15f);
                     Add(hitbox);
                     animationStates.Animate(3);

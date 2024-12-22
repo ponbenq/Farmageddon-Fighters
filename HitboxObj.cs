@@ -27,7 +27,7 @@ public class HitboxObj : RectangleActor
 
         var collistionObj = CollisionObj.CreateWithRect(this, groupCode);
         collistionObj.OnCollide = OnCollide;
-        collistionObj.DebugDraw = true;
+        collistionObj.DebugDraw = false;
         Add(collistionObj);
     }
 

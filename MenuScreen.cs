@@ -79,6 +79,8 @@ namespace GameProject
             exitButton.ButtonClicked += GameExit;
             Add(exitButton);
 
+            var gb_collectors = new TextureRegion(TextureCache.Get("Resources/img/logo_gb.png"));
+            Add(new SpriteActor(gb_collectors) { Position = new Vector2(screenSize.X - 300, screenSize.Y - 130) , Scale = new Vector2(0.7f, 0.7f)});
         }
 
         private void Playsoundclick(GenericButton button)

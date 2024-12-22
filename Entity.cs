@@ -84,7 +84,7 @@ namespace GameProject
 
             // create collision object
             var collisionObj = CollisionObj.CreateWithRect(this, RawRect.CreateAdjusted(0.6f, 1), collisionGroup);
-            collisionObj.DebugDraw = true;
+            collisionObj.DebugDraw = false;
             collisionObj.OnCollide = OnCollide;
             Add(collisionObj);
 

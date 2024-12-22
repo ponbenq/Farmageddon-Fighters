@@ -26,6 +26,7 @@ namespace GameProject
         private SoundEffect hurtsound;
         ExitNotifier exitNotifier;
 
+        GameManager manager;
         //Constants
         const float setupTime = 4f;
         const float hpDepleteDelay = 2.5f;
@@ -129,6 +130,8 @@ namespace GameProject
             Add(new CrossHair(player2HpBar1.Position));
             Add(new CrossHair(new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f))); //player1 avatar
             Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
+
+            manager = new GameManager();
         }
 
         public void checkPlayerCross(Entity player1, Entity player2)
@@ -147,8 +150,12 @@ namespace GameProject
         }
         public override void Act(float deltaTime)
         {
-            base.Act(deltaTime);
             var keyInfo = GlobalKeyboardInfo.Value;
+            if(keyInfo.IsKeyPressed(Keys.V))
+                manager.TogglePause();
+            if(manager.isPaused)
+                return;
+            base.Act(deltaTime);
             StartCountdown(deltaTime);
 
             // cross checking

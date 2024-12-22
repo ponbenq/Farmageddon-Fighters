@@ -39,9 +39,11 @@ namespace GameProject
         //State
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
+        private Vector2 screenSize;
         public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier)
         {
             this.exitNotifier = exitNotifier;
+            this.screenSize = screenSize;
 
             //Background
             Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
@@ -152,7 +154,14 @@ namespace GameProject
         {
             var keyInfo = GlobalKeyboardInfo.Value;
             if(keyInfo.IsKeyPressed(Keys.V))
+            {
+                if(!manager.isPaused)
+                {
+                    var pauseMenu = new PauseMenu(screenSize, this);
+                    Add(pauseMenu);
+                }
                 manager.TogglePause();
+            }
             if(manager.isPaused)
                 return;
             base.Act(deltaTime);

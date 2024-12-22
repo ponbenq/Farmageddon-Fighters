@@ -14,7 +14,7 @@ namespace GameProject
     {
         public HowToPlay(Vector2 ScreenSize)
         {
-            var texture = TextureCache.Get("Resources/img/how_to_play.png");
+            var texture = TextureCache.Get("Resources/img/HowToPlay.png");
             Origin = RawSize / 2;
             Position = ScreenSize/2;
             SetTexture(texture);                    

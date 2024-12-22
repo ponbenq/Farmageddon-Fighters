@@ -20,7 +20,7 @@ namespace GameProject
         ImageButton startButton ,stageButton;
         string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected, stageSelected = false;
-        SoundEffect select, move;
+        SoundEffect select, move,click;
         string stage;
 
 
@@ -79,10 +79,18 @@ namespace GameProject
             startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Start");
             startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
             startButton.ButtonClicked += GameStart;
+            startButton.ButtonClicked += Playclicksound;
 
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
+            click = SoundEffect.FromFile("Resources/soundeffect/click.wav");
         }
+
+        private void Playclicksound(GenericButton button)
+        {
+            click.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
+        }
+
         private void AddStageButtons(Vector2 screenSize)
         {
             Vector2[] offsets = { new Vector2(-666, -200), new Vector2(-222, -200), new Vector2(222, -200), new Vector2(666, -200) };

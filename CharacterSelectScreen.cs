@@ -17,19 +17,82 @@ namespace GameProject
         PlayerSelect player1, player2;
         Vector2 tileSize;
         GameStart gameStart;
-        Button startButton;
+        ImageButton startButton;
         string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected = false;
         SoundEffect select, move;
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
+
+            //Background
+            var file = "bgmain";
+            Add(new ParallaxBackground(file, screenSize, 20f, 50f));
+
+            //Stage select
+            var stagetext = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Stage select");
+            stagetext.Origin = stagetext.RawSize / 2;
+            stagetext.Effect = FontStashSharp.FontSystemEffect.Stroked;
+            stagetext.EffectAmount = 3;
+            stagetext.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 - 400);
+            this.Add(stagetext);
+
+            /////////////////////////////////
+            // super hard-code
+            // Stage 1 Button
+            var stage1Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(0, 0, 444, 250));
+            var stage1Button = new ImageButton(stage1Region);
+            stage1Button.Position = new Vector2(screenSize.X / 2 - 666, screenSize.Y / 2 - 200);
+            stage1Button.Origin = stage1Region.Size / 2;
+            stage1Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "1");
+            stage1Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            // Add click event handler
+            this.Add(stage1Button);
+
+            // Stage 2 Button
+            var stage2Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(444, 0, 444, 250));
+            var stage2Button = new ImageButton(stage2Region);
+            stage2Button.Position = new Vector2(screenSize.X / 2 - 222, screenSize.Y / 2 - 200);
+            stage2Button.Origin = stage2Region.Size / 2;
+            stage2Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "2");
+            stage2Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            this.Add(stage2Button);
+
+            // Stage 3 Button
+            var stage3Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(888, 0, 444, 250));
+            var stage3Button = new ImageButton(stage3Region);
+            stage3Button.Position = new Vector2(screenSize.X / 2 + 222, screenSize.Y / 2 - 200);
+            stage3Button.Origin = stage3Region.Size / 2;
+            stage3Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "3");
+            stage3Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            this.Add(stage3Button);
+
+            // Stage 4 Button
+            var stage4Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(1332, 0, 444, 250));
+            var stage4Button = new ImageButton(stage4Region);
+            stage4Button.Position = new Vector2(screenSize.X / 2 + 666, screenSize.Y / 2 - 200);
+            stage4Button.Origin = stage4Region.Size / 2;
+            stage4Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "4");
+            stage4Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            this.Add(stage4Button);
+
+            /////////////////////////////////
+
+
+            //Fighter select
+            var fightertext = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Fighter select");
+            fightertext.Origin = stagetext.RawSize / 2;
+            fightertext.Effect = FontStashSharp.FontSystemEffect.Stroked;
+            fightertext.EffectAmount = 2;
+            fightertext.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2);
+            this.Add(fightertext);
+
             this.gameStart = gameStart;
-            tileSize = new Vector2(200, 200);
+            tileSize = new Vector2(224, 224);
 
             PrepareTileSet();
-            var tileArray = new int[1, 4] {
-                {0, 1, 2, 3}
+            var tileArray = new int[1, 5] {
+                {0, 1, 2, 3, 4}
             };
             tileMap = new TileMap(tileSize, tileArray, CreateTile);
             //tileMap.Origin = tileMap.RawSize / 2;
@@ -42,11 +105,16 @@ namespace GameProject
             visual.Add(player1);
             visual.Add(player2);
             visual.Origin = visual.RawSize / 2;
-            visual.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2);
+            visual.Position = new Vector2(screenSize.X / 2 -560, screenSize.Y / 2 + 50);
             Add(visual);
 
-            startButton = new Button("Simvoni.ttf", 50, Color.Brown, "Start", new Vector2(300, 100));
-            startButton.Position = new Vector2(screenSize.X / 2.5f, screenSize.Y / 2 + 200);
+            //Start button
+            var btnRegion = new TextureRegion(TextureCache.Get("Resources/img/btn.png"));
+            startButton = new ImageButton(btnRegion);
+            startButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 400);
+            startButton.Origin = btnRegion.Size / 2;
+            startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Start");
+            startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
             startButton.ButtonClicked += GameStart;
 
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
@@ -96,8 +164,8 @@ namespace GameProject
         }
         private void PrepareTileSet()
         {
-            var texture = TextureCache.Get("Resources/sprite/characterTiles.png");
-            var tiles2d = RegionCutter.Cut(texture, new Vector2(50, 50), countX: 4, countY: 1);
+            var texture = TextureCache.Get("Resources/sprite/char_frame.png");
+            var tiles2d = RegionCutter.Cut(texture, new Vector2(56, 56), countX: 5, countY: 1);
             tiles = RegionSelector.SelectAll(tiles2d);
         }
 

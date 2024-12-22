@@ -43,7 +43,7 @@ namespace GameProject
             this.exitNotifier = exitNotifier;
 
             //Background
-            Add(new Background(new RectF(Vector2.Zero, screenSize), screenSize));
+            Add(new ParallaxBackground("stage3", screenSize, 50f, 100f));
 
             //Floor
             Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50)));

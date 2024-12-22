@@ -14,7 +14,6 @@ namespace GameProject
         RectF nRect;
         public Avatar(string spritePath)
         {
-            
             var sprite = this;            
             Origin = RawSize / 2;
             int index = Character.GetCharacterIndex(spritePath);            

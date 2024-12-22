@@ -60,7 +60,7 @@ namespace GameProject
                 All.Add(menuScreen);
             }
         }
-        private void GameStart(string player1Sprite, string player2Sprite)
+        private void GameStart(string player1Sprite, string player2Sprite, string stage)
         {
             CollisionDetectionUnit.AddDetector(1, 2);
             CollisionDetectionUnit.AddDetector(1, 3);
@@ -68,10 +68,10 @@ namespace GameProject
             CollisionDetectionUnit.AddDetector(2, 4);
             characterSelectScreen.Detach();
             var player1 = new Entity(ScreenSize, new Vector2(100, 100), player1Sprite,
-                                1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K), 1);
+                                1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K, Keys.J), 1);
             var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), player2Sprite,
-                                    2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F), 2);
-            gameScreen = new GameScreen(ScreenSize, player1, player2, ExitNotifier);
+                                    2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F, Keys.G), 2);
+            gameScreen = new GameScreen(ScreenSize, player1, player2, ExitNotifier, stage);
             All.Add(gameScreen);
         }
     }

@@ -78,7 +78,8 @@ namespace GameProject
             var dyingR = new Animation(this, 0.5f, dyingRight);
 
             animationStates = new AnimationStates([idleL, walkL, fistL, kickL, hurtL, 
-                                                    idleR, walkR, fistR, kickR, hurtR, b, deadL, deadR, dyingL, dyingR]);
+                                                    idleR, walkR, fistR, kickR, hurtR, b, 
+                                                    deadL, deadR, dyingL, dyingR]);
             AddAction(animationStates);
 
             // create collision object
@@ -125,9 +126,10 @@ namespace GameProject
                     Add(hitbox);
                     animationStates.Animate(7);
                 }
-                if(state == playerState.dash)
+                if(state == playerState.dash && stateTimer < 0.01f)
                 {
-
+                    var dash = new Dash(this, direction);
+                    Add(dash);
                 }
                 if(state == playerState.blocking)
                 {
@@ -144,6 +146,13 @@ namespace GameProject
                 if (state == playerState.dying)
                 {
                     animationStates.Animate(14);
+                }
+                if(state == playerState.kicking)
+                {
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(33, 26, 15, 12),
+                                                collisionGroup, 0.15f, hitCheck, 15f);
+                    Add(hitbox);
+                    animationStates.Animate(8);
                 }
             }
             else // on right, facing left
@@ -162,9 +171,10 @@ namespace GameProject
                     Add(hitbox);
                     animationStates.Animate(2);
                 }
-                if(state == playerState.dash)
+                if(state == playerState.dash && stateTimer < 0.01f)
                 {
-
+                    var dash = new Dash(this, direction);
+                    Add(dash);
                 }
                 if(state == playerState.blocking)
                 {
@@ -182,6 +192,13 @@ namespace GameProject
                 {
                     animationStates.Animate(13);
                 }
+                if(state == playerState.kicking)
+                {
+                    var hitbox = new HitboxObj(Vector2.Zero, new RectF(3, 26, 15, 12),
+                                                collisionGroup, 0.15f, hitCheck, 15f);
+                    Add(hitbox);
+                    animationStates.Animate(3);
+                }
             }
 
 
@@ -196,15 +213,19 @@ namespace GameProject
 
         private void screenBounding()
         {
-            var buffer = 90f;
-            if(Position.X + RawRect.Width > screenSize.X - buffer)
+            var buffer = RawRect.CreateAdjusted(0.6f, 1f); // X: 10, Y: 0, Width: 30, Height: 50
+            // right
+            if(Position.X +((size.X * 3) + (buffer.X * 2) + buffer.Width) > screenSize.X)
             {
-                Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+                Debug.WriteLine(Position);
+                Position = new Vector2(screenSize.X - ((size.X * 3) + (buffer.X * 2) + buffer.Width), Position.Y);
                 vX = 0;
             }
-            if(Position.X < 0)
+            // left
+            if(Position.X + buffer.Width < 0)
             {
-                Position = new Vector2(0, Position.Y);
+                Debug.WriteLine(Position);
+                Position = new Vector2(-(buffer.Width), Position.Y);
                 vX = 0;
             }
         }

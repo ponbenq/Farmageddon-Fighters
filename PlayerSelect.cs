@@ -28,13 +28,14 @@ namespace GameProject
         {
             if (playerId == 0)
             {
-                region = new TextureRegion(TextureCache.Get("Resources/Images/Cursor.png"), new RectF(0, 0, 280, 256));
+                region = new TextureRegion(TextureCache.Get("Resources/cursor/mouse.png"), new RectF(0, 0, 23, 21));
             }
             else
             {
-                region = new TextureRegion(TextureCache.Get("Resources/Images/Cursor.png"), new RectF(280, 0, 280, 256));
+                region = new TextureRegion(TextureCache.Get("Resources/cursor/mouse.png"), new RectF(23, 0, 23, 21));
             }
             SetTextureRegion(region);
+            Scale = new Vector2(6, 6);
         }
 
 

@@ -29,7 +29,7 @@ public class GameTest01 : Game2D
         bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
         bgmInstance = bgmsong.CreateInstance();
         bgmInstance.IsLooped = true;
-        bgmInstance.Volume = 0.5f;
+        bgmInstance.Volume = 0.3f;
         bgmInstance.Play();
 
         CollisionDetectionUnit.AddDetector(1, 2);

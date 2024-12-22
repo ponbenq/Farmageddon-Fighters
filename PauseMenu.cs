@@ -56,7 +56,7 @@ namespace GameProject
         public void Main(GenericButton button)
         {
             gameManager.TogglePause();
-            AddAction(new RunAction(() => notifier(actor, 0)));
+            AddAction(new RunAction(() => notifier(actor,0)));
         }
 
     }

@@ -17,10 +17,12 @@ namespace GameProject
         PlayerSelect player1, player2;
         Vector2 tileSize;
         GameStart gameStart;
-        ImageButton startButton;
+        ImageButton startButton ,stageButton;
         string player1Sprite, player2Sprite;
-        Boolean player1Selected, player2Selected = false;
+        Boolean player1Selected, player2Selected, stageSelected = false;
         SoundEffect select, move;
+        string stage;
+
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
@@ -37,48 +39,9 @@ namespace GameProject
             stagetext.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 - 400);
             this.Add(stagetext);
 
-            /////////////////////////////////
-            // super hard-code
-            // Stage 1 Button
-            var stage1Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(0, 0, 444, 250));
-            var stage1Button = new ImageButton(stage1Region);
-            stage1Button.Position = new Vector2(screenSize.X / 2 - 666, screenSize.Y / 2 - 200);
-            stage1Button.Origin = stage1Region.Size / 2;
-            stage1Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "1");
-            stage1Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            // Add click event handler
-            this.Add(stage1Button);
-
-            // Stage 2 Button
-            var stage2Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(444, 0, 444, 250));
-            var stage2Button = new ImageButton(stage2Region);
-            stage2Button.Position = new Vector2(screenSize.X / 2 - 222, screenSize.Y / 2 - 200);
-            stage2Button.Origin = stage2Region.Size / 2;
-            stage2Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "2");
-            stage2Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            this.Add(stage2Button);
-
-            // Stage 3 Button
-            var stage3Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(888, 0, 444, 250));
-            var stage3Button = new ImageButton(stage3Region);
-            stage3Button.Position = new Vector2(screenSize.X / 2 + 222, screenSize.Y / 2 - 200);
-            stage3Button.Origin = stage3Region.Size / 2;
-            stage3Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "3");
-            stage3Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            this.Add(stage3Button);
-
-            // Stage 4 Button
-            var stage4Region = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), new RectF(1332, 0, 444, 250));
-            var stage4Button = new ImageButton(stage4Region);
-            stage4Button.Position = new Vector2(screenSize.X / 2 + 666, screenSize.Y / 2 - 200);
-            stage4Button.Origin = stage4Region.Size / 2;
-            stage4Button.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.White, "4");
-            stage4Button.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            this.Add(stage4Button);
-
-            /////////////////////////////////
-
-
+            // Stage selection buttons
+            AddStageButtons(screenSize);
+                      
             //Fighter select
             var fightertext = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Fighter select");
             fightertext.Origin = stagetext.RawSize / 2;
@@ -120,6 +83,31 @@ namespace GameProject
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
         }
+        private void AddStageButtons(Vector2 screenSize)
+        {
+            Vector2[] offsets = { new Vector2(-666, -200), new Vector2(-222, -200), new Vector2(222, -200), new Vector2(666, -200) };
+            RectF[] sprites = { new RectF(0, 0, 444, 250), new RectF(444, 0, 444, 250), new RectF(888, 0, 444, 250), new RectF(1332, 0, 444, 250) };
+
+            for (int i = 0; i < 4; i++)
+            {
+                var stageRegion = new TextureRegion(TextureCache.Get("Resources/sprite/stage_frame.png"), sprites[i]);
+                var stageButton = new ImageButton(stageRegion)
+                {
+                    Position = new Vector2(screenSize.X / 2 + offsets[i].X, screenSize.Y / 2 + offsets[i].Y),
+                    Origin = stageRegion.Size / 2
+                };
+                stageButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.SlateGray, (i + 1).ToString());
+                stageButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+                stageButton.ButtonClicked += (button) => SelectStage(((ImageButton)button).Str);
+                Add(stageButton);
+            }
+        }
+        private void SelectStage(string stageNumber)
+        {
+            stage = $"stage{stageNumber}";
+            stageSelected = true;
+        }
+
 
         public override void Act(float deltaTime)
         {
@@ -142,7 +130,7 @@ namespace GameProject
                 select.Play();
             }
 
-            if (player1Selected & player2Selected)
+            if (player1Selected & player2Selected & stageSelected)
             {
                 Add(startButton);
             }
@@ -151,7 +139,7 @@ namespace GameProject
         public void GameStart(GenericButton button)
         {
             startButton.Detach();
-            AddAction(new RunAction(() => gameStart(player1Sprite, player2Sprite)));
+            AddAction(new RunAction(() => gameStart(player1Sprite, player2Sprite, stage)));
         }
 
         public string GetSprite(PlayerSelect player)

@@ -38,12 +38,12 @@ namespace GameProject
         //State
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
-        public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier)
+        public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier, string stage)
         {
             this.exitNotifier = exitNotifier;
 
             //Background
-            Add(new ParallaxBackground("stage3", screenSize, 50f, 100f));
+            Add(new ParallaxBackground(stage, screenSize, 50f, 100f));
 
             //Floor
             Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50)));
@@ -60,21 +60,21 @@ namespace GameProject
             var player2Cursor = new Cursor(player2, 2);
 
             //HP bar
-            player1HpBar1 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Transparent, Color.DarkGreen);
+            player1HpBar1 = new ProgressBar(new Vector2(550, 60), max: 100, Color.Transparent, Color.Teal);
             player1HpBar1.Origin = player1HpBar1.RawSize / 2;
             player1HpBar1.Scale = new Vector2(player1HpBar1.Scale.X * -1, player1HpBar1.Scale.Y); //invert
             player1HpBar1.Position = new Vector2(screenSize.X * 0.3f, screenSize.Y * 0.111f);
-            player1HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) {Value = 100};
+            player1HpBar2 = new ProgressBar(new Vector2(550, 60), max: 100, Color.Black, Color.DarkRed) {Value = 100};
             player1HpBar2.Origin = player1HpBar2.RawSize / 2;
             player1HpBar2.Scale = new Vector2(player1HpBar2.Scale.X * -1, player1HpBar2.Scale.Y); //invert
             player1HpBar2.Position = new Vector2(screenSize.X * 0.3f, screenSize.Y * 0.111f);
             Add(player1HpBar2);
             Add(player1HpBar1);
 
-            player2HpBar1 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Transparent, Color.DarkGreen);
+            player2HpBar1 = new ProgressBar(new Vector2(550, 60), max: 100, Color.Transparent, Color.Teal);
             player2HpBar1.Origin = player2HpBar1.RawSize / 2;            
             player2HpBar1.Position = new Vector2(screenSize.X * 0.7f, screenSize.Y * 0.111f);
-            player2HpBar2 = new ProgressBar(new Vector2(575, 75), max: 100, Color.Black, Color.Red) {Value = 100};
+            player2HpBar2 = new ProgressBar(new Vector2(550, 60), max: 100, Color.Black, Color.DarkRed) {Value = 100};
             player2HpBar2.Origin = player2HpBar2.RawSize / 2;            
             player2HpBar2.Position = new Vector2(screenSize.X * 0.7f, screenSize.Y * 0.111f);
             player2HpBar2.Value = 100;
@@ -92,12 +92,12 @@ namespace GameProject
             //Avatar
             avatar1 = new Avatar(player1.spritePath);
             avatar1.Origin = avatar1.RawSize / 2;
-            avatar1.Scale = new Vector2(-4,4);
+            avatar1.Scale = new Vector2(-3,3);
             avatar1.Position = new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f);
             Add(avatar1);
             avatar2 = new Avatar(player2.spritePath);
             avatar2.Origin = avatar2.RawSize / 2;
-            avatar2.Scale = new Vector2(4, 4);
+            avatar2.Scale = new Vector2(3, 3);
             avatar2.Position = new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f);
             Add(avatar2);
 

@@ -218,14 +218,14 @@ namespace GameProject
             if(Position.X +((size.X * 3) + (buffer.X * 2) + buffer.Width) > screenSize.X)
             {
                 Debug.WriteLine(Position);
-                Position = new Vector2(screenSize.X - ((size.X * 3) + (buffer.X * 2) + buffer.Width) - buffer.Width, Position.Y);
+                Position = new Vector2(screenSize.X - ((size.X * 3) + (buffer.X * 2) + buffer.Width), Position.Y);
                 vX = 0;
             }
             // left
-            if(Position.X + (size.X - (buffer.Width - (buffer.X * 2))) <= 0)
+            if(Position.X + buffer.Width < 0)
             {
                 Debug.WriteLine(Position);
-                Position = new Vector2(0, Position.Y);
+                Position = new Vector2(-(buffer.Width), Position.Y);
                 vX = 0;
             }
         }

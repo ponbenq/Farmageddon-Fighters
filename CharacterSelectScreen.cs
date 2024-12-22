@@ -22,33 +22,39 @@ namespace GameProject
         Boolean player1Selected, player2Selected, stageSelected = false;
         SoundEffect select, move, click, choose;
         string stage;
-
+        Text selectedStageText;
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
 
             //Background
             var file = "bgmain";
-            Add(new ParallaxBackground(file, screenSize, 20f, 50f));
+            Add(new ParallaxBackground(file, screenSize, 20f, 50f, false));
 
             //Stage select
-            var stagetext = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Stage select");
-            stagetext.Origin = stagetext.RawSize / 2;
-            stagetext.Effect = FontStashSharp.FontSystemEffect.Stroked;
-            stagetext.EffectAmount = 3;
-            stagetext.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 - 400);
-            this.Add(stagetext);
+            var stageText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Stage select");
+            stageText.Origin = stageText.RawSize / 2;
+            stageText.Effect = FontStashSharp.FontSystemEffect.Stroked;
+            stageText.EffectAmount = 3;
+            stageText.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 - 450);
+            this.Add(stageText);
 
             // Stage selection buttons
             AddStageButtons(screenSize);
-                      
+
+            selectedStageText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.SteelBlue, "");
+            selectedStageText.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 - 70);
+            this.Add(selectedStageText);
+
+
+
             //Fighter select
-            var fightertext = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Fighter select");
-            fightertext.Origin = stagetext.RawSize / 2;
-            fightertext.Effect = FontStashSharp.FontSystemEffect.Stroked;
-            fightertext.EffectAmount = 2;
-            fightertext.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2);
-            this.Add(fightertext);
+            var fighterText = new Text("Resources/Fonts/ZFTERMIN__.ttf", 70, Color.White, "Fighter select");
+            fighterText.Origin = fighterText.RawSize / 2;
+            fighterText.Effect = FontStashSharp.FontSystemEffect.Stroked;
+            fighterText.EffectAmount = 2;
+            fighterText.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 50);
+            this.Add(fighterText);
 
             this.gameStart = gameStart;
             tileSize = new Vector2(224, 224);
@@ -68,7 +74,7 @@ namespace GameProject
             visual.Add(player1);
             visual.Add(player2);
             visual.Origin = visual.RawSize / 2;
-            visual.Position = new Vector2(screenSize.X / 2 -560, screenSize.Y / 2 + 50);
+            visual.Position = new Vector2(screenSize.X / 2 -560, screenSize.Y / 2 + 100);
             Add(visual);
 
             //Start button
@@ -95,7 +101,7 @@ namespace GameProject
 
         private void AddStageButtons(Vector2 screenSize)
         {
-            Vector2[] offsets = { new Vector2(-666, -200), new Vector2(-222, -200), new Vector2(222, -200), new Vector2(666, -200) };
+            Vector2[] offsets = { new Vector2(-666, -250), new Vector2(-222, -250), new Vector2(222, -250), new Vector2(666, -250) };
             RectF[] sprites = { new RectF(0, 0, 444, 250), new RectF(444, 0, 444, 250), new RectF(888, 0, 444, 250), new RectF(1332, 0, 444, 250) };
 
             for (int i = 0; i < 4; i++)
@@ -108,14 +114,18 @@ namespace GameProject
                 };
                 stageButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 80, Color.SlateGray, (i + 1).ToString());
                 stageButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-                stageButton.ButtonClicked += (button) => SelectStage(((ImageButton)button).Str);
+                stageButton.ButtonClicked += (button) => SelectStage((ImageButton)button);
                 Add(stageButton);
             }
         }
-        private void SelectStage(string stageNumber)
+        private void SelectStage(ImageButton button)
         {
+            var stageNumber = button.Str;
             stage = $"stage{stageNumber}";
             stageSelected = true;
+            selectedStageText.Str = $"STAGE {stageNumber} !!";
+            selectedStageText.Origin = selectedStageText.RawSize / 2;
+            
         }
 
 

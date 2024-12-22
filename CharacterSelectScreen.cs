@@ -20,7 +20,7 @@ namespace GameProject
         ImageButton startButton;
         string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected = false;
-        SoundEffect select, move;
+        SoundEffect select, move,click;
 
         public CharacterSelectScreen(Vector2 screenSize, GameStart gameStart)
         {
@@ -115,10 +115,17 @@ namespace GameProject
             startButton.Origin = btnRegion.Size / 2;
             startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Start");
             startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            startButton.ButtonClicked += Playclicksound;
             startButton.ButtonClicked += GameStart;
 
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
+            click = SoundEffect.FromFile("Resources/soundeffect/click.wav");
+        }
+
+        private void Playclicksound(GenericButton button)
+        {
+            click.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
         }
 
         public override void Act(float deltaTime)

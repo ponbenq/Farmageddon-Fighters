@@ -52,12 +52,7 @@ namespace GameProject
                         menuScreen.Detach();
                         characterSelectScreen = new CharacterSelectScreen(ScreenSize, GameStart);
                         All.Add(characterSelectScreen);
-                        return;
-                    case 2: //How to play
-                        menuScreen.Detach();
-                        howtoplayScreen = new howtoplayScreen(ScreenSize,actor);
-                        All.Add(howtoplayScreen);
-                        return;
+                        return;                    
                 }
             }
             if (actor == gameScreen)

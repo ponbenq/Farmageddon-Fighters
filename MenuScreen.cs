@@ -14,10 +14,14 @@ namespace GameProject
     {
         ExitNotifier exitNotifier;
         SoundEffect clicksound;
+        Vector2 screenSize;
+        SpriteActor howToPlay;
+        ImageButton startButton, howToPlayButton, exitButton, backButton;
         
         public MenuScreen(Vector2 screenSize, ExitNotifier exitNotifier)
         {
             this.exitNotifier = exitNotifier;
+            this.screenSize = screenSize;
 
             //Background
             var file = "bgmain";
@@ -47,33 +51,33 @@ namespace GameProject
             var btnRegion = new TextureRegion(TextureCache.Get("Resources/img/btn.png"));
             
             //Start button
-            var startButton = new ImageButton(btnRegion);
+            startButton = new ImageButton(btnRegion);
             startButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 130);
             startButton.Origin = btnRegion.Size / 2;
             startButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65,Color.DimGray, "Start");
             startButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
             startButton.ButtonClicked += Playsoundclick;
             startButton.ButtonClicked += GameStart;
-            this.Add(startButton);
+            Add(startButton);
 
             // How to play
-            var howtoplayButton = new ImageButton(btnRegion);
-            howtoplayButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 250);
-            howtoplayButton.Origin = btnRegion.Size / 2;
-            howtoplayButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "How to play");
-            howtoplayButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
-            howtoplayButton.ButtonClicked += Playsoundclick;
-            howtoplayButton.ButtonClicked += Howtoplay;
-            this.Add(howtoplayButton);
+            howToPlayButton = new ImageButton(btnRegion);
+            howToPlayButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 250);
+            howToPlayButton.Origin = btnRegion.Size / 2;
+            howToPlayButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "How to play");
+            howToPlayButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            howToPlayButton.ButtonClicked += Playsoundclick;
+            howToPlayButton.ButtonClicked += Howtoplay;
+            Add(howToPlayButton);
 
             //Exit button
-            var exitButton = new ImageButton(btnRegion);
+            exitButton = new ImageButton(btnRegion);
             exitButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 370);
             exitButton.Origin = btnRegion.Size / 2;
             exitButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Exit");
             exitButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
             exitButton.ButtonClicked += GameExit;
-            this.Add(exitButton);
+            Add(exitButton);
 
         }
 
@@ -99,7 +103,28 @@ namespace GameProject
         }
         public void Howtoplay(GenericButton button)
         {
-            AddAction(new RunAction(() => exitNotifier(this, 2)));
+            howToPlay = new HowToPlay(screenSize);
+            howToPlay.Origin = howToPlay.RawSize / 2;
+            howToPlay.Position = screenSize / 2;
+            Add(howToPlay);
+
+            var btnRegion = new TextureRegion(TextureCache.Get("Resources/img/btn.png"));
+            backButton = new ImageButton(btnRegion);
+            backButton.Position = new Vector2(screenSize.X / 2, screenSize.Y / 2 + 450);
+            backButton.Origin = btnRegion.Size / 2;
+            backButton.SetButtonText("Resources/Fonts/ZFTERMIN__.ttf", 65, Color.DimGray, "Close");
+            backButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+            backButton.ButtonClicked += BackClicked;
+            Add(backButton);
+
+            exitButton.Detach();
+        }
+
+        public void BackClicked(GenericButton button)
+        {
+            howToPlay.Detach();
+            backButton.Detach();
+            Add(exitButton);
         }
     }
 }

@@ -112,7 +112,7 @@ namespace GameProject
                     {
                         vY -= 550;
                         changeState(playerState.idle);
-                        jumpsound.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
+                        jumpsound.Play(volume: 0.05f, pitch: 0.0f, pan: 0.0f);
                     }
                     if (onFloor)
                         changeState(playerState.idle);
@@ -138,7 +138,7 @@ namespace GameProject
 
                     if (!hasPlayedDashSound) 
                     {
-                        dashsound.Play(volume: 0.5f, pitch: 0.0f, pan: 0.0f);
+                        dashsound.Play(volume: 0.2f, pitch: 0.0f, pan: 0.0f);
                         hasPlayedDashSound = true; 
                     }
 

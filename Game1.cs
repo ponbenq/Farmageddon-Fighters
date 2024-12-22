@@ -9,7 +9,7 @@ namespace GameProject
 {
     public class Game1 : Game2D
     {
-        Actor menuScreen, characterSelectScreen, gameScreen;
+        Actor menuScreen, characterSelectScreen, gameScreen, howtoplayScreen;
         private SoundEffect bgmsong;
         private SoundEffectInstance bgmInstance;
 
@@ -29,10 +29,11 @@ namespace GameProject
             bgmsong = SoundEffect.FromFile("Resources/soundeffect/bgm.wav");
             bgmInstance = bgmsong.CreateInstance();
             bgmInstance.IsLooped = true;
-            bgmInstance.Volume = 0.5f;
+            bgmInstance.Volume = 0.09f;
             bgmInstance.Play();
 
             menuScreen = new MenuScreen(ScreenSize, ExitNotifier);
+            howtoplayScreen = new MenuScreen(ScreenSize, ExitNotifier);
             All.Add(menuScreen);
         }
 
@@ -51,12 +52,17 @@ namespace GameProject
                         menuScreen.Detach();
                         characterSelectScreen = new CharacterSelectScreen(ScreenSize, GameStart);
                         All.Add(characterSelectScreen);
-                        return;
+                        return;                    
                 }
             }
             if (actor == gameScreen)
             {
                 gameScreen.Detach();
+                All.Add(menuScreen);
+            }
+            if(actor == howtoplayScreen)
+            {
+                howtoplayScreen.Detach();
                 All.Add(menuScreen);
             }
         }

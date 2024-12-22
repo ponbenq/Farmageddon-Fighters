@@ -91,7 +91,7 @@ namespace GameProject
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
             click = SoundEffect.FromFile("Resources/soundeffect/click.wav");
             choose = SoundEffect.FromFile("Resources/soundeffect/announcer/Choose.wav");
-            choose.Play();
+            choose.Play(volume:0.3f,pitch:0.0f,pan:0.0f);
         }
 
         private void Playclicksound(GenericButton button)
@@ -224,7 +224,7 @@ namespace GameProject
                 return;
             }
             player1.Position += player1Direction * tileMap.TileSize;
-            move.Play();
+            move.Play(volume:0.3f,pitch:0.0f,pan:0.0f);
         }
         private bool IsAllowMove(PlayerSelect player, Vector2 direction)
         {

@@ -340,7 +340,7 @@ namespace GameProject
                             damage2.Str = (damage * 2).ToString("0") + "\nCRIT!";
                             damage2.Color = Color.Gold;
                             damage2.Origin = damage2.RawSize / 2;
-                            critSfx.Play();
+                            critSfx.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
                         } else
                         {
                             player1Hp -= damage;
@@ -348,14 +348,14 @@ namespace GameProject
                             damage2.Str = damage.ToString("0") + "\nHIT";
                             damage2.Color = Color.White;
                             damage2.Origin = damage2.RawSize / 2;
-                            hurtsound.Play();
+                            hurtsound.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
                         }
                         player.changeState(PlayerAb.playerState.hurt);                                                
                         Add(damage2);                       
                     } else
                     {
                         player1Hit = true;
-                        blockSfx.Play();
+                        blockSfx.Play(volume: 0.4f, pitch: 0.0f, pan: 0.0f);
                         damage2.Str = "BLOCKED";
                         damage2.Color = Color.Red;
                         damage2.Origin = damage2.RawSize / 2;
@@ -488,7 +488,7 @@ namespace GameProject
                     if (!fightSfxPlayed)
                     {
                         var fightSfx = SoundEffect.FromFile("Resources/soundeffect/announcer/fight.wav");
-                        fightSfx.Play();
+                        fightSfx.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
                         fightSfxPlayed = true;
                     }                    
                 }

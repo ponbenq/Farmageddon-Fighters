@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Game12;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.Graphics;
 using ThanaNita.MonoGameTnt;

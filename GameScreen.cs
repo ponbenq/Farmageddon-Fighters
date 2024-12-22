@@ -157,13 +157,23 @@ namespace GameProject
             {
                 if(!manager.isPaused)
                 {
-                    var pauseMenu = new PauseMenu(screenSize, this);
+                    var pauseMenu = new PauseMenu(screenSize, this, manager, exitNotifier);
+                    Debug.WriteLine("PauseMenu Add");
                     Add(pauseMenu);
                 }
                 manager.TogglePause();
             }
             if(manager.isPaused)
+            {
+                foreach (var child in Children.ToList())
+                {
+                    if (child is PauseMenu)
+                    {
+                        child.Act(deltaTime);
+                    }
+                }
                 return;
+            }
             base.Act(deltaTime);
             StartCountdown(deltaTime);
 

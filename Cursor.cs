@@ -47,7 +47,7 @@ namespace GameProject
 
         public void setPlayerCursor(Actor player)
         {
-            Position = new Vector2(player.RawRect.CenterPoint.X, player.RawRect.CenterPoint.Y - 40);
+            Position = new Vector2(player.RawRect.CenterPoint.X - 5, player.RawRect.CenterPoint.Y - 30);
             player.Add(this);
         }
 

@@ -126,10 +126,10 @@ namespace GameProject
                     Add(hitbox);
                     animationStates.Animate(7);
                 }
-                if(state == playerState.dash)
+                if(state == playerState.dash && stateTimer < 0.01f)
                 {
                     var dash = new Dash(this, direction);
-                    // Add(dash);
+                    Add(dash);
                 }
                 if(state == playerState.blocking)
                 {
@@ -171,10 +171,10 @@ namespace GameProject
                     Add(hitbox);
                     animationStates.Animate(2);
                 }
-                if(state == playerState.dash)
+                if(state == playerState.dash && stateTimer < 0.01f)
                 {
                     var dash = new Dash(this, direction);
-                    // Add(dash);
+                    Add(dash);
                 }
                 if(state == playerState.blocking)
                 {

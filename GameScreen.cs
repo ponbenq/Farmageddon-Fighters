@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Game12;
 
 namespace GameProject
 {
@@ -127,11 +126,11 @@ namespace GameProject
             Add(centerText);
             start = ((int)setupTime) - 1;
 
-            //Markers
-            Add(new CrossHair(player1HpBar1.Position));
-            Add(new CrossHair(player2HpBar1.Position));
-            Add(new CrossHair(new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f))); //player1 avatar
-            Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
+            ////Markers
+            //Add(new CrossHair(player1HpBar1.Position));
+            //Add(new CrossHair(player2HpBar1.Position));
+            //Add(new CrossHair(new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f))); //player1 avatar
+            //Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
 
             manager = new GameManager();
         }
@@ -299,13 +298,20 @@ namespace GameProject
             
             if (state == gameStates.End)
             {
-                endTime += deltaTime;
-                if (endTime >= 4f)
-                {
-                    AddAction(new RunAction(() => exitNotifier(this, 0)));
-                }
+                var mainRegion = new TextureRegion(TextureCache.Get("Resources/pauseMenu/main_button.png"));
+                var mainButton = new ImageButton(mainRegion);
+                mainButton.Position = new Vector2(screenSize.X / 2, screenSize.Y * 0.8f);
+                mainButton.Origin = mainRegion.Size / 2;
+                mainButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+                mainButton.ButtonClicked += Menu;
+                Add(mainButton);
             }
-        }   
+        }
+
+        public void Menu(GenericButton button)
+        {
+            AddAction(new RunAction(() => exitNotifier(this, 0)));
+        }
 
         public void HitCheck(Actor target, float damage)
         {

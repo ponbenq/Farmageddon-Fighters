@@ -1,6 +1,6 @@
 ﻿using ThanaNita.MonoGameTnt;
 
-namespace Game12
+namespace GameProject
 {
     public delegate void ExitNotifier(Actor actor, int code);
 }

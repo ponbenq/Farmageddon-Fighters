@@ -31,7 +31,7 @@ namespace GameProject
         const float setupTime = 4f;
         const float hpDepleteDelay = 2.5f;
         const float hpDepleteRate = 1f;
-        const float hitDelay = 1f;
+        const float hitDelay = 0.6f;
         Color color50 = new Color(100, 100, 100);
         Color color25 = new Color(75, 75, 75);
         Color color0 = new Color(50, 50, 50);

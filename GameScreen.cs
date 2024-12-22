@@ -31,7 +31,7 @@ namespace GameProject
         const float setupTime = 4f;
         const float hpDepleteDelay = 2.5f;
         const float hpDepleteRate = 1f;
-        const float hitDelay = 1f;
+        const float hitDelay = 0.6f;
         Color color50 = new Color(100, 100, 100);
         Color color25 = new Color(75, 75, 75);
         Color color0 = new Color(50, 50, 50);
@@ -311,6 +311,7 @@ namespace GameProject
         {
             hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
             var blockSfx = SoundEffect.FromFile("Resources/soundeffect/block.wav");
+            var critSfx = SoundEffect.FromFile("Resources/soundeffect/hit.wav");
             var blocked = false;
             if (damage == 0f) { blocked = true; }
             if (target is Entity player)
@@ -319,13 +320,24 @@ namespace GameProject
                 {
                     if (!blocked)
                     {
-                        player.changeState(PlayerAb.playerState.hurt);
-                        player1Hp -= damage;
-                        player1Hit = true;                        
-                        damage2.Str = damage.ToString("0") + "\nHIT";
-                        damage2.Color = Color.White;
-                        damage2.Origin = damage2.RawSize / 2;
-                        hurtsound.Play();
+                        if (Critical())
+                        {
+                            player1Hp -= damage * 2;
+                            player1Hit = true;
+                            damage2.Str = (damage * 2).ToString("0") + "\nCRIT!";
+                            damage2.Color = Color.Gold;
+                            damage2.Origin = damage2.RawSize / 2;
+                            critSfx.Play();
+                        } else
+                        {
+                            player1Hp -= damage;
+                            player1Hit = true;
+                            damage2.Str = damage.ToString("0") + "\nHIT";
+                            damage2.Color = Color.White;
+                            damage2.Origin = damage2.RawSize / 2;
+                            hurtsound.Play();
+                        }
+                        player.changeState(PlayerAb.playerState.hurt);                                                
                         Add(damage2);                       
                     } else
                     {
@@ -342,14 +354,24 @@ namespace GameProject
                 {
                     if (!blocked)
                     {
+                        if (Critical())
+                        {
+                            player2Hp -= damage * 2;
+                            player2Hit = true;
+                            damage1.Str = (damage * 2).ToString("0") + "\nCRIT!";
+                            damage1.Color = Color.Gold;
+                            damage1.Origin = damage1.RawSize / 2;
+                            critSfx.Play();
+                        } else
+                        {
+                            player2Hp -= damage;
+                            player2Hit = true;
+                            damage1.Str = damage.ToString("0") + "\nHIT";
+                            damage1.Color = Color.White;
+                            damage1.Origin = damage1.RawSize / 2;
+                            hurtsound.Play();
+                        }
                         player.changeState(PlayerAb.playerState.hurt);
-                        player2Hp -= damage;
-                        //target.Position += new Vector2(40, 0);
-                        player2Hit = true;                        
-                        damage1.Str = damage.ToString("0") + "\nHIT";
-                        damage1.Color = Color.White;
-                        damage1.Origin = damage1.RawSize / 2;
-                        hurtsound.Play();
                         Add(damage1);
                     } else
                     {
@@ -458,6 +480,18 @@ namespace GameProject
                     }                    
                 }
             }                      
+        }
+
+        public bool Critical()
+        {
+            var rng = RandomUtil.NextSingle(1);
+            if (rng >= 0.8)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 }

@@ -213,14 +213,18 @@ namespace GameProject
 
         private void screenBounding()
         {
-            var buffer = 90f;
-            if(Position.X + RawRect.Width > screenSize.X - buffer)
+            var buffer = RawRect.CreateAdjusted(0.6f, 1f); // X: 10, Y: 0, Width: 30, Height: 50
+            // right
+            if(Position.X +((size.X * 3) + (buffer.X * 2) + buffer.Width) > screenSize.X)
             {
-                Position = new Vector2(screenSize.X - RawRect.Width - buffer, Position.Y);
+                Debug.WriteLine(Position);
+                Position = new Vector2(screenSize.X - ((size.X * 3) + (buffer.X * 2) + buffer.Width) - buffer.Width, Position.Y);
                 vX = 0;
             }
-            if(Position.X < 0)
+            // left
+            if(Position.X + (size.X - (buffer.Width - (buffer.X * 2))) <= 0)
             {
+                Debug.WriteLine(Position);
                 Position = new Vector2(0, Position.Y);
                 vX = 0;
             }

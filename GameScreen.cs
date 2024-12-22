@@ -44,10 +44,10 @@ namespace GameProject
             this.exitNotifier = exitNotifier;
 
             //Background
-            Add(new ParallaxBackground(stage, screenSize, 50f, 100f));
+            Add(new ParallaxBackground(stage, screenSize, 50f, 100f, true));
 
             //Floor
-            Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50)));
+            Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50), stage));
             this.player1 = player1;
             this.player2 = player2;
             player1.SetHitCheck(HitCheck); //Pass hitcheck to Player

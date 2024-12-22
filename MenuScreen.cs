@@ -20,7 +20,7 @@ namespace GameProject
 
             //Background
             var file = "bgmain";
-            Add(new ParallaxBackground(file, screenSize, 20f, 50f));
+            Add(new ParallaxBackground(file, screenSize, 20f, 50f, false));
 
             //Fighters
             var size = new Vector2(250, 50);

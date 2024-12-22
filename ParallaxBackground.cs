@@ -7,7 +7,7 @@ namespace GameProject
 {
     public class ParallaxBackground : Actor
     {
-        public ParallaxBackground(string file, Vector2 screenSize, float lv1_speed, float lv2_speed)
+        public ParallaxBackground(string file, Vector2 screenSize, float lv1_speed, float lv2_speed, bool isGame)
         {
             var dir = "Resources/background/";
             var lv1 = dir + file + "_1.png";
@@ -21,6 +21,16 @@ namespace GameProject
             var second_lv2 = new MovingBackground(lv2, screenSize, new Vector2(first_lv2.GetTextureWidth(), 0), lv2_speed);
             Add(first_lv2);
             Add(second_lv2);
+
+            if (isGame)
+            {
+                //Fence
+                var fenceRegion = new TextureRegion(TextureCache.Get("Resources/ground/fence.png"));
+                var fence = new SpriteActor(fenceRegion);
+                fence.Position = new Vector2(0, screenSize.Y - 330);
+                fence.Scale = new Vector2(0.3f, 0.3f);
+                Add(fence);
+            }
         }
     }
 }

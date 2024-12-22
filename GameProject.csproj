@@ -25,7 +25,69 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\net8.0\Resources\Images\" />
     <Folder Include="Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\net8.0\Resources\background\bgmain_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\bgmain_2.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage1_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage1_2.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage2_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage2_2.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage3_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage3_2.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage4_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\background\stage4_2.png" />
+    <None Include="bin\Debug\net8.0\Resources\cursor\cursor.png" />
+    <None Include="bin\Debug\net8.0\Resources\cursor\mouse.png" />
+    <None Include="bin\Debug\net8.0\Resources\Fonts\Simvoni.ttf" />
+    <None Include="bin\Debug\net8.0\Resources\Fonts\ZFTERMIN__.ttf" />
+    <None Include="bin\Debug\net8.0\Resources\ground\blue_brick.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\darkblue_brick.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\fence.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\green_brick.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\green_brick5.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\stage1_floor.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\stage2_floor.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\stage3_floor.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\stage4_floor.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\world_tileset.png" />
+    <None Include="bin\Debug\net8.0\Resources\ground\yellow_brick.png" />
+    <None Include="bin\Debug\net8.0\Resources\img\btn.png" />
+    <None Include="bin\Debug\net8.0\Resources\img\logo.png" />
+    <None Include="bin\Debug\net8.0\Resources\pauseMenu\main_button.png" />
+    <None Include="bin\Debug\net8.0\Resources\pauseMenu\pause_game.png" />
+    <None Include="bin\Debug\net8.0\Resources\pauseMenu\resume_button.png" />
+    <None Include="bin\Debug\net8.0\Resources\smoke\dash.png" />
+    <None Include="bin\Debug\net8.0\Resources\smoke\dash_02.png" />
+    <None Include="bin\Debug\net8.0\Resources\smoke\smoke_1.png" />
+    <None Include="bin\Debug\net8.0\Resources\smoke\smoke_1_flip.png" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\announcer\Choose.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\announcer\Draw.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\announcer\Fight.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\announcer\Player1win.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\announcer\Player2Win.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\bgm.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\block.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\dash.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\dash2.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\hit.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\hurt.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\jump.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\move.wav" />
+    <None Include="bin\Debug\net8.0\Resources\soundeffect\select.wav" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\broccoli\broccoli.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\characterAvatars.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\characterTiles.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\char_avatars.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\char_frame.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\eggplant\eggplant.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\garlic\garlic.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\menu_idle.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\mushroom\mushroom.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\pumpkin\pumpkin.png" />
+    <None Include="bin\Debug\net8.0\Resources\sprite\stage_frame.png" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

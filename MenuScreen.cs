@@ -117,6 +117,8 @@ namespace GameProject
             backButton.ButtonClicked += BackClicked;
             Add(backButton);
 
+            startButton.Detach();
+            howToPlayButton.Detach();
             exitButton.Detach();
         }
 
@@ -124,6 +126,8 @@ namespace GameProject
         {
             howToPlay.Detach();
             backButton.Detach();
+            Add(startButton);
+            Add(howToPlayButton);
             Add(exitButton);
         }
     }

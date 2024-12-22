@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Game12;
 
 namespace GameProject
 {
@@ -31,7 +30,7 @@ namespace GameProject
         const float setupTime = 4f;
         const float hpDepleteDelay = 2.5f;
         const float hpDepleteRate = 1f;
-        const float hitDelay = 1f;
+        const float hitDelay = 0.6f;
         Color color50 = new Color(100, 100, 100);
         Color color25 = new Color(75, 75, 75);
         Color color0 = new Color(50, 50, 50);
@@ -39,9 +38,11 @@ namespace GameProject
         //State
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
+        private Vector2 screenSize;
         public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier, string stage)
         {
             this.exitNotifier = exitNotifier;
+            this.screenSize = screenSize;
 
             //Background
             Add(new ParallaxBackground(stage, screenSize, 50f, 100f, true));
@@ -125,11 +126,11 @@ namespace GameProject
             Add(centerText);
             start = ((int)setupTime) - 1;
 
-            //Markers
-            Add(new CrossHair(player1HpBar1.Position));
-            Add(new CrossHair(player2HpBar1.Position));
-            Add(new CrossHair(new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f))); //player1 avatar
-            Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
+            ////Markers
+            //Add(new CrossHair(player1HpBar1.Position));
+            //Add(new CrossHair(player2HpBar1.Position));
+            //Add(new CrossHair(new Vector2(screenSize.X * 0.075f, screenSize.Y * 0.111f))); //player1 avatar
+            //Add(new CrossHair(new Vector2(screenSize.X * 0.925f, screenSize.Y * 0.111f))); //player2 avatar
 
             manager = new GameManager();
         }
@@ -152,9 +153,26 @@ namespace GameProject
         {
             var keyInfo = GlobalKeyboardInfo.Value;
             if(keyInfo.IsKeyPressed(Keys.V))
+            {
+                if(!manager.isPaused)
+                {
+                    var pauseMenu = new PauseMenu(screenSize, this, manager, exitNotifier);
+                    Debug.WriteLine("PauseMenu Add");
+                    Add(pauseMenu);
+                }
                 manager.TogglePause();
+            }
             if(manager.isPaused)
+            {
+                foreach (var child in Children.ToList())
+                {
+                    if (child is PauseMenu)
+                    {
+                        child.Act(deltaTime);
+                    }
+                }
                 return;
+            }
             base.Act(deltaTime);
             StartCountdown(deltaTime);
 
@@ -280,18 +298,26 @@ namespace GameProject
             
             if (state == gameStates.End)
             {
-                endTime += deltaTime;
-                if (endTime >= 4f)
-                {
-                    AddAction(new RunAction(() => exitNotifier(this, 0)));
-                }
+                var mainRegion = new TextureRegion(TextureCache.Get("Resources/pauseMenu/main_button.png"));
+                var mainButton = new ImageButton(mainRegion);
+                mainButton.Position = new Vector2(screenSize.X / 2, screenSize.Y * 0.8f);
+                mainButton.Origin = mainRegion.Size / 2;
+                mainButton.SetOutlines(0, Color.Transparent, Color.Transparent, Color.Transparent);
+                mainButton.ButtonClicked += Menu;
+                Add(mainButton);
             }
-        }   
+        }
+
+        public void Menu(GenericButton button)
+        {
+            AddAction(new RunAction(() => exitNotifier(this, 0)));
+        }
 
         public void HitCheck(Actor target, float damage)
         {
             hurtsound = SoundEffect.FromFile("Resources/soundeffect/hurt.wav");
             var blockSfx = SoundEffect.FromFile("Resources/soundeffect/block.wav");
+            var critSfx = SoundEffect.FromFile("Resources/soundeffect/hit.wav");
             var blocked = false;
             if (damage == 0f) { blocked = true; }
             if (target is Entity player)
@@ -300,13 +326,24 @@ namespace GameProject
                 {
                     if (!blocked)
                     {
-                        player.changeState(PlayerAb.playerState.hurt);
-                        player1Hp -= damage;
-                        player1Hit = true;                        
-                        damage2.Str = damage.ToString("0") + "\nHIT";
-                        damage2.Color = Color.White;
-                        damage2.Origin = damage2.RawSize / 2;
-                        hurtsound.Play();
+                        if (Critical())
+                        {
+                            player1Hp -= damage * 2;
+                            player1Hit = true;
+                            damage2.Str = (damage * 2).ToString("0") + "\nCRIT!";
+                            damage2.Color = Color.Gold;
+                            damage2.Origin = damage2.RawSize / 2;
+                            critSfx.Play();
+                        } else
+                        {
+                            player1Hp -= damage;
+                            player1Hit = true;
+                            damage2.Str = damage.ToString("0") + "\nHIT";
+                            damage2.Color = Color.White;
+                            damage2.Origin = damage2.RawSize / 2;
+                            hurtsound.Play();
+                        }
+                        player.changeState(PlayerAb.playerState.hurt);                                                
                         Add(damage2);                       
                     } else
                     {
@@ -323,14 +360,24 @@ namespace GameProject
                 {
                     if (!blocked)
                     {
+                        if (Critical())
+                        {
+                            player2Hp -= damage * 2;
+                            player2Hit = true;
+                            damage1.Str = (damage * 2).ToString("0") + "\nCRIT!";
+                            damage1.Color = Color.Gold;
+                            damage1.Origin = damage1.RawSize / 2;
+                            critSfx.Play();
+                        } else
+                        {
+                            player2Hp -= damage;
+                            player2Hit = true;
+                            damage1.Str = damage.ToString("0") + "\nHIT";
+                            damage1.Color = Color.White;
+                            damage1.Origin = damage1.RawSize / 2;
+                            hurtsound.Play();
+                        }
                         player.changeState(PlayerAb.playerState.hurt);
-                        player2Hp -= damage;
-                        //target.Position += new Vector2(40, 0);
-                        player2Hit = true;                        
-                        damage1.Str = damage.ToString("0") + "\nHIT";
-                        damage1.Color = Color.White;
-                        damage1.Origin = damage1.RawSize / 2;
-                        hurtsound.Play();
                         Add(damage1);
                     } else
                     {
@@ -439,6 +486,18 @@ namespace GameProject
                     }                    
                 }
             }                      
+        }
+
+        public bool Critical()
+        {
+            var rng = RandomUtil.NextSingle(1);
+            if (rng >= 0.8)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 }

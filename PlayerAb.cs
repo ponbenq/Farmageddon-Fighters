@@ -176,7 +176,7 @@ namespace GameProject
                     }
                     break;
                 case playerState.dying:
-                    if (stateTimer > 0.6f)
+                    if (stateTimer > 0.4f)
                     {
                         changeState(playerState.death);
                     }

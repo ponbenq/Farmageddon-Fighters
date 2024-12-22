@@ -34,9 +34,9 @@ namespace GameProject
 
         private void initPosition(Vector2 direction)
         {
-            if(direction.X == -1)
+            if(direction.X == 1)
                 Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X - 40, 0);
-            else if(direction.X == 1)
+            else if(direction.X == -1)
                 Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X + 20, 0);
         }
 
@@ -46,12 +46,12 @@ namespace GameProject
             timer += deltaTime;
             if(timer >= 0.7f)
                 this.Detach();
-            if(direction.X == -1)
+            if(direction.X == 1)
             {
                 dashAnimationState.Animate(0);
                 Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X - 40, 0);
             }
-            else if(direction.X == 1)
+            else if(direction.X == -1)
             {
                 dashAnimationState.Animate(1);
                 Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X + 20, 0);

@@ -7,5 +7,5 @@ using ThanaNita.MonoGameTnt;
 
 namespace GameProject
 {
-    public delegate void GameStart(string player1Sprite, string player2Sprite);
+    public delegate void GameStart(string player1Sprite, string player2Sprite, string stage);
 }

@@ -14,12 +14,12 @@ namespace GameProject
         RectF nRect;
         public Avatar(string spritePath)
         {
-            size = new Vector2(50, 50);
+            
             var sprite = this;            
             Origin = RawSize / 2;
             int index = Character.GetCharacterIndex(spritePath);            
-            var texture = TextureCache.Get("Resources/sprite/characterAvatars.png");
-            var region = new TextureRegion(texture, new RectF(index * 50, 0, 50, 50));
+            var texture = TextureCache.Get("Resources/sprite/char_avatars.png");
+            var region = new TextureRegion(texture, new RectF(index * 41, 0, 41, 41));
             SetTextureRegion(region);
         }
     }

@@ -39,13 +39,15 @@ namespace GameProject
         public enum gameStates {Setup, Start, End}
         public gameStates state = gameStates.Setup;
         private Vector2 screenSize;
+        private ParallaxBackground parallaxBackground;
         public GameScreen(Vector2 screenSize, Entity player1, Entity player2, ExitNotifier exitNotifier, string stage)
         {
             this.exitNotifier = exitNotifier;
             this.screenSize = screenSize;
 
             //Background
-            Add(new ParallaxBackground(stage, screenSize, 50f, 100f, true));
+            parallaxBackground = new ParallaxBackground(stage, screenSize, 1f, 2f, true);
+            Add(parallaxBackground);
 
             //Floor
             Add(new Floor(new RectF(0, screenSize.Y - 150, 1000, 50), stage));
@@ -61,6 +63,8 @@ namespace GameProject
             var player1Cursor = new Cursor(player1, 1);
             var player2Cursor = new Cursor(player2, 2);
 
+            // init player first position
+            parallaxBackground.getLastPos(player1.Position, player2.Position);
             //HP bar
             player1HpBar1 = new ProgressBar(new Vector2(550, 60), max: 100, Color.Transparent, Color.Teal);
             player1HpBar1.Origin = player1HpBar1.RawSize / 2;
@@ -176,6 +180,9 @@ namespace GameProject
             base.Act(deltaTime);
             StartCountdown(deltaTime);
 
+
+            // update position to background
+            parallaxBackground.getPlayerPosition(player1.Position, player2.Position);
             // cross checking
             checkPlayerCross((Entity)player1, (Entity)player2);
             //Game Start apt

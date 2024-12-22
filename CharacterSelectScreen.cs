@@ -20,7 +20,7 @@ namespace GameProject
         ImageButton startButton ,stageButton;
         string player1Sprite, player2Sprite;
         Boolean player1Selected, player2Selected, stageSelected = false;
-        SoundEffect select, move,click;
+        SoundEffect select, move, click, choose;
         string stage;
 
 
@@ -84,6 +84,8 @@ namespace GameProject
             select = SoundEffect.FromFile("Resources/soundeffect/select.wav");
             move = SoundEffect.FromFile("Resources/soundeffect/move.wav");
             click = SoundEffect.FromFile("Resources/soundeffect/click.wav");
+            choose = SoundEffect.FromFile("Resources/soundeffect/announcer/Choose.wav");
+            choose.Play();
         }
 
         private void Playclicksound(GenericButton button)
@@ -123,14 +125,14 @@ namespace GameProject
             StepJumpMpvement();
 
             var keyInfo = GlobalKeyboardInfo.Value;
-            if (keyInfo.IsKeyPressed(Keys.Enter))
+            if (keyInfo.IsKeyPressed(Keys.F))
             {
                 player1Sprite = GetSprite(player1);
                 player1.Detach();
                 player1Selected = true;
                 select.Play();
             }
-            if (keyInfo.IsKeyPressed(Keys.Space))
+            if (keyInfo.IsKeyPressed(Keys.OemPeriod))
             {
                 player2Sprite = GetSprite(player2);
                 player2.Detach();
@@ -182,36 +184,36 @@ namespace GameProject
             }
 
             var key = keyInfo.GetPressedKeys()[0];
-            var player1Direction = DirectionKey.DirectionOf(key);
-            if (!IsAllowMove(player1, player1Direction))
-            {
-                return;
-            }
-            player1.Position += player1Direction * tileMap.TileSize;
-
-            //Turn w,a,s,d to direction for player2
-            var player2Direction = new Vector2();
-            if (keyInfo.IsKeyDown(Keys.W))
-            {
-                player2Direction = new Vector2(0, -1);
-            }
-            if (keyInfo.IsKeyDown(Keys.S))
-            {
-                player2Direction = new Vector2(0, 1);
-            }
-            if (keyInfo.IsKeyDown(Keys.A))
-            {
-                player2Direction = new Vector2(-1, 0);
-            }
-            if (keyInfo.IsKeyDown(Keys.D))
-            {
-                player2Direction = new Vector2(1, 0);
-            }
+            var player2Direction = DirectionKey.DirectionOf(key);
             if (!IsAllowMove(player2, player2Direction))
             {
                 return;
             }
             player2.Position += player2Direction * tileMap.TileSize;
+
+            //Turn w,a,s,d to direction for player2
+            var player1Direction = new Vector2();
+            if (keyInfo.IsKeyDown(Keys.W))
+            {
+                player1Direction = new Vector2(0, -1);
+            }
+            if (keyInfo.IsKeyDown(Keys.S))
+            {
+                player1Direction = new Vector2(0, 1);
+            }
+            if (keyInfo.IsKeyDown(Keys.A))
+            {
+                player1Direction = new Vector2(-1, 0);
+            }
+            if (keyInfo.IsKeyDown(Keys.D))
+            {
+                player1Direction = new Vector2(1, 0);
+            }
+            if (!IsAllowMove(player1, player1Direction))
+            {
+                return;
+            }
+            player1.Position += player1Direction * tileMap.TileSize;
             move.Play();
         }
         private bool IsAllowMove(PlayerSelect player, Vector2 direction)

@@ -68,9 +68,9 @@ namespace GameProject
             CollisionDetectionUnit.AddDetector(2, 4);
             characterSelectScreen.Detach();
             var player1 = new Entity(ScreenSize, new Vector2(100, 100), player1Sprite,
-                                1, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.K, Keys.J), 1);
+                                1, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F, Keys.G), 1);
             var player2 = new Entity(ScreenSize, new Vector2(ScreenSize.X - 300, 100), player2Sprite,
-                                    2, new KeyScheme(Keys.W, Keys.S, Keys.D, Keys.A, Keys.Space, Keys.F, Keys.G), 2);
+                                    2, new KeyScheme(Keys.Up, Keys.Down, Keys.Right, Keys.Left, Keys.L, Keys.OemPeriod, Keys.OemComma), 2);
             gameScreen = new GameScreen(ScreenSize, player1, player2, ExitNotifier, stage);
             All.Add(gameScreen);
         }

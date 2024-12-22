@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using ThanaNita.MonoGameTnt;
 
@@ -14,37 +15,46 @@ namespace GameProject
         {
             this.player = player;
             size = new Vector2(32, 32);
-            Scale = new Vector2(2, 2);
-            var texture = TextureCache.Get("Resources/smoke/dash.png");
+            Scale = new Vector2(1.6f, 1.6f);
+            var texture = TextureCache.Get("Resources/smoke/dash_02.png");
             var region = RegionCutter.Cut(texture, size);
             var selector = RegionSelector.Select(region, start: 0, count: 7);
-            var left = new Animation(this, 1.0f, selector);
+            var left = new Animation(this, 0.7f, selector);
 
             var selector2 = RegionSelector.Select(region, start: 7, count: 7);
-            var right = new Animation(this, 1.0f, selector2);
+            var right = new Animation(this, 0.7f, selector2);
             
             dashAnimationState = new AnimationStates([left, right]);
             AddAction(dashAnimationState);
             this.direction = direction;
 
             timer = 0;
+            initPosition(direction);
+        }
+
+        private void initPosition(Vector2 direction)
+        {
+            if(direction.X == 1)
+                Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X - 40, 0);
+            else if(direction.X == -1)
+                Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X + 20, 0);
         }
 
         public override void Act(float deltaTime)
         {
             base.Act(deltaTime);
             timer += deltaTime;
-            if(timer >= 1f)
+            if(timer >= 0.7f)
                 this.Detach();
-            if(direction.X == -1)
+            if(direction.X == 1)
             {
                 dashAnimationState.Animate(0);
-                Position = new Vector2(player.RawRect.X - player.RawSize.X, player.RawRect.Y - (player.RawSize.Y / 3));
+                Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X - 40, 0);
             }
-            else if(direction.X == 1)
+            else if(direction.X == -1)
             {
                 dashAnimationState.Animate(1);
-                Position = new Vector2(player.RawRect.X + player.RawSize.X, player.RawRect.Y - (player.RawSize.Y / 3));
+                Position = new Vector2(player.RawRect.CreateAdjusted(0.6f, 1f).X + 20, 0);
             }
         }
     }

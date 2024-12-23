@@ -44,6 +44,8 @@ namespace GameProject
                 var scrollAdjustment = distanceToTarget * (scrollSpeed * decay) * deltaTime;
 
                 Position += new Vector2(scrollAdjustment, 0);
+                Origin = new Vector2(texture.Width / 2, 0);
+
             }
 
             if (Position.X >= GetTextureWidth())

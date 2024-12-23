@@ -34,7 +34,7 @@ namespace GameProject
 
             if (isGame)
             {
-                var decay = 0.44f;
+                var decay = 0.75f;
                 var centerX = (player1Position.X + player2Position.X) / 2;
 
                 var targetX = centerX - (screenSize.X / 2);

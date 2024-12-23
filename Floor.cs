@@ -13,7 +13,7 @@ public class Floor : SpriteActor
         Scale = new Vector2(7,7);
         Position = rect.Position;
         var collisionObj = CollisionObj.CreateWithRect(this, 3);
-        collisionObj.DebugDraw = true;
+        collisionObj.DebugDraw = false;
         Add(collisionObj);
     }
 }

@@ -67,7 +67,7 @@ namespace ThanaNita.MonoGameTnt
         private void DetectAndResolveAllGroups()
         {
             List<CollisionObj>? list;
-            if(detectors.Count == 0 && groups.IsSingleGroup(out list))
+            if (detectors.Count == 0 && groups.IsSingleGroup(out list))
                 DetectAndResolveSameList(list!);
             else
             {
@@ -82,7 +82,7 @@ namespace ThanaNita.MonoGameTnt
 
         private void DetectAndResolveTwoLists(List<CollisionObj> list1, List<CollisionObj> list2)
         {
-            if(list1 == list2)
+            if (list1 == list2)
                 DetectAndResolveSameList(list1);
             else
                 DetectAndResolveDistinctLists(list1, list2);
@@ -112,7 +112,7 @@ namespace ThanaNita.MonoGameTnt
         }
         private void InvokeCollideBoth(CollisionObj objA, CollisionObj objB, CollideData collideData)
         {
-            if(FirstContactDetectionEnable)
+            if (FirstContactDetectionEnable)
             {
                 collideData.FirstContact = !objB.LastObjList.Contains(objA);
                 objA.CurrentObjList.Add(objB);
